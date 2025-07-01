@@ -1,16 +1,16 @@
-import 'package:fangmou_app/screens/function_unzip_screen/widget/password_item_widget.dart';
+import 'package:fangmou_app/screens/function_decompress_screen/widget/password_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common_widgets/DirectoryPathSelector.dart';
-import 'function_unzip_screen_viewmodel.dart';
+import 'function_decompress_screen_viewmodel.dart';
 
-class FunctionUnzipScreen extends ConsumerWidget {
-  const FunctionUnzipScreen({super.key});
+class FunctionDecompressScreen extends ConsumerWidget {
+  const FunctionDecompressScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var screenState = ref.watch(functionUnzipScreenViewModelProvider);
-    var screenViewmodel = ref.watch(functionUnzipScreenViewModelProvider.notifier);
+    var screenState = ref.watch(functionDecompressScreenViewModelProvider);
+    var screenViewmodel = ref.watch(functionDecompressScreenViewModelProvider.notifier);
     return switch (screenState) {
       // 数据加载成功
       AsyncData(value: final state) => staticWidget(screenViewmodel, [
@@ -39,18 +39,19 @@ class FunctionUnzipScreen extends ConsumerWidget {
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-          child: Row(children: [Text("解压密码："), ElevatedButton(onPressed: screenViewmodel.addPasswordItem, child: Text("新增密码项"))]),
+          child: Row(
+            children: [
+              Text("解压密码："),
+              ElevatedButton(onPressed: screenViewmodel.addPasswordItem, child: Text("新增密码项")),
+              ElevatedButton(onPressed: screenViewmodel.savedecompressPasswordLocal, child: Text("保存密码")),
+              ElevatedButton(onPressed: screenViewmodel.savedecompressPasswordLocal, child: Text("从本地重新获取密码")),
+            ],
+          ),
         ),
         dynamicWidgets[1],
         dynamicWidgets[2],
         SizedBox(height: 20),
         ElevatedButton(onPressed: screenViewmodel.decompress, child: Text("解压")),
-        SizedBox(height: 20),
-        ElevatedButton(onPressed: screenViewmodel.saveUnzipPasswordLocal, child: Text("保存")),
-        SizedBox(height: 20),
-        ElevatedButton(onPressed: screenViewmodel.unzipTest, child: Text("解压文件测试")),
-        SizedBox(height: 20),
-        ElevatedButton(onPressed: screenViewmodel.getZipFileTest, child: Text("获取指定路径下的压缩文件测试")),
         SizedBox(height: 20),
         Text("1.解压当前文件夹下的所有文件"),
         Text("2.解压当前文件夹下的所有文件(包括子文件夹)"),

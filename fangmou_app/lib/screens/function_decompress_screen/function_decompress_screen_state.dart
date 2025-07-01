@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class FunctionUnzipScreenState {
+class FunctionDecompressScreenState {
   final bool decompressDescendantFolder;
 
   late final TextEditingController pathController;
@@ -9,16 +9,16 @@ class FunctionUnzipScreenState {
 
   List<String> get passwordList => passwordControllerList.isNotEmpty ? passwordControllerList.map((i) => i.text).toList() : [];
 
-  FunctionUnzipScreenState({required this.decompressDescendantFolder, required this.passwordControllerList, required this.pathController});
+  FunctionDecompressScreenState({required this.decompressDescendantFolder, required this.passwordControllerList, required this.pathController});
 
-  FunctionUnzipScreenState.initial(this.passwordControllerList) : pathController = TextEditingController(), decompressDescendantFolder = false;
+  FunctionDecompressScreenState.initial(this.passwordControllerList) : pathController = TextEditingController(), decompressDescendantFolder = false;
 
-  FunctionUnzipScreenState copyWith({
+  FunctionDecompressScreenState copyWith({
     bool? decompressDescendantFolder,
     TextEditingController? pathController,
     List<TextEditingController>? passwordControllerList,
   }) {
-    return FunctionUnzipScreenState(
+    return FunctionDecompressScreenState(
       decompressDescendantFolder: decompressDescendantFolder ?? this.decompressDescendantFolder,
       pathController: pathController ?? this.pathController,
       passwordControllerList: passwordControllerList ?? this.passwordControllerList,

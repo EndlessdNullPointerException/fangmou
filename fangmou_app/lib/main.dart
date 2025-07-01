@@ -17,11 +17,6 @@ Future<void> main(List<String> arguments) async {
         title: 'Flutter Demo',
         theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
         routerConfig: AppRouter.router,
-        // 消除点击布局空白处时产生的 Windows 系统错误提示音
-        builder: (context, child) => Listener(
-          onPointerDown: (_) => FocusScope.of(context).unfocus(),
-          child: child,
-        ),
         debugShowCheckedModeBanner: false, // 关闭调试横幅
       ),
     ),

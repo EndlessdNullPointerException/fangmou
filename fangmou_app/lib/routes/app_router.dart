@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layouts/app_shell.dart';
-import '../screens/splash_screen/splash_screen.dart';
+import '../screens/function_decompress_screen/function_decompress_screen.dart';
 import '../screens/function_directory_screen/function_directory_screen.dart';
-import '../screens/function_unzip_screen/function_unzip_screen.dart';
 import '../screens/home_screen/home_screen.dart';
+import '../screens/splash_screen/splash_screen.dart';
 
 class AppRouter {
   static final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -40,7 +40,7 @@ class AppRouter {
           // Setting 标签页及其子路由
           //GoRoute(path: '/setting', pageBuilder: (context, state) => const NoTransitionPage(child: SettingScreen())),
           GoRoute(path: '/file_function', pageBuilder: (context, state) => NoTransitionPage(child: FunctionDirectoryScreen())),
-          GoRoute(path: '/unzip_function', pageBuilder: (context, state) => NoTransitionPage(child: FunctionUnzipScreen())),
+          GoRoute(path: '/unzip_function', pageBuilder: (context, state) => NoTransitionPage(child: FunctionDecompressScreen())),
           // GoRoute(path: '/calculator_function', pageBuilder: (context, state) => NoTransitionPage(child: CalculatorFunctionScreen())),
           // GoRoute(path: '/spider_function', pageBuilder: (context, state) => NoTransitionPage(child: SpiderFunctionScreen())),
           // 独立于 ShellRoute 的路由（如登录页）

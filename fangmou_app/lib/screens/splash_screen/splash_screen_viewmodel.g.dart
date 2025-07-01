@@ -6,14 +6,18 @@ part of 'splash_screen_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$slashScreenViewmodelHash() => r'a7f40f46fe46ec0aab666c9721d66efa6ba5aae1';
+String _$slashScreenViewmodelHash() =>
+    r'22c4a15da46e5f6b3059f412315d113b62c43ed8';
 
 /// See also [SlashScreenViewmodel].
 @ProviderFor(SlashScreenViewmodel)
-final slashScreenViewmodelProvider = AutoDisposeNotifierProvider<SlashScreenViewmodel, SlashScreenState>.internal(
+final slashScreenViewmodelProvider = AutoDisposeNotifierProvider<
+    SlashScreenViewmodel, SlashScreenState>.internal(
   SlashScreenViewmodel.new,
   name: r'slashScreenViewmodelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product') ? null : _$slashScreenViewmodelHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$slashScreenViewmodelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

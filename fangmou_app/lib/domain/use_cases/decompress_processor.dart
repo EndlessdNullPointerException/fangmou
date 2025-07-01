@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 
 import '../../repositories/local/ArchiveFilePasswordList.dart';
 
-class UnzipProcessor {
+class DecompressProcessor {
   static const List<String> compressFileType = ['.7z', '.zip', '.rar', '.part1.rar', '.rar.001', '.7z.001', '.zip.001', '.z01'];
 
   // 获取指定文件夹下的所有压缩文件（7z、zip、rar）
