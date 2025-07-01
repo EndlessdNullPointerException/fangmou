@@ -31,32 +31,36 @@ class FunctionDecompressScreen extends ConsumerWidget {
     };
   }
 
-  Widget staticWidget(screenViewmodel, List<Widget> dynamicWidgets) {
+  Widget staticWidget(FunctionDecompressScreenViewModel screenViewmodel, List<Widget> dynamicWidgets) {
     return Column(
       children: [
         dynamicWidgets[0],
         SizedBox(height: 20),
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-          child: Row(
-            children: [
-              Text("解压密码："),
-              ElevatedButton(onPressed: screenViewmodel.addPasswordItem, child: Text("新增密码项")),
-              ElevatedButton(onPressed: screenViewmodel.savedecompressPasswordLocal, child: Text("保存密码")),
-              ElevatedButton(onPressed: screenViewmodel.savedecompressPasswordLocal, child: Text("从本地重新获取密码")),
-            ],
-          ),
+        Row(
+          children: [
+            Text("解压密码："),
+            Spacer(),
+            ElevatedButton(onPressed: screenViewmodel.addPasswordItem, child: Text("新增密码项")),
+            SizedBox(width: 10),
+            ElevatedButton(onPressed: screenViewmodel.saveDecompressPasswordLocal, child: Text("保存密码")),
+            SizedBox(width: 10),
+            ElevatedButton(onPressed: screenViewmodel.getDecompressPasswordLocal, child: Text("从本地重新获取密码")),
+          ],
         ),
         dynamicWidgets[1],
-        dynamicWidgets[2],
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            dynamicWidgets[2],
+            Text("是否解压后代文件夹中的压缩文件"),
+            SizedBox(width: 10),
+
+          ],
+        ),
         SizedBox(height: 20),
         ElevatedButton(onPressed: screenViewmodel.decompress, child: Text("解压")),
         SizedBox(height: 20),
-        Text("1.解压当前文件夹下的所有文件"),
-        Text("2.解压当前文件夹下的所有文件(包括子文件夹)"),
-        Text("3.解压文件时进行检查，并且根据需要创建新文件夹"),
-        Text("4.保存解压密码，并且可以新增解压密码"),
       ],
     );
   }

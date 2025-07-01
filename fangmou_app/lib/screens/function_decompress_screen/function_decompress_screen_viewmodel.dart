@@ -33,13 +33,17 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
     return FunctionDecompressScreenState.initial(controllerList);
   }
 
-  // 保存密码到本地
-  void getdecompressPasswordLocal() {
-    decompressProcessor.savePassword(getCurrentState().passwordList);
+  // 从本地获取解压密码
+  Future<void> getDecompressPasswordLocal() async {
+    final current = getCurrentState();
+
+    List<String> passwordList = await decompressProcessor.getPassword();
+    List<TextEditingController> controllerList = passwordList.map((pw) => TextEditingController(text: pw)).toList();
+    state = AsyncValue.data(current.copyWith(passwordControllerList: controllerList));
   }
 
-  // 保存密码到本地
-  void savedecompressPasswordLocal() {
+  // 保存解压密码到本地
+  void saveDecompressPasswordLocal() {
     decompressProcessor.savePassword(getCurrentState().passwordList);
   }
 
