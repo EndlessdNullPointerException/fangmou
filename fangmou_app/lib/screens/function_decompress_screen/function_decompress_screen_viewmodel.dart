@@ -54,7 +54,9 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
     List<File> files = await decompressProcessor.getCompressedFiles(current.pathController.text, current.decompressDescendantFolder);
 
     for (File f in files) {
-      decompressProcessor.extractArchive(f, getCurrentState().passwordList);
+      // 不加上 await 的话，程序会同时开启多个异步任务，导致系统卡顿甚至卡死
+      // TODO 修改异步任务执行方式，在不影响系统性能的情况下，尽可能的异步执行
+      await decompressProcessor.extractArchive(f, getCurrentState().passwordList);
     }
   }
 
