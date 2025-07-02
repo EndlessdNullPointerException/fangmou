@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../common_widgets/loading_status_widget.dart';
 import '../../domain/use_cases/decompress_processor.dart';
 import '../../utils/constants/constants.dart';
 
@@ -47,16 +48,35 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
     decompressProcessor.savePassword(getCurrentState().passwordList);
   }
 
+  test() async* {
+    for (int i = 1; i <= 3; i++) {
+      yield "$i"; // 向 Stream 发送值 i
+      await Future.delayed(Duration(seconds: 1)); // 模拟异步等待
+    }
+  }
+
   // 解压操作
-  decompress() async {
+  Stream<LoadingStatusData> decompress() async* {
     final current = getCurrentState();
 
-    List<File> files = await decompressProcessor.getCompressedFiles(current.pathController.text, current.decompressDescendantFolder);
+    yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "开始解压，路径为${current.pathController.text}");
+    try {
+      List<File> files = await decompressProcessor.getCompressedFiles(current.pathController.text, current.decompressDescendantFolder);
 
-    for (File f in files) {
-      // 不加上 await 的话，程序会同时开启多个异步任务，导致系统卡顿甚至卡死
-      // TODO 修改异步任务执行方式，在不影响系统性能的情况下，尽可能的异步执行
-      await decompressProcessor.extractArchive(f, getCurrentState().passwordList);
+      for (File f in files) {
+        yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "当前解压文件为${f.path}");
+        try {
+          // 不加上 await 的话，程序会同时开启多个异步任务，导致系统卡顿甚至卡死
+          // TODO 修改异步任务执行方式，在不影响系统性能的情况下，尽可能的异步执行
+          await decompressProcessor.extractArchive(f, getCurrentState().passwordList);
+        } catch (e) {
+          yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "${f.path}解压失败");
+        }
+      }
+
+      yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "解压完成");
+    } catch (e) {
+      yield LoadingStatusData(loadingStatus: LoadingStatus.error, currentStatusDescription: "出现错误，停止解压");
     }
   }
 

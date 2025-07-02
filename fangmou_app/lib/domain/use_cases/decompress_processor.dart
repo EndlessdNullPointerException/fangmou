@@ -161,6 +161,7 @@ class DecompressProcessor {
     } catch (e) {
       logger.d("解压失败");
       logger.e(e);
+      throw Exception("解压失败");
     } finally {
       logger.d("解压结束");
       // region <- Logic:删除创建的临时文件夹 ->

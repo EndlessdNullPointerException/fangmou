@@ -2,6 +2,8 @@ import 'package:fangmou_app/screens/function_decompress_screen/widget/password_i
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../common_widgets/DirectoryPathSelector.dart';
+import '../../common_widgets/loading_status_widget.dart';
+import '../../routes/app_router.dart';
 import 'function_decompress_screen_viewmodel.dart';
 
 class FunctionDecompressScreen extends ConsumerWidget {
@@ -55,11 +57,15 @@ class FunctionDecompressScreen extends ConsumerWidget {
             dynamicWidgets[2],
             Text("是否解压后代文件夹中的压缩文件"),
             SizedBox(width: 10),
-
           ],
         ),
         SizedBox(height: 20),
-        ElevatedButton(onPressed: screenViewmodel.decompress, child: Text("解压")),
+        ElevatedButton(onPressed: ()=>{
+          showDialog(
+        context: AppRouter.context!,
+        barrierDismissible: false,
+        builder:
+        (ctx) => LoadingStatusWidget(currentStatus: screenViewmodel.decompress(),))}, child: Text("开始解压"),),
         SizedBox(height: 20),
       ],
     );
