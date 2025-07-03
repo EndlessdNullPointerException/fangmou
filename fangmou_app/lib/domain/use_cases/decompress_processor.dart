@@ -30,10 +30,6 @@ class DecompressProcessor {
         if (entity is File) {
           final File file = entity;
 
-          if (file.path == "C:\\Users\\11849\\Desktop\\T1\\驱动.z01") {
-            logger.d("here");
-          }
-
           // 将符合类型的文件添加到待解压列表
           for (String extension in compressFileType) {
             final filePath = file.path.toLowerCase();
@@ -91,68 +87,69 @@ class DecompressProcessor {
     String temporaryDirectory = "${compressedFile.parent.path}\\${FileUtils.generateRandomTemporaryDirectory(compressedFile)}";
 
     try {
+      // 列出目录内容（不递归）
+      final List<FileSystemEntity> entities = await compressedFile.parent.list().toList();
+
+      // region  删除分卷压缩文件的预处理
+      List<File> deleteFileList = [];
+      for (FileSystemEntity entity in entities) {
+        if (entity is File) {
+          File f = entity;
+          if (f.path.split(".").first == compressedFile.path.split(".").first) {
+            deleteFileList.add(f);
+          }
+        }
+      }
+      // endregion
+
       // region <- Logic: 使用密码表解压文件->
       int i = 0;
       for (String password in passwordList) {
         i++;
-        ProcessResult result = await executeExtract(compressedFile.path, temporaryDirectory, password);
-        // 获取退出状态码
-        final exitCode = result.exitCode;
-        final String errorMessage = result.stderr;
+        String result = await executeExtract(compressedFile.path, temporaryDirectory, password);
 
-        // 根据状态码处理结果
-        if (exitCode == 0) {
-          logger.d('解压成功');
-          break;
-        } else {
-          if (errorMessage.isNotEmpty && errorMessage.contains("Wrong password")) {
-            logger.d("解压密码:$password错误");
-            logger.d(result.stderr);
-            if (i == passwordList.length) {
-              logger.d("所有解压密码全部错误");
-              throw Exception("无可用密码");
-            }
-          } else {
-            throw Exception(result.stderr);
-          }
-        }
+        if (result == "success") break;
+
+        if (result == "wrongPassword" && i == passwordList.length) throw "无可用密码";
+        if (result == "wrongPassword") continue;
+
+        throw result;
       }
       // endregion <- Logic: 使用密码表解压文件->
 
       // region <- Logic:修改目录结构 ->
       // 如果出现重复目录，则在重复目录后添加后缀
-      // 如果文件夹下是否只含有一个文件夹，且不包含其他文件，则将这两个文件夹合并
+      // 如果文件夹下只含有一个文件夹，且不包含其他文件，则将这两个文件夹合并
+      // 如果文件夹下只含有一个文件直接将文件放到压缩文件所在的目录
       if (Directory(path).existsSync()) {
         logger.d(path);
         path = "$path-${FileUtils.generateRandomTemporaryDirectory(compressedFile)}";
       }
 
-      final String flagPath = await notSingleFolder(temporaryDirectory);
-      if (flagPath != "") {
-        await Directory(flagPath).rename(path);
+      final Map<String, dynamic> flagPath = await notSingleFolder(temporaryDirectory);
+
+      if (flagPath["result"] == "isFile") {
+        final insideFile = flagPath["file"];
+        String insideFileName = insideFile.path.split('\\').last;
+
+        final List<FileSystemEntity> entities = await compressedFile.parent.list().toList();
+        if (uniqueFileName(entities, insideFile)) {
+          await flagPath["file"].rename("${compressedFile.parent.path}\\$insideFileName");
+        } else {
+          await flagPath["file"].rename("${compressedFile.parent.path}\\${FileUtils.generateRandomTemporaryDirectory(compressedFile)}-$insideFileName");
+        }
+      } else if (flagPath["result"] == "isDirectory") {
+        await Directory(flagPath["directory"]).rename(path);
       } else {
         await Directory(temporaryDirectory).rename(path);
       }
       // endregion <- Logic:修改目录结构 ->
 
       // region <- Logic:删除解压成功的文件 ->
-      // 删除解压成功的文件，dart删除无法找回，所以解压前必须备份
+      // 删除解压成功的文件，dart 删除无法找回，所以解压前必须备份
       if (compressedFile.path.endsWith('.7z')) {
         compressedFile.deleteSync();
       } else {
-        final dir = Directory(compressedFile.parent.path);
-        // 列出目录内容（不递归）
-        final List<FileSystemEntity> entities = await dir.list().toList();
-
-        List<File> deleteFileList = [];
-        for (FileSystemEntity entity in entities) {
-          if (entity is File) {
-            File f = entity;
-            if (f.path.split(".").first == compressedFile.path.split(".").first) {
-              deleteFileList.add(f);
-            }
-          }
-        }
         for (File file in deleteFileList) {
           file.deleteSync();
         }
@@ -174,38 +171,65 @@ class DecompressProcessor {
   }
 
   // 使用 process-on 执行 7-zip 解压命令
-  Future<ProcessResult> executeExtract(String compressedFilePath, String outputPath, String password) async {
+  Future<String> executeExtract(String compressedFilePath, String outputPath, String password, {bool notArchive = false}) async {
     try {
-      List<String> args = ['x', '-y', compressedFilePath, '-o$outputPath', '-p$password'];
+      List<String> args;
+      if (notArchive) {
+        args = ['x', '-t#', compressedFilePath, '-o$outputPath', '-i!*.zip', '-p$password'];
+      } else {
+        args = ['x', '-y', compressedFilePath, '-o$outputPath', '-p$password'];
+      }
 
-      // 执行解压命令
+      // 执行的解压命令
       logger.d("${FileUtils.executable_7z.path} ${args.join(" ")}");
-      return await Process.run(FileUtils.executable_7z.path, args, runInShell: true);
+
+      final result = await Process.run(FileUtils.executable_7z.path, args, runInShell: true);
+
+      // 获取退出状态码
+      final exitCode = result.exitCode;
+      final String errorMessage = result.stderr;
+
+      // 根据状态码处理结果
+      if (exitCode == 0) {
+        logger.d('解压成功');
+        return "success";
+      }
+
+      if (errorMessage.contains("Wrong password")) {
+        logger.d("解压密码:$password错误");
+        logger.d(result.stderr);
+        return "wrongPassword";
+      }
+      if (errorMessage.contains("Is not archive")) {
+        return executeExtract(compressedFilePath, outputPath, password, notArchive: true);
+      }
+
+      throw Exception(errorMessage);
     } catch (e) {
       throw Exception(e);
     }
   }
 
-  // 检查指定文件夹下是否只含有文件夹，且不包含其他文件
-  Future<String> notSingleFolder(String path) async {
+  // 检查指定文件夹下是否只含有一个文件夹或文件，且不包含其他文件
+  Future<Map<String, dynamic>> notSingleFolder(String path) async {
     try {
       final dir = Directory(path);
       // 列出目录内容（不递归）
       final List<FileSystemEntity> entities = await dir.list().toList();
 
       if (entities.length > 1 || entities.isEmpty) {
-        return "";
+        return {"result": "default"};
       } else {
         String path = entities.first.path;
         if (await FileSystemEntity.isFile(path)) {
-          return "";
+          return {"result": "isFile", "file": entities.first};
         } else {
-          return path;
+          return {"result": "isDirectory", "directory": path};
         }
       }
     } catch (e) {
       logger.e('检查出错: $e');
-      return ""; // 权限错误等异常情况，视为不符合条件
+      return {"result": "error"}; // 权限错误等异常情况，视为不符合条件
     }
   }
 
@@ -217,6 +241,18 @@ class DecompressProcessor {
     box.put('ArchiveFilePasswordList', ArchiveFilePasswordList(passwordList: passwordList)); // 对象
 
     return false;
+  }
+
+  bool uniqueFileName(List<FileSystemEntity> entities, File file) {
+    for (FileSystemEntity entity in entities) {
+      if (entity is File) {
+        File f = entity;
+        if (f.path.split('\\').last == file.path.split('\\').last) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   // 从本地获取解压密码

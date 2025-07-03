@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../routes/app_router.dart';
 import 'CustomAppBar/CustomAppBar.dart';
 
 class AppShell extends ConsumerWidget {
@@ -11,13 +12,17 @@ class AppShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: CustomAppBar(
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical, // 滚动方向
-          physics: BouncingScrollPhysics(), // iOS风格弹性滚动
-          child: Padding(padding: EdgeInsets.all(20), child: child), // 需滚动的内容
+      body: SizedBox(
+        width: double.infinity, // 关键行
+        child: CustomAppBar(
+          body: SingleChildScrollView(
+            scrollDirection: Axis.vertical, // 滚动方向
+            physics: BouncingScrollPhysics(), // iOS风格弹性滚动
+            child: Padding(padding: EdgeInsets.all(20), child: child), // 需滚动的内容
+          ),
+            routeItemList: AppRouter.routeItemList,
         ),
-      ),
+      )
     );
   }
 }

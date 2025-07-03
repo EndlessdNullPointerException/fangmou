@@ -48,13 +48,6 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
     decompressProcessor.savePassword(getCurrentState().passwordList);
   }
 
-  test() async* {
-    for (int i = 1; i <= 3; i++) {
-      yield "$i"; // 向 Stream 发送值 i
-      await Future.delayed(Duration(seconds: 1)); // 模拟异步等待
-    }
-  }
-
   // 解压操作
   Stream<LoadingStatusData> decompress() async* {
     final current = getCurrentState();
@@ -74,7 +67,7 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
         }
       }
 
-      yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "解压完成");
+      yield LoadingStatusData(loadingStatus: LoadingStatus.success, currentStatusDescription: "解压完成");
     } catch (e) {
       yield LoadingStatusData(loadingStatus: LoadingStatus.error, currentStatusDescription: "出现错误，停止解压");
     }

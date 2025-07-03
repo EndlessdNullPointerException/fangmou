@@ -37,12 +37,17 @@ class LoadingStatusWidget extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 10),
-                  if (loadingStatus == LoadingStatus.loading)
-                    CircularProgressIndicator(
+                  switch (loadingStatus) {
+                    LoadingStatus.success => Icon(Icons.check_circle,size: 40,color: Colors.green,),
+                    LoadingStatus.error => Icon(Icons.error,size: 40,color: Colors.red,),
+                    LoadingStatus.loading => CircularProgressIndicator(
                       backgroundColor: Colors.grey.withAlpha(33),
                       valueColor: const AlwaysStoppedAnimation(Colors.blue),
                       strokeWidth: 5,
                     ),
+                  },
+                  if (loadingStatus == LoadingStatus.loading)
+
                   SizedBox(height: 10),
                   switch (loadingStatus) {
                     LoadingStatus.success => Text("完成"),

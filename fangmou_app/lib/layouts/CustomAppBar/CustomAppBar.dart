@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../routes/route_item.dart';
 import 'CustomAppbarIconButton.dart';
 import 'CustomAppbarPopupMenuButton.dart';
 import 'CustomAppbarStyle.dart';
@@ -13,7 +14,9 @@ class CustomAppBar extends ConsumerWidget {
 
   final Widget body;
 
-  CustomAppBar({super.key, required this.body});
+  final List<RouteItem> routeItemList;
+
+  CustomAppBar({super.key, required this.body, required this.routeItemList});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +26,7 @@ class CustomAppBar extends ConsumerWidget {
         // 主页面内容（添加顶部边距避免遮挡）
         Padding(
           padding: EdgeInsets.only(top: isExpanded ? CustomAppbarStyle.appbarHeight : CustomAppbarStyle.appbarPinHeight), // 动态调整边距
-          child: Container(child: body,),
+          child: Container(child: body),
         ),
         // 顶部边缘可展开面板
         Positioned(
@@ -126,11 +129,10 @@ class CustomAppBar extends ConsumerWidget {
                 ],
             onSelected: (value) {},
           ),
-          CustomAppbarIconButton(icon: Icon(Icons.calculate), onPressed: () => {context.go('/calculator_function')}),
-          CustomAppbarIconButton(icon: Icon(Icons.tab), onPressed: () => {context.go('/spider_function')}),
-          CustomAppbarIconButton(icon: Icon(Icons.folder), onPressed: () => {context.go('/file_function')}),
-
-          CustomAppbarIconButton(icon: Icon(Icons.unarchive), onPressed: () => {context.go('/unzip_function')}),
+          CustomAppbarIconButton(icon: Icon(Icons.calculate), onPressed: () => {context.go('/function_calculator')}),
+          CustomAppbarIconButton(icon: Icon(IconData(0xf53f, fontFamily: 'CustomIcon')), onPressed: () => {context.go('/function_spider')}),
+          CustomAppbarIconButton(icon: Icon(Icons.folder), onPressed: () => {context.go('/function_directory')}),
+          CustomAppbarIconButton(icon: Icon(Icons.unarchive), onPressed: () => {context.go('/function_decompress')}),
           CustomAppbarIconButton(
             onPressed: () => {logger.d("yes"), ref.read(isExpandedProvider.notifier).state = false},
             icon: Icon(Icons.expand_less),
