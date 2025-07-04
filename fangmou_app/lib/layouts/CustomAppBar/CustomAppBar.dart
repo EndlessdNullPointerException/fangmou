@@ -61,6 +61,7 @@ class CustomAppBar extends ConsumerWidget {
   }
 
   Widget _buildAppbarContent(BuildContext context, WidgetRef ref) {
+
     final isExpanded = ref.watch(isExpandedProvider); // 监听状态变化
     if (!isExpanded) return Container(); // 收起时仅显示线条
     return Container(
@@ -68,97 +69,24 @@ class CustomAppBar extends ConsumerWidget {
       color: Colors.black12,
       child: Row(
         children: [
-          CustomAppbarPopupMenuButton(
-            icon: Icon(Icons.reorder),
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<String>(
-                    value: 'settings',
-                    child: Row(children: const [Icon(Icons.settings, size: 20), SizedBox(width: 8), Text('设置')]),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'help',
-                    child: Row(children: const [Icon(Icons.help_outline, size: 20), SizedBox(width: 8), Text('帮助中心')]),
-                  ),
-                ],
-            onSelected: (value) {
-              switch (value) {
-                case "settings":
-                  context.go('/setting');
-                case "help":
-                  context.go('/home');
-              }
-            },
-          ),
-          CustomAppbarPopupMenuButton(
-            icon: Icon(Icons.event_note),
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<String>(
-                    value: 'settings',
-                    child: Row(children: const [Icon(Icons.view_list, size: 20), SizedBox(width: 8), Text('查看')]),
-                  ),
-                  PopupMenuItem<String>(value: 'help', child: Row(children: const [Icon(Icons.add_alert, size: 20), SizedBox(width: 8), Text('新建')])),
-                ],
-            onSelected: (value) {},
-          ),
-          CustomAppbarPopupMenuButton(
-            icon: Icon(Icons.create),
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<String>(
-                    value: 'settings',
-                    child: Row(children: const [Icon(Icons.view_agenda, size: 20), SizedBox(width: 8), Text('查看')]),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'help',
-                    child: Row(children: const [Icon(Icons.add_circle, size: 20), SizedBox(width: 8), Text('新建')]),
-                  ),
-                ],
-            onSelected: (value) {},
-          ),
-          CustomAppbarPopupMenuButton(
-            icon: Icon(Icons.design_services),
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<String>(
-                    value: 'settings',
-                    child: Row(children: const [Icon(Icons.design_services_outlined, size: 20), SizedBox(width: 8), Text('模板一览')]),
-                  ),
-                  PopupMenuItem<String>(value: 'help', child: Row(children: const [Icon(Icons.add_box, size: 20), SizedBox(width: 8), Text('模板新增')])),
-                ],
-            onSelected: (value) {},
-          ),
-          CustomAppbarIconButton(icon: Icon(Icons.calculate), onPressed: () => {context.go('/function_calculator')}),
-          CustomAppbarIconButton(icon: Icon(IconData(0xf53f, fontFamily: 'CustomIcon')), onPressed: () => {context.go('/function_spider')}),
-          CustomAppbarIconButton(icon: Icon(Icons.folder), onPressed: () => {context.go('/function_directory')}),
-          CustomAppbarIconButton(icon: Icon(Icons.unarchive), onPressed: () => {context.go('/function_decompress')}),
-          CustomAppbarIconButton(
-            onPressed: () => {logger.d("yes"), ref.read(isExpandedProvider.notifier).state = false},
-            icon: Icon(Icons.expand_less),
-          ),
-          CustomAppbarPopupMenuButton(
-            icon: Icon(Icons.more_vert),
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem<String>(
-                    value: 'settings',
-                    child: Row(children: const [Icon(Icons.settings, size: 20), SizedBox(width: 8), Text('设置')]),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'help',
-                    child: Row(children: const [Icon(Icons.help_outline, size: 20), SizedBox(width: 8), Text('帮助中心')]),
-                  ),
-                ],
-            onSelected: (value) {
-              switch (value) {
-                case "settings":
-                  context.go('/setting');
-                case "help":
-                  context.go('/home');
-              }
-            },
-          ),
+          for (var item in routeItemList)
+            if (item.subMenu.isEmpty)
+              CustomAppbarIconButton(icon: item.icon, onPressed: () => {context.go(item.path)})
+            else
+              CustomAppbarPopupMenuButton(
+                icon: item.icon,
+                itemBuilder:
+                    (context) => [
+                      for(var subItem in item.subMenu)
+                        PopupMenuItem<String>(
+                          value: subItem.path,
+                          child: Row(children:  [subItem.icon, SizedBox(width: 8), Text(subItem.name)]),
+                        ),
+                    ],
+                onSelected: (value) {
+                  context.go(value);
+                },
+              ),
         ],
       ),
     );
