@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fangmou_app/screens/function_directory_screen/model/process_mode.dart';
 import 'package:fangmou_app/utils/constants/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
@@ -8,7 +9,7 @@ import '../../utils/platform/windows/file_utils.dart';
 
 class FileBatchProcessor {
   // 根据文件前缀重新整理文件夹
-  fileBatchRemoveByPrefix(String directoryPath, WidgetRef ref) async {
+  fileBatchRemoveByPrefix(String directoryPath, WidgetRef ref, ProcessMode processMode) async {
     logger.d("选择的文件夹路径: $directoryPath");
     List<Directory> subDirectories = await FileUtils.getSubDirectories(directoryPath);
 
@@ -21,9 +22,19 @@ class FileBatchProcessor {
         var thePath = path.basename(dir.path);
         logger.d('子文件夹完整路径: $fullPath');
         logger.d("子文件夹路径: $thePath");
-        int index = thePath.indexOf("]");
-        if (index != -1) {
-          String prefix = thePath.substring(0, index + 1);
+
+        String prefix = "";
+        switch (processMode) {
+          case ProcessMode.manga:
+            prefix = prefixManga(thePath);
+            break;
+          case ProcessMode.photography:
+            prefix = prefixPhotography(thePath);
+            break;
+        }
+
+        logger.d("前缀为: $prefix");
+        if (prefix.isNotEmpty) {
           logger.d("前缀为: $prefix");
           if (prefix != thePath) {
             if (prefixMap.containsKey(prefix)) {
@@ -57,5 +68,54 @@ class FileBatchProcessor {
         }
       }
     }
+  }
+
+  String prefixManga(String path) {
+    int leftBracketIndex = path.indexOf("[");
+    int rightBracketIndex = path.indexOf("]") + 1;
+    return leftBracketIndex != -1 && rightBracketIndex != -1 ? path.substring(leftBracketIndex, rightBracketIndex) : "";
+  }
+
+  String prefixPhotography(String path) {
+    if (path == "梓末－私密助理") {
+      logger.d("-------------");
+      logger.d(path.indexOf("－"));
+      logger.d(path.indexOf("-"));
+      logger.d("-------------");
+    }
+
+    trimSpace(String s, i) {
+      s = path.substring(0, i);
+      while (true) {
+        if (s.endsWith(" ")) {
+          s = s.trimRight();
+        } else {
+          break;
+        }
+      }
+      return s;
+    }
+
+    int index = path.indexOf("-");
+    if (index != -1) {
+      return trimSpace(path, index);
+    }
+
+    index = path.indexOf("－");
+    if (index != -1) {
+      return trimSpace(path, index);
+    }
+
+    index = path.indexOf(" ");
+    if (index != -1) {
+      return trimSpace(path, index);
+    }
+
+    index = path.indexOf("_");
+    if (index != -1) {
+      return trimSpace(path, index);
+    }
+
+    return "";
   }
 }

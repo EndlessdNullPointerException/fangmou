@@ -60,7 +60,6 @@ class LoadingStatusWidget extends StatelessWidget {
           ),
         ],
       ),
-
       actions: [TextButton(onPressed: () => Navigator.pop(AppRouter.context!), child: Text('确定'))],
     );
   }

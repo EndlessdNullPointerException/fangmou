@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common_widgets/DirectoryPathSelector.dart';
 import 'function_directory_screen_viewmodel.dart';
+import 'model/process_mode.dart';
 
 class FunctionDirectoryScreen extends ConsumerWidget {
   // 定义 Provider
@@ -19,6 +20,16 @@ class FunctionDirectoryScreen extends ConsumerWidget {
         SizedBox(height: 20), // 垂直间距
         DirectoryPathSelector(controller: screenState.pathController),
         SizedBox(height: 20), // 垂直间距
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Radio(value: ProcessMode.manga, groupValue: screenState.processMode, onChanged: screenViewmodel.changeProcessMode),
+            Text("漫画模式"),
+            SizedBox(width: 10),
+            Radio(value: ProcessMode.photography, groupValue: screenState.processMode, onChanged: screenViewmodel.changeProcessMode),
+            Text("写真模式"),
+          ],
+        ),
         ElevatedButton(child: Text("开始"), onPressed: () => {screenViewmodel.startPathProcess(ref)}),
         SizedBox(height: 20), // 垂直间距
       ],

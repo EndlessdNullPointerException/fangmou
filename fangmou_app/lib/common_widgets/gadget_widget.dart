@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../routes/app_router.dart';
+import 'loading_status_widget.dart';
 
 void showSnackBar(String message) {
   if (AppRouter.context != null) {
@@ -23,4 +24,23 @@ void showMaterialBanner(String message, Color color) {
       ),
     );
   }
+}
+
+void showCustomDialog(String message){
+  showDialog(
+    context: AppRouter.context!,
+    barrierDismissible: false,
+    builder: (ctx) =>  AlertDialog(
+      title: Text(message),
+      actions: [TextButton(onPressed: () => Navigator.pop(AppRouter.context!), child: Text('确定'))],
+    )
+  );
+}
+
+void showLoadingDialog(Stream<LoadingStatusData> currentStatus){
+  showDialog(
+    context: AppRouter.context!,
+    barrierDismissible: false,
+    builder: (ctx) => LoadingStatusWidget(currentStatus: currentStatus),
+  );
 }

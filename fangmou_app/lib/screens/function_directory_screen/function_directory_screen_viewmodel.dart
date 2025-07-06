@@ -1,3 +1,4 @@
+import 'package:fangmou_app/screens/function_directory_screen/model/process_mode.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,6 +20,14 @@ class FunctionDirectoryScreenViewmodel extends _$FunctionDirectoryScreenViewmode
 
   void startPathProcess(WidgetRef ref) {
     logger.d("已经获取到地址 $state.pathController.text");
-    fileBatchProcessor.fileBatchRemoveByPrefix(state.pathController.text, ref);
+    fileBatchProcessor.fileBatchRemoveByPrefix(state.pathController.text, ref,state.processMode);
+  }
+
+  void changeProcessMode(ProcessMode? value) {
+    logger.d("=============");
+    logger.d(value);
+    state = state.copyWith(processMode: value);
+    logger.d(state.processMode);
+    logger.d("=============");
   }
 }

@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:fangmou_app/screens/function_decompress_screen/function_decompress_screen_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../common_widgets/gadget_widget.dart';
 import '../../common_widgets/loading_status_widget.dart';
 import '../../domain/use_cases/decompress_processor.dart';
 import '../../utils/constants/constants.dart';
@@ -27,6 +29,7 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
   // 从本地异步获取解压密码
   @override
   Future<FunctionDecompressScreenState> build() async {
+    logger.d("FunctionDecompressScreenViewModel build Start");
     List<String> passwordList = await decompressProcessor.getPassword();
     logger.d(passwordList.length);
     List<TextEditingController> controllerList = passwordList.map((pw) => TextEditingController(text: pw)).toList();
@@ -44,8 +47,15 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
   }
 
   // 保存解压密码到本地
-  void saveDecompressPasswordLocal() {
-    decompressProcessor.savePassword(getCurrentState().passwordList);
+  Future<void> saveDecompressPasswordLocal() async {
+    String message = "";
+    if (await decompressProcessor.savePassword(getCurrentState().passwordList)) {
+      message = "保存成功";
+    } else {
+      message = "保存失败";
+    }
+
+    showCustomDialog(message);
   }
 
   // 解压操作
@@ -54,14 +64,18 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
 
     yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "开始解压，路径为${current.pathController.text}");
     try {
-      List<File> files = await decompressProcessor.getCompressedFiles(current.pathController.text, current.decompressDescendantFolder);
+      List<File> files = await decompressProcessor.getCompressedFiles(
+        current.pathController.text,
+        decompressDescendantFolder: current.decompressDescendantFolder,
+        decompressAllTypeFile: current.decompressAllTypeFile,
+      );
 
       for (File f in files) {
         yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "当前解压文件为${f.path}");
         try {
           // 不加上 await 的话，程序会同时开启多个异步任务，导致系统卡顿甚至卡死
           // TODO 修改异步任务执行方式，在不影响系统性能的情况下，尽可能的异步执行
-          await decompressProcessor.extractArchive(f, getCurrentState().passwordList);
+          await decompressProcessor.extractArchive(f, getCurrentState().passwordList, current.deleteOriginFile, current.decompressDescendantFolder);
         } catch (e) {
           yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "${f.path}解压失败");
         }
@@ -76,7 +90,10 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
   // 新增密码项
   void addPasswordItem() {
     final current = getCurrentState();
-    final newList = [...current.passwordControllerList, TextEditingController()];
+    final List<TextEditingController> newList = [];
+    newList.add(TextEditingController());
+    newList.addAll(current.passwordControllerList);
+
     state = AsyncValue.data(current.copyWith(passwordControllerList: newList));
   }
 
@@ -90,9 +107,18 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
     logger.d(getCurrentState().passwordControllerList.length);
   }
 
-  // 修改 state 状态
   void changeDecompressDescendantFolder(bool? value) {
     final current = getCurrentState();
     state = AsyncValue.data(current.copyWith(decompressDescendantFolder: value));
+  }
+
+  void changeDeleteOriginFile(bool? value) {
+    final current = getCurrentState();
+    state = AsyncValue.data(current.copyWith(deleteOriginFile: value));
+  }
+
+  void changeDecompressAllTypeFile(bool? value) {
+    final current = getCurrentState();
+    state = AsyncValue.data(current.copyWith(decompressAllTypeFile: value));
   }
 }

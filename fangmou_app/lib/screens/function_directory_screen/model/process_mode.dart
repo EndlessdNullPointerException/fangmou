@@ -1,0 +1,5 @@
+enum ProcessMode{
+  manga,
+  photography;
+}
+

@@ -2,6 +2,8 @@ import 'package:fangmou_app/utils/constants/constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
+import '../routes/app_router.dart';
+
 class DirectoryPathSelector extends StatefulWidget {
   final TextEditingController controller;
 
@@ -38,10 +40,13 @@ class _DirectoryPathSelectorState extends State<DirectoryPathSelector> {
                   padding: EdgeInsets.all(8), // 紧凑点击区域
                   constraints: BoxConstraints(),
                   onPressed: () async {
+                    // 选择路径时，添加遮罩层
+                    showDialog(context: context, barrierDismissible: false, builder: (ctx) => Container());
                     // 通过文件选择器获取
                     String? directoryPath = await FilePicker.platform.getDirectoryPath();
                     logger.d('搜索内容: $directoryPath');
-                    widget.controller.text = directoryPath!;
+                    widget.controller.text = directoryPath ?? "";
+                    Navigator.pop(AppRouter.context!);
                   },
                 ),
               ),
