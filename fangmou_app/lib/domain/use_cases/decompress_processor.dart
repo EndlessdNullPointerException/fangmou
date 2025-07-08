@@ -137,7 +137,7 @@ class DecompressProcessor {
       passwordList.insert(0, "");
       for (String password in passwordList) {
         i++;
-        //String result = await executeExtract(compressedFile.parent.path, fileName, temporary, password);
+        //String result = await executeExtract7Zip(compressedFile.parent.path, fileName, temporary, password);
         String result = await executeExtractBandiZip(compressedFile.parent.path, fileName, temporary, password);
 
         if (result == "success") break;
@@ -276,7 +276,7 @@ class DecompressProcessor {
   }
 
   // 使用 process-on 执行 7-zip 解压命令
-  Future<String> executeExtract(
+  Future<String> executeExtract7Zip(
     String compressedFileDirectory,
     String compressedFileName,
     String outputPath,
@@ -315,7 +315,7 @@ class DecompressProcessor {
         return "wrongPassword";
       }
       if (errorMessage.contains("Is not archive") && !notArchive) {
-        return executeExtract(compressedFileDirectory, compressedFileName, outputPath, password, notArchive: true);
+        return executeExtract7Zip(compressedFileDirectory, compressedFileName, outputPath, password, notArchive: true);
       }
 
       throw Exception(errorMessage);

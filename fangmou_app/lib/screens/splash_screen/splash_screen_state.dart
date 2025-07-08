@@ -1,5 +1,4 @@
 import 'package:fangmou_app/screens/splash_screen/model/startup_status.dart';
-import 'package:flutter/foundation.dart';
 
 class SlashScreenState {
   final String message;

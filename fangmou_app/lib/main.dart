@@ -14,27 +14,30 @@ Future<void> main(List<String> arguments) async {
   // 进行依赖注入
   setupLocator();
   setupDomainUserCase();
-  showNativeNotification("START UP","!!!!!!");
 
   // 获取并打印当前应用的启动路径（.exe 文件路径）
   logger.d('应用启动路径: ${Platform.resolvedExecutable}');
   logger.d(arguments);
 
-  runApp(
-    ProviderScope(
-      // RiverPod 状态管理的作用域
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-        routerConfig: AppRouter.router,
-        debugShowCheckedModeBanner: false, // 关闭调试横幅
+  if(arguments.isNotEmpty){
+    String x = arguments.join("\n");
+    await Directory("C:\\Users\\11849\\Desktop\\新建文件夹 (X)").create();
+    exit(0);
+  }else{
+    runApp(
+      ProviderScope(
+        // RiverPod 状态管理的作用域
+        child: MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+          routerConfig: AppRouter.router,
+          debugShowCheckedModeBanner: false, // 关闭调试横幅
+        ),
       ),
-    ),
-  );
-
-
+    );
+  }
 }
-void showNativeNotification(String title, String body) {
+Future<void> showNativeNotification(String title, String body) async {
   final pTitle = title.toNativeUtf16();
   final pBody = body.toNativeUtf16();
 

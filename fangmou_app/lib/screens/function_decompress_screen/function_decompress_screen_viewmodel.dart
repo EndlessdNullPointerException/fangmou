@@ -70,14 +70,16 @@ class FunctionDecompressScreenViewModel extends _$FunctionDecompressScreenViewMo
         decompressAllTypeFile: current.decompressAllTypeFile,
       );
 
+      int i = 0;
       for (File f in files) {
-        yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "当前解压文件为${f.path}");
+        i++;
+        yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "$i/${files.length},当前解压文件为${f.path}");
         try {
           // 不加上 await 的话，程序会同时开启多个异步任务，导致系统卡顿甚至卡死
           // TODO 修改异步任务执行方式，在不影响系统性能的情况下，尽可能的异步执行
           await decompressProcessor.extractArchive(f, getCurrentState().passwordList, current.deleteOriginFile, current.decompressDescendantFolder);
         } catch (e) {
-          yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "${f.path}解压失败");
+          yield LoadingStatusData(loadingStatus: LoadingStatus.error, currentStatusDescription: "${f.path}解压失败");
         }
       }
 

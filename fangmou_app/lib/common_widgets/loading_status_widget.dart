@@ -47,12 +47,11 @@ class LoadingStatusWidget extends StatelessWidget {
                     ),
                   },
                   if (loadingStatus == LoadingStatus.loading)
-
                   SizedBox(height: 10),
                   switch (loadingStatus) {
                     LoadingStatus.success => Text("完成"),
                     LoadingStatus.error => Text("处理失败，请退出"),
-                    LoadingStatus.loading => Text("进行中,$currentStatusDescription"),
+                    LoadingStatus.loading => Text("$currentStatusDescription"),
                   },
                 ],
               ),
@@ -60,7 +59,13 @@ class LoadingStatusWidget extends StatelessWidget {
           ),
         ],
       ),
-      actions: [TextButton(onPressed: () => Navigator.pop(AppRouter.context!), child: Text('确定'))],
+      actions: [
+        switch (loadingStatus) {
+          LoadingStatus.success => TextButton(onPressed: () => Navigator.pop(AppRouter.context!), child: Text('确定')),
+          LoadingStatus.error => TextButton(onPressed: () => Navigator.pop(AppRouter.context!), child: Text('确定')),
+          LoadingStatus.loading => TextButton(onPressed: null, child: Text('终止')),
+        },
+        ],
     );
   }
 }

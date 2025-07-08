@@ -54,7 +54,7 @@ class PlatformUtils {
       int count = 0;
       for (final line in lines) {
         if (line.toLowerCase().contains(processName)) {
-          final pid = int.tryParse(line.split(RegExp(r'\s+'))[1] ?? '0');
+          final pid = int.tryParse(line.split(RegExp(r'\s+'))[1]);
           if (pid != currentPid) {
             count++;
             if (count >= 1) return true; // 发现其他进程实例

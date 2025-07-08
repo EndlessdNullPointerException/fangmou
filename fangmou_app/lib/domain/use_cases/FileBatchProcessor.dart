@@ -2,21 +2,25 @@ import 'dart:io';
 
 import 'package:fangmou_app/screens/function_directory_screen/model/process_mode.dart';
 import 'package:fangmou_app/utils/constants/constants.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as path;
 
+import '../../common_widgets/loading_status_widget.dart';
 import '../../utils/platform/windows/file_utils.dart';
 
 class FileBatchProcessor {
+
   // 根据文件前缀重新整理文件夹
-  fileBatchRemoveByPrefix(String directoryPath, WidgetRef ref, ProcessMode processMode) async {
+  Stream<LoadingStatusData> fileBatchRemoveByPrefix(String directoryPath,  ProcessMode processMode) async* {
     logger.d("选择的文件夹路径: $directoryPath");
     List<Directory> subDirectories = await FileUtils.getSubDirectories(directoryPath);
+
+    yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "文件统计中");
 
     // 处理路径逻辑
     if (subDirectories.isNotEmpty) {
       Map<String, List<Directory>> prefixMap = {};
 
+      int processEntityCount = 0;
       for (var dir in subDirectories) {
         var fullPath = dir.path;
         var thePath = path.basename(dir.path);
@@ -42,6 +46,7 @@ class FileBatchProcessor {
             } else {
               prefixMap[prefix] = [dir];
             }
+            processEntityCount++;
           } else {
             logger.d("前缀等于要移动的文件夹，不进行操作");
           }
@@ -49,6 +54,7 @@ class FileBatchProcessor {
       }
 
       if (prefixMap.isNotEmpty) {
+        int i=0;
         for (var prefix in prefixMap.keys) {
           // 拼接完整路径
           final fullPath = '${directoryPath.endsWith('/') ? directoryPath : '$directoryPath/'}$prefix';
@@ -60,10 +66,14 @@ class FileBatchProcessor {
           await directory.create(recursive: true);
 
           for (Directory dir in prefixMap[prefix]!) {
+            i++;
             var thePath = path.basename(dir.path);
             var targetPath = "${directory.path}/$thePath";
             logger.d("进行移动，目标文件夹为:$targetPath");
             await dir.rename(targetPath);
+
+            final processPercentage = (i/processEntityCount).toStringAsFixed(2);
+            yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "当前进度$processPercentage%，$i//$processEntityCount");
           }
         }
       }
@@ -77,12 +87,6 @@ class FileBatchProcessor {
   }
 
   String prefixPhotography(String path) {
-    if (path == "梓末－私密助理") {
-      logger.d("-------------");
-      logger.d(path.indexOf("－"));
-      logger.d(path.indexOf("-"));
-      logger.d("-------------");
-    }
 
     trimSpace(String s, i) {
       s = path.substring(0, i);

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../common_widgets/loading_status_widget.dart';
 import '../../domain/use_cases/FileBatchProcessor.dart';
 import '../../utils/constants/constants.dart';
 import 'function_directory_screen_state.dart';
@@ -18,9 +19,17 @@ class FunctionDirectoryScreenViewmodel extends _$FunctionDirectoryScreenViewmode
     return FunctionDirectoryScreenState.initial();
   }
 
-  void startPathProcess(WidgetRef ref) {
+  Stream<LoadingStatusData> startPathProcess() async* {
     logger.d("已经获取到地址 $state.pathController.text");
-    fileBatchProcessor.fileBatchRemoveByPrefix(state.pathController.text, ref,state.processMode);
+    yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "开始处理，路径为${state.pathController.text}");
+
+    try {
+      yield* fileBatchProcessor.fileBatchRemoveByPrefix(state.pathController.text, state.processMode);
+      yield LoadingStatusData(loadingStatus: LoadingStatus.success, currentStatusDescription: "完成");
+    } catch (e) {
+      logger.d(e);
+      yield LoadingStatusData(loadingStatus: LoadingStatus.error, currentStatusDescription: "$e");
+    }
   }
 
   void changeProcessMode(ProcessMode? value) {
