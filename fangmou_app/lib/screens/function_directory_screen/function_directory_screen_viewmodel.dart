@@ -1,5 +1,4 @@
 import 'package:fangmou_app/screens/function_directory_screen/model/process_mode.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

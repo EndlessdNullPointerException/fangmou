@@ -6,7 +6,7 @@ import 'package:fangmou_app/utils/platform/windows/file_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
 
-import '../../repositories/local/ArchiveFilePasswordList.dart';
+import '../../data_source/local/ArchiveFilePasswordList.dart';
 
 class DecompressProcessor {
   static const List<String> compressFileType = ['.7z', '.zip', '.rar', '.part1.rar', '.rar.001', '.7z.001', '.zip.001', '.z01'];

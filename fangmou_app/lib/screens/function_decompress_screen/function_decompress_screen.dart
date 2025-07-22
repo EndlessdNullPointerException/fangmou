@@ -1,3 +1,4 @@
+import 'package:fangmou_app/common_widgets/simple_content_card.dart';
 import 'package:fangmou_app/screens/function_decompress_screen/widget/password_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,41 +13,53 @@ class FunctionDecompressScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     logger.d("FunctionDecompressScreen build");
-
     var screenState = ref.watch(functionDecompressScreenViewModelProvider);
     var screenViewmodel = ref.watch(functionDecompressScreenViewModelProvider.notifier);
-    return switch (screenState) {
-      // 数据加载成功
-      AsyncData(value: final state) => staticWidget(screenViewmodel, {
-        "directoryPathSelector": DirectoryPathSelector(controller: state.pathController),
-        "passwordList": PasswordItemWidget(deleteCallBack: screenViewmodel.deletePasswordItem, passwordControllerList: state.passwordControllerList),
-        "decompressDescendantFolder": Checkbox(
-          value: state.decompressDescendantFolder,
-          onChanged: (bool? value) {
-            screenViewmodel.changeDecompressDescendantFolder(value);
+    return SimpleContentCard(
+      hasSingleChildScrollView: true,
+      content: SingleChildScrollView(
+        scrollDirection: Axis.vertical, // 滚动方向
+        physics: BouncingScrollPhysics(), // iOS风格弹性滚动
+        child: Padding(
+          padding: EdgeInsetsGeometry.only(right: 10),
+          child: switch (screenState) {
+            // 数据加载成功
+            AsyncData(value: final state) => staticWidget(screenViewmodel, {
+              "directoryPathSelector": DirectoryPathSelector(controller: state.pathController),
+              "passwordList": PasswordItemWidget(
+                deleteCallBack: screenViewmodel.deletePasswordItem,
+                passwordControllerList: state.passwordControllerList,
+              ),
+              "decompressDescendantFolder": Checkbox(
+                value: state.decompressDescendantFolder,
+                onChanged: (bool? value) {
+                  screenViewmodel.changeDecompressDescendantFolder(value);
+                },
+              ),
+              "decompressAllTypeFile": Checkbox(
+                value: state.decompressAllTypeFile,
+                onChanged: (bool? value) {
+                  screenViewmodel.changeDecompressAllTypeFile(value);
+                },
+              ),
+              "deleteOriginFile": Checkbox(
+                value: state.deleteOriginFile,
+                onChanged: (bool? value) {
+                  screenViewmodel.changeDeleteOriginFile(value);
+                },
+              ),
+            }),
+            _ => staticWidget(screenViewmodel, {
+              "directoryPathSelector": DirectoryPathSelector(controller: TextEditingController()),
+              "passwordList": Text("获取数据中"),
+              "decompressDescendantFolder": Checkbox(value: false, onChanged: (bool? value) {}),
+              "decompressAllTypeFile": Checkbox(value: false, onChanged: (bool? value) {}),
+              "deleteOriginFile": Checkbox(value: false, onChanged: (bool? value) {}),
+            }),
           },
         ),
-        "decompressAllTypeFile": Checkbox(
-          value: state.decompressAllTypeFile,
-          onChanged: (bool? value) {
-            screenViewmodel.changeDecompressAllTypeFile(value);
-          },
-        ),
-        "deleteOriginFile": Checkbox(
-          value: state.deleteOriginFile,
-          onChanged: (bool? value) {
-            screenViewmodel.changeDeleteOriginFile(value);
-          },
-        ),
-      }),
-      _ => staticWidget(screenViewmodel, {
-        "directoryPathSelector": DirectoryPathSelector(controller: TextEditingController()),
-        "passwordList": Text("获取数据中"),
-        "decompressDescendantFolder": Checkbox(value: false, onChanged: (bool? value) {}),
-        "decompressAllTypeFile": Checkbox(value: false, onChanged: (bool? value) {}),
-        "deleteOriginFile": Checkbox(value: false, onChanged: (bool? value) {}),
-      }),
-    };
+      ),
+    );
   }
 
   Widget staticWidget(FunctionDecompressScreenViewModel screenViewmodel, Map<String, Widget> dynamicWidgets) {

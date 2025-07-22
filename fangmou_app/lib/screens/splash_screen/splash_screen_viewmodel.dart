@@ -4,10 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../repositories/local/ArchiveFilePasswordList.dart';
+import '../../data_source/local/sqllite_helper.dart';
+import '../../data_source/local/ArchiveFilePasswordList.dart';
 import '../../routes/app_router.dart';
 import '../../utils/constants/constants.dart';
-import '../../utils/platform/windows/AdminPrivilegeUtils.dart';
+import '../../utils/platform/windows/windows_admin_privilege_util.dart';
 import '../../utils/platform/windows/file_utils.dart';
 
 part 'splash_screen_viewmodel.g.dart';
@@ -26,15 +27,21 @@ class SlashScreenViewmodel extends _$SlashScreenViewmodel {
 
       // TODO 获取window平台管理员权限
       // 检查程序是否持有windows管理员权限
-      PlatformUtils.isWindowsAdmin();
+      WindowsAdminPrivilegeUtil.isWindowsAdmin();
 
-      // 初始化 Hive
+      // region <- Logic:初始化 Hive ->
       await Hive.initFlutter();
       // 注册适配器（需先运行生成命令）
       Hive.registerAdapter(ArchiveFilePasswordListAdapter());
       // 打开 Box
       await Hive.openBox('settings');
       await Hive.openBox<ArchiveFilePasswordList>('ArchiveFilePasswordList');
+      // region <- Logic:初始化 Hive ->
+
+
+      // region <- Logic:初始化 SqlLite ->
+      SqfliteHelper.initDatabase();
+      // endregion <- Logic:初始化 SqlLite ->
 
       // 初始化 7zip
       await FileUtils.initialize7z();

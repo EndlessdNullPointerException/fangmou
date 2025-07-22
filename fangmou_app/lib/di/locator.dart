@@ -2,7 +2,9 @@
 import 'package:ansicolor/ansicolor.dart';
 import 'package:intl/intl.dart'; // 用于时间格式化
 import 'package:logger/logger.dart';
+import 'package:sqflite/sqflite.dart';
 
+import '../data_source/local/sqllite_helper.dart';
 import '../utils/constants/constants.dart';
 
 void setupLocator() {

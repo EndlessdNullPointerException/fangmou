@@ -1,3 +1,4 @@
+import 'package:fangmou_app/common_widgets/simple_content_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +15,7 @@ class FunctionDirectoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var screenState = ref.watch(functionDirectoryScreenViewmodelProvider);
     var screenViewmodel = ref.watch(functionDirectoryScreenViewmodelProvider.notifier);
-    return Column(
+    return SimpleContentCard(content: Column(
       children: [
         SizedBox(height: 20), // 垂直间距
         SizedBox(height: 20), // 垂直间距
@@ -33,6 +34,7 @@ class FunctionDirectoryScreen extends ConsumerWidget {
         ElevatedButton(child: Text("开始"), onPressed: () => {showLoadingDialog(screenViewmodel.startPathProcess())}),
         SizedBox(height: 20), // 垂直间距
       ],
-    );
+    ))
+    ;
   }
 }

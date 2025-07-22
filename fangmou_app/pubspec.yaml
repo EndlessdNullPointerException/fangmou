@@ -31,13 +31,21 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   #本地数据存储
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  sqflite: ^2.4.2
+  sqflite_common_ffi: ^2.3.6
+  uuid: ^4.5.1
+  json_annotation: ^4.9.0
 
   win32: ^5.0.0
+  win32_registry: ^2.1.0
+  window_manager: ^0.5.0
   ffi: ^2.0.0
   charset: ^2.0.1
+  decimal: ^3.2.4
 
   # Riverpod核心库
   flutter_riverpod: ^2.5.1
@@ -67,7 +75,9 @@ dependencies:
   path: ^1.9.1
 
   # markdown 文本编辑
-  flutter_markdown_editor: ^2.0.0
+  flutter_html: ^3.0.0
+  markdown: ^7.3.0
+  gpt_markdown: ^1.1.2
 
   # 国际化支持
   intl: ^0.20.2
@@ -79,6 +89,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_single_instance: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -95,6 +106,7 @@ dev_dependencies:
 
   #本地数据存储
   hive_generator: ^2.0.0
+  json_serializable: ^6.7.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -120,8 +132,6 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/7zip/windows/7z.exe
-    - assets/templates/add_submenu.reg
-    - assets/templates/remove_submenu.reg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

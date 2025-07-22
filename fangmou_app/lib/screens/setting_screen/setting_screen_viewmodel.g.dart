@@ -7,7 +7,7 @@ part of 'setting_screen_viewmodel.dart';
 // **************************************************************************
 
 String _$settingScreenViewmodelHash() =>
-    r'ea3e4b308ad632e5cc1c42a63d13b78ad9b20553';
+    r'01df21d628f6b60d66656a0b7f70deb060c13239';
 
 /// See also [SettingScreenViewmodel].
 @ProviderFor(SettingScreenViewmodel)

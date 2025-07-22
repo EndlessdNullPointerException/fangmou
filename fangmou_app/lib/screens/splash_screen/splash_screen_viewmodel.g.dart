@@ -7,7 +7,7 @@ part of 'splash_screen_viewmodel.dart';
 // **************************************************************************
 
 String _$slashScreenViewmodelHash() =>
-    r'22c4a15da46e5f6b3059f412315d113b62c43ed8';
+    r'5bafc524e352c50642e7e8945406f90cfc14f0b4';
 
 /// See also [SlashScreenViewmodel].
 @ProviderFor(SlashScreenViewmodel)

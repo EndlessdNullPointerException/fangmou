@@ -7,7 +7,7 @@ part of 'function_directory_screen_viewmodel.dart';
 // **************************************************************************
 
 String _$functionDirectoryScreenViewmodelHash() =>
-    r'7d8e4afc2c70f9f38887150d099c6055d6d9e183';
+    r'7a78a72f75b5b0436d87575c644c39fb38533eea';
 
 /// See also [FunctionDirectoryScreenViewmodel].
 @ProviderFor(FunctionDirectoryScreenViewmodel)

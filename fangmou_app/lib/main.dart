@@ -6,7 +6,7 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:win32/win32.dart';
-
+import 'package:window_manager/window_manager.dart';
 import 'di/DomainUserCaseDI.dart';
 import 'di/locator.dart';
 
@@ -19,24 +19,22 @@ Future<void> main(List<String> arguments) async {
   logger.d('应用启动路径: ${Platform.resolvedExecutable}');
   logger.d(arguments);
 
-  if(arguments.isNotEmpty){
-    String x = arguments.join("\n");
-    await Directory("C:\\Users\\11849\\Desktop\\新建文件夹 (X)").create();
-    exit(0);
-  }else{
-    runApp(
-      ProviderScope(
-        // RiverPod 状态管理的作用域
-        child: MaterialApp.router(
-          title: 'Flutter Demo',
-          theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-          routerConfig: AppRouter.router,
-          debugShowCheckedModeBanner: false, // 关闭调试横幅
-        ),
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  runApp(
+    ProviderScope(
+      // RiverPod 状态管理的作用域
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+        routerConfig: AppRouter.router,
+        debugShowCheckedModeBanner: false, // 关闭调试横幅
       ),
-    );
-  }
+    ),
+  );
 }
+
 Future<void> showNativeNotification(String title, String body) async {
   final pTitle = title.toNativeUtf16();
   final pBody = body.toNativeUtf16();

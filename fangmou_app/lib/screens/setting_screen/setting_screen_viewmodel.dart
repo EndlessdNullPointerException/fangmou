@@ -3,8 +3,12 @@ import 'package:charset/charset.dart';
 import 'package:fangmou_app/screens/setting_screen/setting_screen_state.dart';
 import 'package:path/path.dart' as path;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:win32_registry/win32_registry.dart';
+
+import 'dart:ffi';
 
 import '../../utils/constants/constants.dart';
+import '../../utils/platform/windows/windows_admin_privilege_util.dart';
 
 part 'setting_screen_viewmodel.g.dart';
 
@@ -113,24 +117,27 @@ class SettingScreenViewmodel extends _$SettingScreenViewmodel {
     return switch (state) {
       AsyncData(value: final value) => value,
       AsyncError() => throw Exception("FunctionDecompressScreenViewModel 获取异步状态出现错误"),
-      _ => SettingScreenState(enableExplorerContextMenuIntegration: false),
+      _ => SettingScreenState(enableExplorerContextMenuIntegration: false,enableAdminPermission: false),
     };
   }
 
   @override
   Future<SettingScreenState> build() async {
-    return SettingScreenState(enableExplorerContextMenuIntegration: false);
+    return SettingScreenState(
+        enableExplorerContextMenuIntegration: await checkExplorerContextMenuIntegration(),
+        enableAdminPermission: await WindowsAdminPrivilegeUtil.isWindowsAdmin());
   }
 
-  //
-  // void setExplorerContextMenuIntegration(bool? value) async {
-  //   logger.d(value);
-  //   state = AsyncValue.data(SettingScreenState(enableExplorerContextMenuIntegration: value!));
-  // }
-  //
-  void setExplorerContextMenuIntegration(bool? value) async {
-    var current = getCurrentState();
+  Future<bool> checkExplorerContextMenuIntegration() async {
+    const keyPath = r'Directory\shell\FangmouAppParent';
+    final key = Registry.openPath(RegistryHive.classesRoot, path: keyPath);
 
+    final buildNumber = key.getStringValue('Icon');
+    key.close();
+    return buildNumber != null;
+  }
+
+  void setExplorerContextMenuIntegration(bool? value) async {
     var script = "";
     try {
       final appPath = Platform.resolvedExecutable.replaceAll('\\', '\\\\');
@@ -164,7 +171,7 @@ class SettingScreenViewmodel extends _$SettingScreenViewmodel {
     } catch (e) {
       logger.e(e);
     }
-
-    state = AsyncValue.data(SettingScreenState(enableExplorerContextMenuIntegration: value!));
+    final current = getCurrentState();
+    state = AsyncValue.data(current.copyWith(enableExplorerContextMenuIntegration: value));
   }
 }
