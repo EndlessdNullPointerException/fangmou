@@ -20,7 +20,10 @@ class FunctionDirectoryScreenViewmodel extends _$FunctionDirectoryScreenViewmode
 
   Stream<LoadingStatusData> startPathProcess() async* {
     logger.d("已经获取到地址 $state.pathController.text");
-    yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "开始处理，路径为${state.pathController.text}");
+    yield LoadingStatusData(
+      loadingStatus: LoadingStatus.loading,
+      currentStatusDescription: "开始处理，路径为${state.pathController.text}",
+    );
 
     try {
       yield* fileBatchProcessor.fileBatchRemoveByPrefix(state.pathController.text, state.processMode);

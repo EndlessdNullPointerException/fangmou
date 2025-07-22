@@ -12,16 +12,16 @@ class LoadingStatusWidget extends StatelessWidget {
       stream: currentStatus, // 传入要监听的单订阅流
       builder: (BuildContext context, AsyncSnapshot<LoadingStatusData> snapshot) {
         if (snapshot.hasError) {
-          return buildDialog(LoadingStatus.error,"出现错误${snapshot.error}");
+          return buildDialog(LoadingStatus.error, "出现错误${snapshot.error}");
         }
         if (!snapshot.hasData) {
-          return buildDialog(LoadingStatus.error,"出现错误,无数据可用");
+          return buildDialog(LoadingStatus.error, "出现错误,无数据可用");
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return buildDialog(LoadingStatus.loading,"等待中"); // 数据加载中
+          return buildDialog(LoadingStatus.loading, "等待中"); // 数据加载中
         }
 
-        return buildDialog(snapshot.data!.loadingStatus,snapshot.data!.currentStatusDescription);
+        return buildDialog(snapshot.data!.loadingStatus, snapshot.data!.currentStatusDescription);
       },
     );
   }
@@ -38,16 +38,15 @@ class LoadingStatusWidget extends StatelessWidget {
                 children: [
                   SizedBox(height: 10),
                   switch (loadingStatus) {
-                    LoadingStatus.success => Icon(Icons.check_circle,size: 40,color: Colors.green,),
-                    LoadingStatus.error => Icon(Icons.error,size: 40,color: Colors.red,),
+                    LoadingStatus.success => Icon(Icons.check_circle, size: 40, color: Colors.green),
+                    LoadingStatus.error => Icon(Icons.error, size: 40, color: Colors.red),
                     LoadingStatus.loading => CircularProgressIndicator(
                       backgroundColor: Colors.grey.withAlpha(33),
                       valueColor: const AlwaysStoppedAnimation(Colors.blue),
                       strokeWidth: 5,
                     ),
                   },
-                  if (loadingStatus == LoadingStatus.loading)
-                  SizedBox(height: 10),
+                  if (loadingStatus == LoadingStatus.loading) SizedBox(height: 10),
                   switch (loadingStatus) {
                     LoadingStatus.success => Text("完成"),
                     LoadingStatus.error => Text("处理失败，请退出"),
@@ -65,7 +64,7 @@ class LoadingStatusWidget extends StatelessWidget {
           LoadingStatus.error => TextButton(onPressed: () => Navigator.pop(AppRouter.context!), child: Text('确定')),
           LoadingStatus.loading => TextButton(onPressed: null, child: Text('终止')),
         },
-        ],
+      ],
     );
   }
 }

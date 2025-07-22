@@ -11,7 +11,6 @@ class TableUpdateTemplate extends ConsumerStatefulWidget {
 class _TableUpdateTemplateState extends ConsumerState<TableUpdateTemplate> {
   @override
   Widget build(BuildContext context) {
-
     return layout();
   }
 

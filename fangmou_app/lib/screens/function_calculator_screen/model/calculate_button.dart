@@ -47,8 +47,24 @@ enum CalculateButton {
 
   // endregion <- Values:进制转换 ->
 
-  save(icon: "保存", symbol: "", positionX: 0, positionY: 6, backGroundColor: Colors.green, fontColor: Colors.white, type: CalculateButtonType.other),
-  clean(icon: "清空", symbol: "", positionX: 4, positionY: 6, backGroundColor: Colors.red, fontColor: Colors.white, type: CalculateButtonType.other),
+  save(
+    icon: "保存",
+    symbol: "",
+    positionX: 0,
+    positionY: 6,
+    backGroundColor: Colors.green,
+    fontColor: Colors.white,
+    type: CalculateButtonType.other,
+  ),
+  clean(
+    icon: "清空",
+    symbol: "",
+    positionX: 4,
+    positionY: 6,
+    backGroundColor: Colors.red,
+    fontColor: Colors.white,
+    type: CalculateButtonType.other,
+  ),
   backspace(
     icon: "←",
     symbol: "",

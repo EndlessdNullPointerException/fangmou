@@ -10,6 +10,9 @@ class FunctionDirectoryScreenState {
   FunctionDirectoryScreenState.initial() : pathController = TextEditingController(), processMode = ProcessMode.manga;
 
   FunctionDirectoryScreenState copyWith({pathController, processMode}) {
-    return FunctionDirectoryScreenState(pathController: pathController ?? this.pathController, processMode: processMode ?? this.processMode);
+    return FunctionDirectoryScreenState(
+      pathController: pathController ?? this.pathController,
+      processMode: processMode ?? this.processMode,
+    );
   }
 }

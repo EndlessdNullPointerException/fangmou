@@ -9,7 +9,8 @@ class FunctionDecompressScreenState {
 
   final List<TextEditingController> passwordControllerList;
 
-  List<String> get passwordList => passwordControllerList.isNotEmpty ? passwordControllerList.map((i) => i.text).toList() : [];
+  List<String> get passwordList =>
+      passwordControllerList.isNotEmpty ? passwordControllerList.map((i) => i.text).toList() : [];
 
   FunctionDecompressScreenState({
     required this.decompressDescendantFolder,

@@ -23,7 +23,9 @@ class CustomAppBar extends ConsumerWidget {
       children: [
         // 主页面内容（添加顶部边距避免遮挡）
         Padding(
-          padding: EdgeInsets.only(top: isExpanded ? CustomAppbarStyle.appbarHeight : CustomAppbarStyle.appbarPinHeight), // 动态调整边距
+          padding: EdgeInsets.only(
+            top: isExpanded ? CustomAppbarStyle.appbarHeight : CustomAppbarStyle.appbarPinHeight,
+          ), // 动态调整边距
           child: body,
         ),
         // 顶部边缘可展开面板
@@ -35,7 +37,8 @@ class CustomAppBar extends ConsumerWidget {
             onEnter: (_) => ref.read(isExpandedProvider.notifier).state = true,
             child: AnimatedContainer(
               duration: Duration(milliseconds: 300),
-              height: isExpanded ? CustomAppbarStyle.appbarHeight : CustomAppbarStyle.appbarPinHeight, // 控制高度变化（原宽度改为高度）
+              height:
+                  isExpanded ? CustomAppbarStyle.appbarHeight : CustomAppbarStyle.appbarPinHeight, // 控制高度变化（原宽度改为高度）
               decoration: BoxDecoration(
                 color: Colors.blueGrey[800],
                 borderRadius: BorderRadius.only(
@@ -77,7 +80,9 @@ class CustomAppBar extends ConsumerWidget {
                       for (FangMouGoRoute subItem in item.descendantRoutes!)
                         PopupMenuItem<String>(
                           value: subItem.path,
-                          child: Row(children: [subItem.icon ?? Icon(Icons.error), SizedBox(width: 8), Text(subItem.name ?? "")]),
+                          child: Row(
+                            children: [subItem.icon ?? Icon(Icons.error), SizedBox(width: 8), Text(subItem.name ?? "")],
+                          ),
                         ),
                     ],
                 onSelected: (value) async {
@@ -85,7 +90,10 @@ class CustomAppBar extends ConsumerWidget {
                 },
               ),
           Spacer(),
-          CustomAppbarIconButton(onPressed: () => {ref.read(isExpandedProvider.notifier).state = false}, icon: Icon(Icons.expand_less)),
+          CustomAppbarIconButton(
+            onPressed: () => {ref.read(isExpandedProvider.notifier).state = false},
+            icon: Icon(Icons.expand_less),
+          ),
         ],
       ),
     );

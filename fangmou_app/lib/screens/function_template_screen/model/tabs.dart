@@ -35,16 +35,31 @@ enum Tabs {
 }
 
 final List<FangMouGoRoute> functionTemplateFlutterRoute = [
-  FangMouGoRoute(name: '基础页面模板', path: '/base_page_template', pageBuilder: (context, state) => NoTransitionPage(child: BasePageTemplate())),
-  FangMouGoRoute(name: '模板生成模板', path: '/template_generate_template', pageBuilder: (context, state) => NoTransitionPage(child: TemplateGenerateTemplate())),
-
+  FangMouGoRoute(
+    name: '基础页面模板',
+    path: '/base_page_template',
+    pageBuilder: (context, state) => NoTransitionPage(child: BasePageTemplate()),
+  ),
+  FangMouGoRoute(
+    name: '模板生成模板',
+    path: '/template_generate_template',
+    pageBuilder: (context, state) => NoTransitionPage(child: TemplateGenerateTemplate()),
+  ),
 ];
 final List<FangMouGoRoute> functionTemplateJavaRoute = [];
 
 final List<FangMouGoRoute> functionTemplatePythonRoute = [];
 
 final List<FangMouGoRoute> functionTemplateSqlRoute = [
-  FangMouGoRoute(name: '数据表创建模板', path: '/table_create_template', pageBuilder: (context, state) => NoTransitionPage(child: TableCreateTemplate())),
-  FangMouGoRoute(name: '数据表更新模板', path: '/table_update_template', pageBuilder: (context, state) => NoTransitionPage(child: TableUpdateTemplate())),
+  FangMouGoRoute(
+    name: '数据表创建模板',
+    path: '/table_create_template',
+    pageBuilder: (context, state) => NoTransitionPage(child: TableCreateTemplate()),
+  ),
+  FangMouGoRoute(
+    name: '数据表更新模板',
+    path: '/table_update_template',
+    pageBuilder: (context, state) => NoTransitionPage(child: TableUpdateTemplate()),
+  ),
 ];
 final List<FangMouGoRoute> functionTemplateVueRoute = [];

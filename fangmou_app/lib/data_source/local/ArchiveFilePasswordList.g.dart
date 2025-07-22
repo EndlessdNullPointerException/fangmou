@@ -6,20 +6,15 @@ part of 'ArchiveFilePasswordList.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ArchiveFilePasswordListAdapter
-    extends TypeAdapter<ArchiveFilePasswordList> {
+class ArchiveFilePasswordListAdapter extends TypeAdapter<ArchiveFilePasswordList> {
   @override
   final int typeId = 0;
 
   @override
   ArchiveFilePasswordList read(BinaryReader reader) {
     final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return ArchiveFilePasswordList(
-      passwordList: (fields[0] as List).cast<String>(),
-    );
+    final fields = <int, dynamic>{for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read()};
+    return ArchiveFilePasswordList(passwordList: (fields[0] as List).cast<String>());
   }
 
   @override
@@ -36,7 +31,5 @@ class ArchiveFilePasswordListAdapter
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ArchiveFilePasswordListAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is ArchiveFilePasswordListAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

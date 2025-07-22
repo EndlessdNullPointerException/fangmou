@@ -39,7 +39,11 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
   Widget build(BuildContext context) {
     final screenState = ref.watch(functionNoteListScreenViewmodelProvider);
     final screenViewmodel = ref.watch(functionNoteListScreenViewmodelProvider.notifier);
-    return screenState.when(data: (value) => layout(value, screenViewmodel), loading: () => whenLoading(), error: (error, stack) => whenError(error));
+    return screenState.when(
+      data: (value) => layout(value, screenViewmodel),
+      loading: () => whenLoading(),
+      error: (error, stack) => whenError(error),
+    );
   }
 
   Widget layout(FunctionNoteListScreenState screenState, FunctionNoteListScreenViewmodel screenViewmodel) {
@@ -71,7 +75,10 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
           padding: EdgeInsets.only(top: 55), // 调整边距
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical, // 滚动方向
-            child: Padding(padding: EdgeInsets.only(right: 15, left: 15), child: list(screenState, screenViewmodel)), // 需滚动的内容
+            child: Padding(
+              padding: EdgeInsets.only(right: 15, left: 15),
+              child: list(screenState, screenViewmodel),
+            ), // 需滚动的内容
           ),
         ),
         // region 浮动按钮
@@ -159,7 +166,10 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
               elevation: 0,
               isDense: true,
               underline: Divider(height: 0),
-              items: SortMethod.values.map((item) => DropdownMenuItem<SortMethod>(value: item, child: Text(item.message))).toList(),
+              items:
+                  SortMethod.values
+                      .map((item) => DropdownMenuItem<SortMethod>(value: item, child: Text(item.message)))
+                      .toList(),
               onChanged: (v) => screenViewmodel.resort(v!),
             ),
           ),
@@ -181,7 +191,10 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
                 controller: screenState.keyword,
                 onSubmitted: (v) => screenViewmodel.search(),
                 decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blue, width: 1)),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: Colors.blue, width: 1),
+                  ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
@@ -204,7 +217,12 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
           itemBuilder:
               (context) =>
                   PopOption.values
-                      .map((item) => PopupMenuItem<PopOption>(value: item, child: Wrap(spacing: 10, children: <Widget>[Text(item.text)])))
+                      .map(
+                        (item) => PopupMenuItem<PopOption>(
+                          value: item,
+                          child: Wrap(spacing: 10, children: <Widget>[Text(item.text)]),
+                        ),
+                      )
                       .toList(),
           offset: const Offset(0, 40),
           onSelected: (e) => screenViewmodel.onPopupMenuSelected(e),
@@ -247,7 +265,9 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
                           maintainState: true, // 如果需要保留状态可以设置为true
                           child: Checkbox(
                             value: screenState.selectedList[i],
-                            onChanged: (checkState) => screenViewmodel.selectCheckbox(checkState, i, screenState.noteMessageList[i]),
+                            onChanged:
+                                (checkState) =>
+                                    screenViewmodel.selectCheckbox(checkState, i, screenState.noteMessageList[i]),
                           ),
                         ),
                       ],

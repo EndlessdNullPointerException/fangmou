@@ -16,7 +16,9 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     var screenViewmodel = ref.read(functionNoteDetailScreenViewmodelProvider(id).notifier);
 
     return screenState.when(
-      data: (value) => layout(context: context, screenState: value, screenViewmodel: screenViewmodel, dynamicWidgetMap: {}),
+      data:
+          (value) =>
+              layout(context: context, screenState: value, screenViewmodel: screenViewmodel, dynamicWidgetMap: {}),
       loading: () => whenLoading(),
       error: (error, stack) => whenError(error),
     );
@@ -36,7 +38,12 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
           right: 0,
           child: Column(
             children: [
-              Row(children: screenState.editMode ? editToolBar(screenState, screenViewmodel) : viewToolBar(screenState, screenViewmodel)),
+              Row(
+                children:
+                    screenState.editMode
+                        ? editToolBar(screenState, screenViewmodel)
+                        : viewToolBar(screenState, screenViewmodel),
+              ),
               Divider(height: 0),
             ],
           ),
@@ -53,9 +60,13 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
                   padding: EdgeInsetsGeometry.all(10),
                   child: Column(
                     children: [
-                      screenState.editMode ? editTitle(context, screenState, screenViewmodel) : viewTitle(context, screenState, screenViewmodel),
+                      screenState.editMode
+                          ? editTitle(context, screenState, screenViewmodel)
+                          : viewTitle(context, screenState, screenViewmodel),
                       Divider(),
-                      screenState.editMode ? editMain(context, screenState, screenViewmodel) : viewMain(context, screenState, screenViewmodel),
+                      screenState.editMode
+                          ? editMain(context, screenState, screenViewmodel)
+                          : viewMain(context, screenState, screenViewmodel),
                     ],
                   ),
                 ),
@@ -67,7 +78,10 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     );
   }
 
-  List<Widget> editToolBar(FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+  List<Widget> editToolBar(
+    FunctionNoteDetailScreenState screenState,
+    FunctionNoteDetailScreenViewmodel screenViewmodel,
+  ) {
     return [
       MaterialButton(onPressed: () => screenViewmodel.back(), child: Icon(Icons.arrow_back)),
       Spacer(),
@@ -76,7 +90,10 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     ];
   }
 
-  List<Widget> viewToolBar(FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+  List<Widget> viewToolBar(
+    FunctionNoteDetailScreenState screenState,
+    FunctionNoteDetailScreenViewmodel screenViewmodel,
+  ) {
     return [
       MaterialButton(onPressed: () => screenViewmodel.back(), child: Icon(Icons.arrow_back)),
       Spacer(),
@@ -84,12 +101,22 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     ];
   }
 
-  Widget editTitle(BuildContext context, FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+  Widget editTitle(
+    BuildContext context,
+    FunctionNoteDetailScreenState screenState,
+    FunctionNoteDetailScreenViewmodel screenViewmodel,
+  ) {
     return TextField(
       controller: screenState.editTitle,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blue, width: 1)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blueAccent, width: 2.0)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blue, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+        ),
         hintText: "标题",
         hintStyle: TextStyle(
           color: Colors.grey[400], // 使用浅灰色
@@ -99,14 +126,24 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget editMain(BuildContext context, FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+  Widget editMain(
+    BuildContext context,
+    FunctionNoteDetailScreenState screenState,
+    FunctionNoteDetailScreenViewmodel screenViewmodel,
+  ) {
     return TextField(
       controller: screenState.editMain,
       onChanged: screenViewmodel.changed,
       decoration: InputDecoration(
         hintText: "正文...",
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blue, width: 1)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blueAccent, width: 2.0)),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blue, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+        ),
         hintStyle: TextStyle(
           color: Colors.grey[400], // 使用浅灰色
         ),
@@ -115,11 +152,19 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget viewTitle(BuildContext context, FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+  Widget viewTitle(
+    BuildContext context,
+    FunctionNoteDetailScreenState screenState,
+    FunctionNoteDetailScreenViewmodel screenViewmodel,
+  ) {
     return Text(screenState.noteBasicMessage.title, style: Theme.of(context).textTheme.headlineLarge);
   }
 
-  Widget viewMain(BuildContext context, FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+  Widget viewMain(
+    BuildContext context,
+    FunctionNoteDetailScreenState screenState,
+    FunctionNoteDetailScreenViewmodel screenViewmodel,
+  ) {
     return GptMarkdown(screenState.noteMain.main, style: Theme.of(context).textTheme.bodyLarge);
   }
 }

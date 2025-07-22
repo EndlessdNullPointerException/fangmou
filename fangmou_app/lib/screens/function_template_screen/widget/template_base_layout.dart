@@ -8,7 +8,7 @@ import '../../../utils/constants/constants.dart';
 
 typedef ResetParamsCallback = void Function();
 typedef ClearAllCallBack = void Function();
-typedef GenerateCallback = void Function(bool fileGenerate, String directory);
+typedef GenerateCallback = void Function(GlobalKey<FormState> formkey, bool fileGenerate, String directory);
 
 class TemplateBaseLayout extends StatefulWidget {
   final dynamic paramField;
@@ -32,6 +32,8 @@ class TemplateBaseLayout extends StatefulWidget {
 }
 
 class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   bool fileGenerate = false;
   final TextEditingController directoryController = TextEditingController();
 
@@ -65,48 +67,59 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
               padding: EdgeInsetsGeometry.only(right: 10, top: 10),
               child: Column(
                 children: [
-                  widget.paramField,
+                  Form(
+                    canPop: true,
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        widget.paramField,
+                        Row(
+                          children: [
+                            Spacer(),
+                            SizedBox(width: 10),
+                            ElevatedButton(onPressed: widget.resetParams, child: Text("重置参数")),
+                            SizedBox(width: 10),
+                            ElevatedButton(onPressed: widget.clearAll, child: Text("清空所有")),
+                            SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () => widget.generate(_formKey, fileGenerate, directoryController.text),
+                              child: Text("模板生成"),
+                            ),
+                            SizedBox(width: 10),
+                            Checkbox(
+                              value: fileGenerate,
+                              onChanged: (value) {
+                                logger.d(value);
+                                setState(() {
+                                  fileGenerate = value!;
+                                });
+                              },
+                            ),
+                            Text("生成文件"),
+                            Spacer(),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: 2,
+                              child: FractionallySizedBox(
+                                widthFactor: 1.0,
+                                child: Visibility(
+                                  visible: fileGenerate,
+                                  maintainState: true,
+                                  child: DirectoryPathSelector(controller: directoryController),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                   Divider(),
                   SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Spacer(),
-                      SizedBox(width: 10),
-                      ElevatedButton(onPressed: widget.resetParams, child: Text("重置参数")),
-                      SizedBox(width: 10),
-                      ElevatedButton(onPressed: widget.clearAll, child: Text("清空所有")),
-                      SizedBox(width: 10),
-                      ElevatedButton(onPressed: () => widget.generate(fileGenerate, directoryController.text), child: Text("模板生成")),
-                      SizedBox(width: 10),
-                      Checkbox(
-                        value: fileGenerate,
-                        onChanged: (value) {
-                          logger.d(value);
-                          setState(() {
-                            fileGenerate = value!;
-                          });
-                        },
-                      ),
-                      Text("生成文件"),
-                      Spacer(),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: FractionallySizedBox(
-                          widthFactor: 1.0,
-                          child: Visibility(
-                            visible: fileGenerate,
-                            maintainState: true,
-                            child: DirectoryPathSelector(controller: directoryController),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Divider(),
                   widget.resultField,
                 ],
@@ -119,7 +132,9 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
           top: 0,
           left: 0,
           right: 0,
-          child: Column(children: [SizedBox(height: 50, child: Row(children: toolBar())), Divider(height: 0, thickness: 3)]),
+          child: Column(
+            children: [SizedBox(height: 50, child: Row(children: toolBar())), Divider(height: 0, thickness: 3)],
+          ),
         ),
       ],
     );

@@ -21,20 +21,28 @@ class SettingScreen extends ConsumerWidget {
         "checkbox_enableAdminPermission": Checkbox(onChanged: null, value: state.enableAdminPermission),
       }),
       _ => staticWidget(screenViewmodel, {
-        "checkbox_enableExplorerContextMenuIntegration": Checkbox(onChanged: screenViewmodel.setExplorerContextMenuIntegration, value: false),
-        "checkbox_enableAdminPermission": Checkbox(onChanged: screenViewmodel.setExplorerContextMenuIntegration, value: false),
+        "checkbox_enableExplorerContextMenuIntegration": Checkbox(
+          onChanged: screenViewmodel.setExplorerContextMenuIntegration,
+          value: false,
+        ),
+        "checkbox_enableAdminPermission": Checkbox(
+          onChanged: screenViewmodel.setExplorerContextMenuIntegration,
+          value: false,
+        ),
       }),
     };
   }
 
   Widget staticWidget(SettingScreenViewmodel viewmodel, Map<String, Widget> widgets) {
-    return SimpleContentCard(content: Center(
-      child: Column(
-        children: [
-          Row(children: [widgets['checkbox_enableAdminPermission']!, Text("获得管理员权限")]),
-          Row(children: [widgets['checkbox_enableExplorerContextMenuIntegration']!, Text("集成到资源管理器右键功能菜单")]),
-        ],
+    return SimpleContentCard(
+      content: Center(
+        child: Column(
+          children: [
+            Row(children: [widgets['checkbox_enableAdminPermission']!, Text("获得管理员权限")]),
+            Row(children: [widgets['checkbox_enableExplorerContextMenuIntegration']!, Text("集成到资源管理器右键功能菜单")]),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

@@ -153,7 +153,9 @@ class _BasePageTemplateState extends ConsumerState<BasePageTemplate> {
           top: 0,
           left: 0,
           right: 0,
-          child: Column(children: [SizedBox(height: 50, child: Row(children: toolBar())), Divider(height: 0, thickness: 3)]),
+          child: Column(
+            children: [SizedBox(height: 50, child: Row(children: toolBar())), Divider(height: 0, thickness: 3)],
+          ),
         ),
       ],
     );

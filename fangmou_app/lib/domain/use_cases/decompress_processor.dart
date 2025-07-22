@@ -9,11 +9,24 @@ import 'package:path/path.dart' as p;
 import '../../data_source/local/ArchiveFilePasswordList.dart';
 
 class DecompressProcessor {
-  static const List<String> compressFileType = ['.7z', '.zip', '.rar', '.part1.rar', '.rar.001', '.7z.001', '.zip.001', '.z01'];
+  static const List<String> compressFileType = [
+    '.7z',
+    '.zip',
+    '.rar',
+    '.part1.rar',
+    '.rar.001',
+    '.7z.001',
+    '.zip.001',
+    '.z01',
+  ];
 
   // 获取指定文件夹下的所有压缩文件（7z、zip、rar）
   // 通过参数可以设置是否包含后代目录
-  Future<List<File>> getCompressedFiles(String directoryPath, {required bool decompressAllTypeFile, required bool decompressDescendantFolder}) async {
+  Future<List<File>> getCompressedFiles(
+    String directoryPath, {
+    required bool decompressAllTypeFile,
+    required bool decompressDescendantFolder,
+  }) async {
     final dir = Directory(directoryPath);
 
     // 检查目录是否存在
@@ -43,7 +56,9 @@ class DecompressProcessor {
             // 除去rar格式的分卷文件
             if (filePath.endsWith("rar") && filePath.contains("part")) {
               try {
-                final num = int.parse(filePath.substring(filePath.lastIndexOf("part") + 4, filePath.lastIndexOf("rar") - 1));
+                final num = int.parse(
+                  filePath.substring(filePath.lastIndexOf("part") + 4, filePath.lastIndexOf("rar") - 1),
+                );
                 if (num > 1) {
                   continue;
                 }
@@ -70,7 +85,8 @@ class DecompressProcessor {
               final allFileList = Directory(file.parent.path).list();
               bool flag = false;
               await for (FileSystemEntity f in allFileList) {
-                if (f.path.split(".").first.toLowerCase() == filePath.split(".").first && p.extension(f.path.toLowerCase()) == ".zip") {
+                if (f.path.split(".").first.toLowerCase() == filePath.split(".").first &&
+                    p.extension(f.path.toLowerCase()) == ".zip") {
                   flag = true;
                   break;
                 }
@@ -98,7 +114,12 @@ class DecompressProcessor {
   }
 
   // 执行解压操作
-  Future<void> extractArchive(File compressedFile, List<String> passwordList, bool deleteOriginFile, bool decompressDescendantFolder) async {
+  Future<void> extractArchive(
+    File compressedFile,
+    List<String> passwordList,
+    bool deleteOriginFile,
+    bool decompressDescendantFolder,
+  ) async {
     String fileName = compressedFile.path.replaceFirst("${compressedFile.parent.path}\\", "");
     String filePathWithoutSuffix = fileName.split('.').first;
 
@@ -296,7 +317,12 @@ class DecompressProcessor {
       String command = '${FileUtils.executable_7z.path} x -y "$compressedFileName" -o"$outputPath" -p"$password"';
       logger.d(command);
 
-      final result = await Process.run(FileUtils.executable_7z.path, args, runInShell: false, workingDirectory: compressedFileDirectory);
+      final result = await Process.run(
+        FileUtils.executable_7z.path,
+        args,
+        runInShell: false,
+        workingDirectory: compressedFileDirectory,
+      );
 
       // 获取退出状态码
       final exitCode = result.exitCode;
@@ -385,12 +411,13 @@ class DecompressProcessor {
     return data;
   }
 
-
   // 使用 bandizip 进行解压
-  Future<String> executeExtractBandiZip(String compressedFileDirectory,
-      String compressedFileName,
-      String outputPath,
-      String password) async {
+  Future<String> executeExtractBandiZip(
+    String compressedFileDirectory,
+    String compressedFileName,
+    String outputPath,
+    String password,
+  ) async {
     try {
       List<String> args;
 
@@ -403,12 +430,19 @@ class DecompressProcessor {
       String command = 'bz.exe x -y -p:"$password" -o:"$outputPath" "$compressedFileName"';
       logger.d(command);
 
-      final result = await Process.run("bz.exe", args, runInShell: true, workingDirectory: compressedFileDirectory, stderrEncoding: utf8,stdoutEncoding: utf8);
+      final result = await Process.run(
+        "bz.exe",
+        args,
+        runInShell: true,
+        workingDirectory: compressedFileDirectory,
+        stderrEncoding: utf8,
+        stdoutEncoding: utf8,
+      );
 
       // 获取退出状态码
       final exitCode = result.exitCode;
       final String stderr = result.stderr;
-      final String stdout =result.stdout;
+      final String stdout = result.stdout;
       logger.d("┏━━━━━━━━━━━━━━━━result━━━━━━━━━━━━━━━━━━┓");
       logger.d(exitCode);
       logger.d(stderr);

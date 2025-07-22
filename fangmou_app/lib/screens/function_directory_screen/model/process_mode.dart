@@ -1,5 +1,1 @@
-enum ProcessMode{
-  manga,
-  photography;
-}
-
+enum ProcessMode { manga, photography }

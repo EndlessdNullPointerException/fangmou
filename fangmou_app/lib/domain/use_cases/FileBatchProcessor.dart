@@ -8,9 +8,8 @@ import '../../common_widgets/loading_status_widget.dart';
 import '../../utils/platform/windows/file_utils.dart';
 
 class FileBatchProcessor {
-
   // 根据文件前缀重新整理文件夹
-  Stream<LoadingStatusData> fileBatchRemoveByPrefix(String directoryPath,  ProcessMode processMode) async* {
+  Stream<LoadingStatusData> fileBatchRemoveByPrefix(String directoryPath, ProcessMode processMode) async* {
     logger.d("选择的文件夹路径: $directoryPath");
     List<Directory> subDirectories = await FileUtils.getSubDirectories(directoryPath);
 
@@ -54,7 +53,7 @@ class FileBatchProcessor {
       }
 
       if (prefixMap.isNotEmpty) {
-        int i=0;
+        int i = 0;
         for (var prefix in prefixMap.keys) {
           // 拼接完整路径
           final fullPath = '${directoryPath.endsWith('/') ? directoryPath : '$directoryPath/'}$prefix';
@@ -72,8 +71,11 @@ class FileBatchProcessor {
             logger.d("进行移动，目标文件夹为:$targetPath");
             await dir.rename(targetPath);
 
-            final processPercentage = (i/processEntityCount).toStringAsFixed(2);
-            yield LoadingStatusData(loadingStatus: LoadingStatus.loading, currentStatusDescription: "当前进度$processPercentage%，$i//$processEntityCount");
+            final processPercentage = (i / processEntityCount).toStringAsFixed(2);
+            yield LoadingStatusData(
+              loadingStatus: LoadingStatus.loading,
+              currentStatusDescription: "当前进度$processPercentage%，$i//$processEntityCount",
+            );
           }
         }
       }
@@ -87,7 +89,6 @@ class FileBatchProcessor {
   }
 
   String prefixPhotography(String path) {
-
     trimSpace(String s, i) {
       s = path.substring(0, i);
       while (true) {

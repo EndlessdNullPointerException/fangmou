@@ -3,9 +3,9 @@ import 'package:json_annotation/json_annotation.dart';
 import '../../utils/generator.dart';
 
 part 'note_basic_message.g.dart';
+
 @JsonSerializable()
 class NoteBasicMessage {
-
   final String id;
 
   final DateTime createdAt;
@@ -37,5 +37,4 @@ class NoteBasicMessage {
 
   factory NoteBasicMessage.fromJson(Map<String, dynamic> json) => _$NoteBasicMessageFromJson(json);
   Map<String, dynamic> toJson() => _$NoteBasicMessageToJson(this);
-
 }

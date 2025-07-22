@@ -6,7 +6,8 @@ class SettingScreenState {
 
   SettingScreenState copyWith({bool? enableExplorerContextMenuIntegration, bool? enableAdminPermission}) {
     return SettingScreenState(
-      enableExplorerContextMenuIntegration: enableExplorerContextMenuIntegration ?? this.enableExplorerContextMenuIntegration,
+      enableExplorerContextMenuIntegration:
+          enableExplorerContextMenuIntegration ?? this.enableExplorerContextMenuIntegration,
       enableAdminPermission: enableAdminPermission ?? this.enableAdminPermission,
     );
   }

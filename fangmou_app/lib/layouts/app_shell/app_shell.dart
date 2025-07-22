@@ -10,8 +10,6 @@ class AppShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: CustomAppBar(body: child,),
-    );
+    return Scaffold(body: CustomAppBar(body: child));
   }
 }

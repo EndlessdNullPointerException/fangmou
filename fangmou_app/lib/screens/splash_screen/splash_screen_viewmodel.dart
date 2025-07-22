@@ -38,7 +38,6 @@ class SlashScreenViewmodel extends _$SlashScreenViewmodel {
       await Hive.openBox<ArchiveFilePasswordList>('ArchiveFilePasswordList');
       // region <- Logic:初始化 Hive ->
 
-
       // region <- Logic:初始化 SqlLite ->
       SqfliteHelper.initDatabase();
       // endregion <- Logic:初始化 SqlLite ->
@@ -47,7 +46,7 @@ class SlashScreenViewmodel extends _$SlashScreenViewmodel {
       await FileUtils.initialize7z();
 
       // 压缩功能测试
-      await Future.delayed(Duration(milliseconds:1));
+      await Future.delayed(Duration(milliseconds: 1));
       state = SlashScreenState(StartupStatus.testSevenZip);
       await FileUtils.test7zFunctionality();
 

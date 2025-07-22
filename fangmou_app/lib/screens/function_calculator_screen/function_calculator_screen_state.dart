@@ -7,7 +7,12 @@ class FunctionCalculatorScreenState {
   final CalculateButton lastClick;
   final CalculateButton lastOperator;
 
-  FunctionCalculatorScreenState({required this.input, required this.formula, required this.lastClick, required this.lastOperator});
+  FunctionCalculatorScreenState({
+    required this.input,
+    required this.formula,
+    required this.lastClick,
+    required this.lastOperator,
+  });
 
   FunctionCalculatorScreenState.initiate()
     : input = TextEditingController(),

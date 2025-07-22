@@ -12,51 +12,53 @@ class FunctionCalculatorScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var screenState = ref.watch(functionCalculatorScreenViewmodelProvider);
     var screenViewmodel = ref.watch(functionCalculatorScreenViewmodelProvider.notifier);
-    return SimpleContentCard(content: Column(
-      children: [
-        TextField(
-          readOnly: true,
-          controller: screenState.formula,
-          textAlign: TextAlign.right, // 文字右对齐
-          textDirection: TextDirection.ltr,// 从右向左输入
-          style: const TextStyle(color: Colors.black,fontSize: 10),
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurpleAccent),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+    return SimpleContentCard(
+      content: Column(
+        children: [
+          TextField(
+            readOnly: true,
+            controller: screenState.formula,
+            textAlign: TextAlign.right, // 文字右对齐
+            textDirection: TextDirection.ltr, // 从右向左输入
+            style: const TextStyle(color: Colors.black, fontSize: 10),
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              fillColor: Color(0x110099ee),
+              filled: true,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurpleAccent),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            fillColor: Color(0x110099ee),
-            filled: true,
           ),
-        ),
-        SizedBox(height: 10),
-        TextField(
-          readOnly: true,
-          style: const TextStyle(color: Colors.blue,fontWeight: FontWeight.bold,fontSize: 30),
-          textAlign: TextAlign.right, // 文字右对齐
-          textDirection: TextDirection.ltr,// 从右向左输入
-          controller: screenState.input,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurpleAccent),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+          SizedBox(height: 10),
+          TextField(
+            readOnly: true,
+            style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 30),
+            textAlign: TextAlign.right, // 文字右对齐
+            textDirection: TextDirection.ltr, // 从右向左输入
+            controller: screenState.input,
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              fillColor: Color(0x110099ee),
+              filled: true,
             ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.deepPurpleAccent),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            fillColor: Color(0x110099ee),
-            filled: true,
           ),
-        ),
-        SizedBox(height: 10),
-        buttons(screenViewmodel),
-      ],
-    ));
+          SizedBox(height: 10),
+          buttons(screenViewmodel),
+        ],
+      ),
+    );
   }
 
   Widget buttons(screenViewmodel) {
@@ -81,7 +83,7 @@ class FunctionCalculatorScreen extends ConsumerWidget {
               foregroundColor: WidgetStateProperty.all<Color>(item.fontColor),
             ),
             onPressed: () => screenViewmodel.addChar(item),
-            child: Text(style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20), item.icon),
+            child: Text(style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20), item.icon),
           ),
         ),
       ),

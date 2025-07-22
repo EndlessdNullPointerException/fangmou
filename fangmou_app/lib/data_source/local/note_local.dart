@@ -44,7 +44,11 @@ class NoteLocal {
     return result;
   }
 
-  Future<List<NoteBasicMessage>> getNoteBasicMessageList({String? sortBy, String? sortDirection, String? keyword}) async {
+  Future<List<NoteBasicMessage>> getNoteBasicMessageList({
+    String? sortBy,
+    String? sortDirection,
+    String? keyword,
+  }) async {
     List<NoteBasicMessage> result = [];
 
     String keywordSQL = keyword != null && keyword.isNotEmpty ? " AND (title LIKE ? OR excerpt LIKE  ?)" : "";
@@ -112,7 +116,12 @@ class NoteLocal {
         where: 'id in ($conditionPosition)',
         whereArgs: deleteIdList,
       );
-      await txn.update('note_main', {"deletion_flag": "true", "deleted_at": now}, where: 'id in ($conditionPosition)', whereArgs: deleteIdList);
+      await txn.update(
+        'note_main',
+        {"deletion_flag": "true", "deleted_at": now},
+        where: 'id in ($conditionPosition)',
+        whereArgs: deleteIdList,
+      );
     });
   }
 

@@ -106,7 +106,11 @@ class SqlLiteDemoState extends State<SqlLiteDemo> {
               Database db = await SqfliteHelper.database;
 
               logger.d('┏━━━━━━━━━━━━━━━━根据 id 删除━━━━━━━━━━━━━━━━┓');
-              int? result = await db.delete('note_basic_message', where: 'id = ?', whereArgs: ['b07ceff0e3fe4c61ba4f112fefd59550']);
+              int? result = await db.delete(
+                'note_basic_message',
+                where: 'id = ?',
+                whereArgs: ['b07ceff0e3fe4c61ba4f112fefd59550'],
+              );
               logger.d(result);
               logger.d('┗━━━━━━━━━━━━━━━━根据 id 删除━━━━━━━━━━━━━━━━┛');
             },

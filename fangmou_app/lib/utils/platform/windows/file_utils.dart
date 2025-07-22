@@ -69,7 +69,12 @@ class FileUtils {
       if (await extractDir.exists()) await extractDir.delete(recursive: true);
       await extractDir.create();
 
-      final extractResult = await Process.run(FileUtils.executable_7z.path, ['x', testZipPath, '-o${extractDir.path}', '-y']);
+      final extractResult = await Process.run(FileUtils.executable_7z.path, [
+        'x',
+        testZipPath,
+        '-o${extractDir.path}',
+        '-y',
+      ]);
 
       if (extractResult.exitCode != 0) {
         throw Exception('测试解压失败: ${extractResult.stderr}');

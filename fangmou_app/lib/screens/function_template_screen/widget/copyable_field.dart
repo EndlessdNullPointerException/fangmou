@@ -17,7 +17,10 @@ class CopyableField extends StatelessWidget {
           readOnly: true,
           decoration: InputDecoration(
             fillColor: Color(0x110099ee),
-            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blue, width: 1)),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              borderSide: BorderSide(color: Colors.blue, width: 1),
+            ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
               borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),

@@ -29,7 +29,11 @@ class FunctionNoteListScreenViewmodel extends _$FunctionNoteListScreenViewmodel 
   }
 
   void resort(SortMethod sortBy) async {
-    final noteMessageList = await getData(sortBy: sortBy.field, sortDirection: sortBy.direction, keyword: currentState.keyword.text);
+    final noteMessageList = await getData(
+      sortBy: sortBy.field,
+      sortDirection: sortBy.direction,
+      keyword: currentState.keyword.text,
+    );
     state = AsyncValue.data(currentState.copyWith(sortBy: sortBy, noteMessageList: noteMessageList));
   }
 
@@ -65,7 +69,9 @@ class FunctionNoteListScreenViewmodel extends _$FunctionNoteListScreenViewmodel 
   }
 
   void exitEditMode() {
-    state = AsyncValue.data(currentState.copyWith(editMode: false, selectedList: List.filled(currentState.noteMessageList.length, false)));
+    state = AsyncValue.data(
+      currentState.copyWith(editMode: false, selectedList: List.filled(currentState.noteMessageList.length, false)),
+    );
   }
 
   void gotoDetail(String i) {
@@ -84,11 +90,15 @@ class FunctionNoteListScreenViewmodel extends _$FunctionNoteListScreenViewmodel 
   }
 
   void selectAll(bool value) {
-    state = AsyncValue.data(currentState.copyWith(selectedList: List.filled(currentState.noteMessageList.length, value)));
+    state = AsyncValue.data(
+      currentState.copyWith(selectedList: List.filled(currentState.noteMessageList.length, value)),
+    );
   }
 
   void reverseSelected() {
-    state = AsyncValue.data(currentState.copyWith(selectedList: currentState.selectedList.map((item) => !item).toList()));
+    state = AsyncValue.data(
+      currentState.copyWith(selectedList: currentState.selectedList.map((item) => !item).toList()),
+    );
   }
 
   Future<void> deleteSelected() async {

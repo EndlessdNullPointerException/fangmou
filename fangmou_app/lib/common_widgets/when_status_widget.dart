@@ -11,11 +11,7 @@ Widget whenLoading() {
     ),
   );
 }
+
 Widget whenError(Object error) {
-  return Center(
-    child: Column(children: [
-      Icon(Icons.error,size: 40,color: Colors.red,),
-      Text(error.toString())
-    ],),
-  );
+  return Center(child: Column(children: [Icon(Icons.error, size: 40, color: Colors.red), Text(error.toString())]));
 }

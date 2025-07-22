@@ -117,15 +117,16 @@ class SettingScreenViewmodel extends _$SettingScreenViewmodel {
     return switch (state) {
       AsyncData(value: final value) => value,
       AsyncError() => throw Exception("FunctionDecompressScreenViewModel 获取异步状态出现错误"),
-      _ => SettingScreenState(enableExplorerContextMenuIntegration: false,enableAdminPermission: false),
+      _ => SettingScreenState(enableExplorerContextMenuIntegration: false, enableAdminPermission: false),
     };
   }
 
   @override
   Future<SettingScreenState> build() async {
     return SettingScreenState(
-        enableExplorerContextMenuIntegration: await checkExplorerContextMenuIntegration(),
-        enableAdminPermission: await WindowsAdminPrivilegeUtil.isWindowsAdmin());
+      enableExplorerContextMenuIntegration: await checkExplorerContextMenuIntegration(),
+      enableAdminPermission: await WindowsAdminPrivilegeUtil.isWindowsAdmin(),
+    );
   }
 
   Future<bool> checkExplorerContextMenuIntegration() async {

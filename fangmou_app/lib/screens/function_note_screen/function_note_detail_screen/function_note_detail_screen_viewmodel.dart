@@ -124,12 +124,21 @@ class FunctionNoteDetailScreenViewmodel extends _$FunctionNoteDetailScreenViewmo
     String excerpt = main.length > 300 ? main.substring(0, 300).trimRight() : main;
     int noteType = currentState.noteBasicMessage.noteType;
 
-    await noteLocal.insertOrUpdateNote(id: id, now: now, excerpt: excerpt, title: title, noteType: noteType, main: main);
+    await noteLocal.insertOrUpdateNote(
+      id: id,
+      now: now,
+      excerpt: excerpt,
+      title: title,
+      noteType: noteType,
+      main: main,
+    );
 
     NoteBasicMessage noteBasicMessageResult = await noteLocal.getNoteBasicMessageById(id);
     NoteMain noteMainResult = await noteLocal.getNoteMainById(id);
 
-    state = AsyncValue.data(currentState.copyWith(noteBasicMessage: noteBasicMessageResult, noteMain: noteMainResult, editMode: true));
+    state = AsyncValue.data(
+      currentState.copyWith(noteBasicMessage: noteBasicMessageResult, noteMain: noteMainResult, editMode: true),
+    );
   }
 
   /// 触发状态改变，以此更新UI

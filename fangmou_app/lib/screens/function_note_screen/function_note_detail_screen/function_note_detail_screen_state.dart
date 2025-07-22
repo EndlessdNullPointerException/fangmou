@@ -31,15 +31,21 @@ class FunctionNoteDetailScreenState {
       editMain = TextEditingController(),
       noteType = 0;
 
-  FunctionNoteDetailScreenState.initiateEdit({required this.noteType, required this.noteBasicMessage, required this.noteMain})
-    : editMode = true,
-      editTitle = TextEditingController(text: noteBasicMessage.title),
-      editMain = TextEditingController(text: noteMain.main);
+  FunctionNoteDetailScreenState.initiateEdit({
+    required this.noteType,
+    required this.noteBasicMessage,
+    required this.noteMain,
+  }) : editMode = true,
+       editTitle = TextEditingController(text: noteBasicMessage.title),
+       editMain = TextEditingController(text: noteMain.main);
 
-  FunctionNoteDetailScreenState.initiateView({required this.noteType, required this.noteBasicMessage, required this.noteMain})
-    : editMode = false,
-      editTitle = TextEditingController(text: noteBasicMessage.title),
-      editMain = TextEditingController(text: noteMain.main);
+  FunctionNoteDetailScreenState.initiateView({
+    required this.noteType,
+    required this.noteBasicMessage,
+    required this.noteMain,
+  }) : editMode = false,
+       editTitle = TextEditingController(text: noteBasicMessage.title),
+       editMain = TextEditingController(text: noteMain.main);
 
   FunctionNoteDetailScreenState copyWith({
     bool? editMode,

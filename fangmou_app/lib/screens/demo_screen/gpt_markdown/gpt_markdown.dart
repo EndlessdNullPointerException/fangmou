@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
+
 class GptMarkdownExample extends StatefulWidget {
   const GptMarkdownExample({super.key});
 
@@ -8,11 +9,9 @@ class GptMarkdownExample extends StatefulWidget {
 }
 
 class _CounterWidgetState extends State<GptMarkdownExample> {
-
   @override
   Widget build(BuildContext context) {
-    return GptMarkdown(
-      '''
+    return GptMarkdown('''
 # 10	平台适配
 
 ## 10.1	响应式布局
@@ -216,7 +215,6 @@ Scaffold(
 ---
 
 
-    ''',
-    );
+    ''');
   }
 }

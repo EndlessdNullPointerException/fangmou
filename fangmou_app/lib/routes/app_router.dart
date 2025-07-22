@@ -23,7 +23,12 @@ class AppRouter {
   static final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 
   static final List<FangMouGoRoute> goRouteItemList = [
-    FangMouGoRoute(name: '主页', path: '/home', icon: Icon(Icons.home), pageBuilder: (context, state) => NoTransitionPage(child: HomeScreen())),
+    FangMouGoRoute(
+      name: '主页',
+      path: '/home',
+      icon: Icon(Icons.home),
+      pageBuilder: (context, state) => NoTransitionPage(child: HomeScreen()),
+    ),
     FangMouGoRoute(
       name: '笔记',
       path: '/function_note_list',
@@ -124,11 +129,14 @@ class AppRouter {
           // region 动态路由
           GoRoute(
             path: '/function_schedule_detail/:id',
-            pageBuilder: (context, state) => NoTransitionPage(child: FunctionScheduleDetailScreen(id: state.pathParameters['id']!)),
+            pageBuilder:
+                (context, state) =>
+                    NoTransitionPage(child: FunctionScheduleDetailScreen(id: state.pathParameters['id']!)),
           ),
           GoRoute(
             path: '/function_note_detail/:id',
-            pageBuilder: (context, state) => NoTransitionPage(child: FunctionNoteDetailScreen(id: state.pathParameters['id']!)),
+            pageBuilder:
+                (context, state) => NoTransitionPage(child: FunctionNoteDetailScreen(id: state.pathParameters['id']!)),
           ),
           // endregion
 

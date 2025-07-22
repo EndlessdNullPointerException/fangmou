@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 
 class FangMouGoRoute extends GoRoute {
-   FangMouGoRoute( {
+  FangMouGoRoute({
     required super.path,
     super.name,
     super.builder,

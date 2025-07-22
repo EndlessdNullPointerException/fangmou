@@ -5,7 +5,7 @@ class DraggableFabScreen extends ConsumerStatefulWidget {
   const DraggableFabScreen({super.key});
 
   @override
-  ConsumerState<DraggableFabScreen>  createState() => _DraggableFabScreenState();
+  ConsumerState<DraggableFabScreen> createState() => _DraggableFabScreenState();
 }
 
 class _DraggableFabScreenState extends ConsumerState<DraggableFabScreen> {
@@ -22,8 +22,8 @@ class _DraggableFabScreenState extends ConsumerState<DraggableFabScreen> {
     if (!_isInitialized) {
       final size = MediaQuery.of(context).size;
       // 初始位置设置在右下角，并留出一些边距
-      _top = 100 ;
-      _left = 100 ;
+      _top = 100;
+      _left = 100;
       _isInitialized = true;
     }
   }
@@ -33,12 +33,7 @@ class _DraggableFabScreenState extends ConsumerState<DraggableFabScreen> {
     return Stack(
       children: <Widget>[
         // 这里可以放置你的主要内容
-        const Center(
-          child: Text(
-            '在屏幕上任意拖动右下角的按钮',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
+        const Center(child: Text('在屏幕上任意拖动右下角的按钮', style: TextStyle(fontSize: 18))),
         // 使用 Positioned 来定位可拖动的按钮
         Positioned(
           top: _top,
@@ -57,9 +52,7 @@ class _DraggableFabScreenState extends ConsumerState<DraggableFabScreen> {
               onPressed: () {
                 // 按钮的点击事件
                 print('FAB Tapped!');
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('按钮被点击了！')),
-                );
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('按钮被点击了！')));
               },
               child: const Icon(Icons.drag_handle),
             ),

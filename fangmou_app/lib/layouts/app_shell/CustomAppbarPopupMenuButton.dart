@@ -7,7 +7,12 @@ class CustomAppbarPopupMenuButton extends StatelessWidget {
   final PopupMenuItemBuilder<String> itemBuilder;
   final Icon icon;
 
-  const CustomAppbarPopupMenuButton({super.key, required this.itemBuilder, required this.onSelected, required this.icon});
+  const CustomAppbarPopupMenuButton({
+    super.key,
+    required this.itemBuilder,
+    required this.onSelected,
+    required this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {

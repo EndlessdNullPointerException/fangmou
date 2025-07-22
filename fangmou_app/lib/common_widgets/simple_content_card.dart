@@ -14,7 +14,10 @@ class SimpleContentCard extends StatelessWidget {
       child: Card(
         color: Colors.white,
         elevation: 10.0,
-        child: Padding(padding: EdgeInsetsGeometry.only(left: 10, top: 10, bottom: 10, right: hasSingleChildScrollView ? 0 : 10), child: content),
+        child: Padding(
+          padding: EdgeInsetsGeometry.only(left: 10, top: 10, bottom: 10, right: hasSingleChildScrollView ? 0 : 10),
+          child: content,
+        ),
       ),
     );
   }

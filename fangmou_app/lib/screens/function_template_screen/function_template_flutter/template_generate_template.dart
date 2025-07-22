@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fangmou_app/common_widgets/fangmou_standard_text_field.dart';
 import 'package:fangmou_app/screens/function_template_screen/widget/copyable_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,9 +9,10 @@ import '../../../common_widgets/gadget_widget.dart';
 import '../../../utils/constants/constants.dart';
 import '../widget/template_base_layout.dart';
 
-const String example ='''
+const String example = '''
 import 'dart:io';
 
+import 'package:fangmou_app/common_widgets/fangmou_standard_text_field.dart';
 import 'package:fangmou_app/screens/function_template_screen/widget/copyable_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,19 +21,18 @@ import '../../../common_widgets/gadget_widget.dart';
 import '../../../utils/constants/constants.dart';
 import '../widget/template_base_layout.dart';
 
-const String example ='''
+const String example = \'\'\'
+{{exampleValue}}
+\'\'\';
 
-    ''';
-
-
-class TemplateGenerateTemplate extends ConsumerStatefulWidget {
-  const TemplateGenerateTemplate({super.key});
+class {{className}}Template extends ConsumerStatefulWidget {
+  const {{className}}Template({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TemplateGenerateTemplateState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _{{className}}TemplateState();
 }
 
-class _TemplateGenerateTemplateState extends ConsumerState<TemplateGenerateTemplate> {
+class _{{className}}TemplateState extends ConsumerState<{{className}}Template> {
   final TextEditingController exampleCopyableFieldController = TextEditingController();
 
   final TextEditingController fileName = TextEditingController();
@@ -43,13 +44,10 @@ class _TemplateGenerateTemplateState extends ConsumerState<TemplateGenerateTempl
 
   // region <- Functions:布局方法 ->
   Widget paramField() {
-    return TextField(
-      controller: fileName,
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blue, width: 1)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blueAccent, width: 2.0)),
-        labelText: '文件名',
-      ),
+    return Column(
+      children: [
+        Row(children: [Spacer(flex: 40), fangmouStandardTextField(flex: 30, controller: fileName, labelText: "文件名"), Spacer(flex: 40)]),
+      ],
     );
   }
 
@@ -112,10 +110,7 @@ class _TemplateGenerateTemplateState extends ConsumerState<TemplateGenerateTempl
   }
 
   // endregion <- Functions: 生成相关代码 ->
-}
-
-''';
-
+}''';
 
 class TemplateGenerateTemplate extends ConsumerStatefulWidget {
   const TemplateGenerateTemplate({super.key});
@@ -126,23 +121,53 @@ class TemplateGenerateTemplate extends ConsumerStatefulWidget {
 
 class _TemplateGenerateTemplateState extends ConsumerState<TemplateGenerateTemplate> {
   final TextEditingController exampleCopyableFieldController = TextEditingController();
-
   final TextEditingController fileName = TextEditingController();
+  final TextEditingController className = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return TemplateBaseLayout(paramField: paramField(), resultField: resultField(), resetParams: resetParams, clearAll: clearAll, generate: generate);
+    return TemplateBaseLayout(
+      paramField: paramField(),
+      resultField: resultField(),
+      resetParams: resetParams,
+      clearAll: clearAll,
+      generate: generate,
+    );
   }
 
   // region <- Functions:布局方法 ->
   Widget paramField() {
-    return TextField(
-      controller: fileName,
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blue, width: 1)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0), borderSide: BorderSide(color: Colors.blueAccent, width: 2.0)),
-        labelText: '文件名',
-      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            Spacer(flex: 15),
+            fangmouStandardTextFormField(
+              flex: 30,
+              controller: fileName,
+              labelText: "文件名",
+              validator: (value) {
+                logger.d(value);
+                if (value != null && value != "") return null;
+                return "文件名不能为空";
+              },
+            ),
+            Spacer(flex: 10),
+            fangmouStandardTextFormField(
+              flex: 30,
+              controller: className,
+              labelText: "类名",
+              validator: (value) {
+                logger.d(value);
+                logger.d(value);
+                if (value != null && value != "") return null;
+                return "类名不能为空";
+              },
+            ),
+            Spacer(flex: 15),
+          ],
+        ),
+      ],
     );
   }
 
@@ -165,7 +190,13 @@ class _TemplateGenerateTemplateState extends ConsumerState<TemplateGenerateTempl
     logger.d('┗━━━━━━━━━━━━━━━━clearAll━━━━━━━━━━━━━━━━┛');
   }
 
-  Future<void> generate(fileGenerate, directory) async {
+  Future<void> generate(formKey, fileGenerate, directory) async {
+    if (formKey.currentState == null) return;
+    if (formKey.currentState!.validate()) {
+      FocusScope.of(context).requestFocus(FocusNode());
+      Navigator.of(context).pop();
+    }
+
     logger.d('┏━━━━━━━━━━━━━━━━generate━━━━━━━━━━━━━━━━┓');
     logger.d(fileGenerate);
     logger.d(directory);
@@ -200,8 +231,9 @@ class _TemplateGenerateTemplateState extends ConsumerState<TemplateGenerateTempl
   // region <- Functions: 生成相关代码 ->
   String exampleGenerator() {
     String result = "";
-    result = example.replaceAll("{{exampleValue}}", "value");
+    result = example.replaceAll("{{className}}", className.text);
     return result;
   }
+
   // endregion <- Functions: 生成相关代码 ->
 }

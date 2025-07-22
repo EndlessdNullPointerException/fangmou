@@ -4,7 +4,7 @@ import 'package:win32/win32.dart';
 
 import '../../constants/constants.dart';
 
-class WindowsAdminPrivilegeUtil{
+class WindowsAdminPrivilegeUtil {
   // 检查管理员权限
   static Future<bool> isWindowsAdmin() async {
     // 检查当前平台是否为 Windows

@@ -106,10 +106,10 @@ class FunctionCalculatorScreenViewmodel extends _$FunctionCalculatorScreenViewmo
           throw "未处理的操作符";
       }
 
-      if(CalculateButton.equalTo == calculateButton){
-        formulaResult =formula + lastValue.toString() + calculateButton.symbol;
+      if (CalculateButton.equalTo == calculateButton) {
+        formulaResult = formula + lastValue.toString() + calculateButton.symbol;
         inputResult = lastValue.toString();
-      }else{
+      } else {
         formulaResult = lastValue.toString() + calculateButton.symbol;
         inputResult = "";
       }
