@@ -5,7 +5,6 @@ import 'package:path/path.dart' as path;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:win32_registry/win32_registry.dart';
 
-import 'dart:ffi';
 
 import '../../utils/constants/constants.dart';
 import '../../utils/platform/windows/windows_admin_privilege_util.dart';

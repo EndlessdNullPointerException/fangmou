@@ -5,9 +5,9 @@ import 'package:fangmou_app/utils/constants/constants.dart';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:win32/win32.dart';
 import 'package:window_manager/window_manager.dart';
-import 'di/DomainUserCaseDI.dart';
 import 'di/locator.dart';
 
 Future<void> main(List<String> arguments) async {
@@ -25,11 +25,13 @@ Future<void> main(List<String> arguments) async {
   runApp(
     ProviderScope(
       // RiverPod 状态管理的作用域
-      child: MaterialApp.router(
-        title: 'Flutter Demo',
-        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
-        routerConfig: AppRouter.router,
-        debugShowCheckedModeBanner: false, // 关闭调试横幅
+      child: OKToast(
+        child: MaterialApp.router(
+          title: 'Flutter Demo',
+          theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
+          routerConfig: AppRouter.router,
+          debugShowCheckedModeBanner: false, // 关闭调试横幅
+        ),
       ),
     ),
   );

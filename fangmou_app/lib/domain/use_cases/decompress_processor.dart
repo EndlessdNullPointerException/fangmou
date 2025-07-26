@@ -6,7 +6,7 @@ import 'package:fangmou_app/utils/platform/windows/file_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart' as p;
 
-import '../../data_source/local/ArchiveFilePasswordList.dart';
+import '../../data_source/local/archive_file_password_list.dart';
 
 class DecompressProcessor {
   static const List<String> compressFileType = [

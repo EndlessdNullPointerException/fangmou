@@ -33,8 +33,10 @@ class CopyableField extends StatelessWidget {
           child: IconButton(
             onPressed: () async {
               try {
-                await Clipboard.setData(ClipboardData(text: controller.text));
-                showCustomDialog("复制成功");
+                if (controller.text.isNotEmpty) {
+                  await Clipboard.setData(ClipboardData(text: controller.text));
+                  showCustomDialog("复制成功");
+                }
               } catch (e) {
                 logger.e(e.toString());
               }

@@ -2128,7 +2128,6 @@ String generateUuid32() {
 String generateRandomString(int min, int max) {
   final length = min + Random().nextInt(max - min + 1);
 
-  const String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   final Random rnd = Random();
 
   StringBuffer sb = StringBuffer();

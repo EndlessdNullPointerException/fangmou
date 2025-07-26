@@ -2,7 +2,7 @@ import 'package:fangmou_app/common_widgets/simple_content_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../common_widgets/DirectoryPathSelector.dart';
+import '../../common_widgets/directory_path_selector.dart';
 import '../../common_widgets/gadget_widget.dart';
 import 'function_directory_screen_viewmodel.dart';
 import 'model/process_mode.dart';

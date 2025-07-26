@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ArchiveFilePasswordList.dart';
+part of 'archive_file_password_list.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

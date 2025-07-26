@@ -1,14 +1,16 @@
+import 'package:fangmou_app/utils/extensions/go_router_extension.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class TableUpdateTemplate extends ConsumerStatefulWidget {
-  const TableUpdateTemplate({super.key});
+class TableUpdateTemplateScreen extends ConsumerStatefulWidget {
+  final FangMouGoRoute route;
+  const TableUpdateTemplateScreen({super.key, required this.route});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _TableUpdateTemplateState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _TableUpdateTemplateScreenState();
 }
 
-class _TableUpdateTemplateState extends ConsumerState<TableUpdateTemplate> {
+class _TableUpdateTemplateScreenState extends ConsumerState<TableUpdateTemplateScreen> {
   @override
   Widget build(BuildContext context) {
     return layout();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import '../../routes/app_router.dart';
 import 'loading_status_widget.dart';
 
@@ -29,7 +30,6 @@ void showMaterialBanner(String message, Color color) {
 void showCustomDialog(String message) {
   showDialog(
     context: AppRouter.context!,
-    barrierDismissible: false,
     builder:
         (ctx) => AlertDialog(
           title: Text(message),
@@ -37,6 +37,17 @@ void showCustomDialog(String message) {
         ),
   );
 }
+
+void showCustomToast(String message){
+  showToast(
+    message,
+    position: ToastPosition.top,
+    backgroundColor: Colors.black.withValues(alpha: 0.7),
+    radius: 10.0,
+    textStyle: const TextStyle(fontSize: 16.0, color: Colors.white),
+  );
+}
+
 
 void showLoadingDialog(Stream<LoadingStatusData> currentStatus) {
   showDialog(

@@ -7,7 +7,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../data_source/local/note_local.dart';
 import '../../../model/note_model/note_basic_message.dart';
-import '../../../utils/constants/constants.dart';
 import 'function_note_list_screen_state.dart';
 
 part "function_note_list_screen_viewmodel.g.dart";

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fangmou_app/common_widgets/DirectoryPathSelector.dart';
+import 'package:fangmou_app/common_widgets/directory_path_selector.dart';
 import 'package:fangmou_app/common_widgets/simple_content_card.dart';
 import 'package:fangmou_app/routes/app_router.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../common_widgets/gadget_widget.dart';
 import '../../../utils/constants/constants.dart';
+import '../../../utils/extensions/go_router_extension.dart';
 import '../widget/copyable_field.dart';
 
 const String templateScreen = '''
@@ -61,14 +62,15 @@ class {{pageName}}State {
 }
 ''';
 
-class BasePageTemplate extends ConsumerStatefulWidget {
-  const BasePageTemplate({super.key});
+class BasePageTemplateScreen extends ConsumerStatefulWidget {
+  final FangMouGoRoute route;
+  const BasePageTemplateScreen({super.key, required this.route});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _BasePageTemplateState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _BasePageTemplateScreenState();
 }
 
-class _BasePageTemplateState extends ConsumerState<BasePageTemplate> {
+class _BasePageTemplateScreenState extends ConsumerState<BasePageTemplateScreen> {
   @override
   Widget build(BuildContext context) {
     return layout();
@@ -170,10 +172,12 @@ class _BasePageTemplateState extends ConsumerState<BasePageTemplate> {
         child: Icon(Icons.arrow_back),
       ),
       Spacer(),
+      Text(widget.route.name!,style: Theme.of(AppRouter.context!).textTheme.headlineMedium),
+      SizedBox(width: 10,)
     ];
   }
 
-  // region <- Functions: 生成相关代码 ->
+  // region <- Functions: 生成代码方法 ->
 
   Future<void> generate() async {
     String result0 = "";
@@ -223,5 +227,5 @@ class _BasePageTemplateState extends ConsumerState<BasePageTemplate> {
     return result;
   }
 
-  // endregion <- Functions: 生成相关代码 ->
+  // endregion <- Functions: 生成代码方法 ->
 }

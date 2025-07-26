@@ -5,7 +5,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data_source/local/sqllite_helper.dart';
-import '../../data_source/local/ArchiveFilePasswordList.dart';
+import '../../data_source/local/archive_file_password_list.dart';
 import '../../routes/app_router.dart';
 import '../../utils/constants/constants.dart';
 import '../../utils/platform/windows/windows_admin_privilege_util.dart';

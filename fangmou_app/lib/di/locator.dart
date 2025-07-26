@@ -1,11 +1,29 @@
 // locator.dart
 import 'package:ansicolor/ansicolor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart'; // 用于时间格式化
 import 'package:logger/logger.dart';
-import 'package:sqflite/sqflite.dart';
 
-import '../data_source/local/sqllite_helper.dart';
+import '../data_source/local/note_local.dart';
+import '../domain/use_cases/decompress_processor.dart';
+import '../domain/use_cases/file_batch_processor.dart';
 import '../utils/constants/constants.dart';
+
+void setupDomainUserCase() {
+  // region 文件处理
+  getIt.registerLazySingleton<FileBatchProcessor>(() => FileBatchProcessor());
+  getIt.registerLazySingleton<DecompressProcessor>(() => DecompressProcessor());
+  // endregion
+
+  // region  本地数据获取
+  getIt.registerLazySingleton<NoteLocal>(
+        () => NoteLocal(), // 使用异步工厂
+  );
+  // endregion
+
+  // 注册全局导航键
+  getIt.registerSingleton<GlobalKey<NavigatorState>>(GlobalKey<NavigatorState>(debugLabel: 'root'));
+}
 
 void setupLocator() {
   // 注册服务（示例）

@@ -38,12 +38,18 @@ final List<FangMouGoRoute> functionTemplateFlutterRoute = [
   FangMouGoRoute(
     name: '基础页面模板',
     path: '/base_page_template',
-    pageBuilder: (context, state) => NoTransitionPage(child: BasePageTemplate()),
+    pageBuilder: (context, state) {
+      FangMouGoRoute route = state.extra as FangMouGoRoute;
+      return NoTransitionPage(child: BasePageTemplateScreen(route: route));
+    },
   ),
   FangMouGoRoute(
     name: '模板生成模板',
     path: '/template_generate_template',
-    pageBuilder: (context, state) => NoTransitionPage(child: TemplateGenerateTemplate()),
+    pageBuilder: (context, state) {
+      FangMouGoRoute route = state.extra as FangMouGoRoute;
+      return NoTransitionPage(child: TemplateGenerateTemplateScreen(route: route));
+    },
   ),
 ];
 final List<FangMouGoRoute> functionTemplateJavaRoute = [];
@@ -54,12 +60,18 @@ final List<FangMouGoRoute> functionTemplateSqlRoute = [
   FangMouGoRoute(
     name: '数据表创建模板',
     path: '/table_create_template',
-    pageBuilder: (context, state) => NoTransitionPage(child: TableCreateTemplate()),
+    pageBuilder: (context, state) {
+      FangMouGoRoute route = state.extra as FangMouGoRoute;
+      return NoTransitionPage(child: TableCreateTemplateScreen(route: route));
+    },
   ),
   FangMouGoRoute(
     name: '数据表更新模板',
     path: '/table_update_template',
-    pageBuilder: (context, state) => NoTransitionPage(child: TableUpdateTemplate()),
+    pageBuilder: (context, state) {
+      FangMouGoRoute route = state.extra as FangMouGoRoute;
+      return NoTransitionPage(child: TableUpdateTemplateScreen(route: route));
+    },
   ),
 ];
 final List<FangMouGoRoute> functionTemplateVueRoute = [];

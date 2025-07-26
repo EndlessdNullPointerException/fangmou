@@ -136,7 +136,7 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
           (context, i) => Visibility(
             visible: itemVisibleMap[tab]![i],
             child: GestureDetector(
-              onTap: () => AppRouter.context!.push(tab.routes[i].path),
+              onTap: () => AppRouter.context!.push(tab.routes[i].path,extra: tab.routes[i]),
               behavior: HitTestBehavior.opaque, // 整个 GestureDetector 包裹的区域（包括空白区）都会捕捉事件
               child: Card(
                 elevation: 5,

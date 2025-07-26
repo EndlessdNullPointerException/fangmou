@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layouts/app_shell/app_shell.dart';
-import '../screens/demo_screen/sql_lite_demo/sql_lite_demo.dart';
+import '../screens/demo_screen/template/template.dart';
 import '../screens/function_calculator_screen/function_calculator_screen.dart';
 import '../screens/function_decompress_screen/function_decompress_screen.dart';
 import '../screens/function_directory_screen/function_directory_screen.dart';
@@ -103,7 +103,16 @@ class AppRouter {
       name: 'Test',
       path: '/function_test',
       icon: Icon(Icons.pan_tool),
-      pageBuilder: (context, state) => NoTransitionPage(child: SqlLiteDemo()),
+      pageBuilder:
+          (context, state) => NoTransitionPage(
+            child: AbcScreen(
+              route: FangMouGoRoute(
+                path: "path",
+                name: "TEST",
+                pageBuilder: (context, state) => const NoTransitionPage(child: HomeScreen()),
+              ),
+            ),
+          ),
     ),
   ];
 

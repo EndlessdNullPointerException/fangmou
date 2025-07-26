@@ -3,7 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../common_widgets/loading_status_widget.dart';
-import '../../domain/use_cases/FileBatchProcessor.dart';
+import '../../domain/use_cases/file_batch_processor.dart';
 import '../../utils/constants/constants.dart';
 import 'function_directory_screen_state.dart';
 

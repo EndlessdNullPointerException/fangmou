@@ -2,7 +2,7 @@ import 'package:fangmou_app/common_widgets/simple_content_card.dart';
 import 'package:fangmou_app/screens/function_decompress_screen/widget/password_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../common_widgets/DirectoryPathSelector.dart';
+import '../../common_widgets/directory_path_selector.dart';
 import '../../common_widgets/gadget_widget.dart';
 import '../../utils/constants/constants.dart';
 import 'function_decompress_screen_viewmodel.dart';

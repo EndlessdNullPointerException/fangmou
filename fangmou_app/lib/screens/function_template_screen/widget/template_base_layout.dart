@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../common_widgets/DirectoryPathSelector.dart';
+import '../../../common_widgets/directory_path_selector.dart';
 import '../../../common_widgets/simple_content_card.dart';
 import '../../../routes/app_router.dart';
-import '../../../utils/constants/constants.dart';
 
-typedef ResetParamsCallback = void Function();
-typedef ClearAllCallBack = void Function();
+typedef ResetParamsCallback = void Function(GlobalKey<FormState> formkey);
+typedef ClearAllCallBack = void Function(GlobalKey<FormState> formkey);
 typedef GenerateCallback = void Function(GlobalKey<FormState> formkey, bool fileGenerate, String directory);
+typedef ParamFieldBuilder = Widget Function(bool isFileGenerate);
 
 class TemplateBaseLayout extends StatefulWidget {
-  final dynamic paramField;
-  final dynamic resultField;
+  final String name;
+
+  final ParamFieldBuilder paramField;
+  final Widget resultField;
 
   final ResetParamsCallback resetParams;
   final ClearAllCallBack clearAll;
@@ -21,6 +23,8 @@ class TemplateBaseLayout extends StatefulWidget {
   const TemplateBaseLayout({
     super.key,
     required this.paramField,
+
+    required this.name,
     required this.resultField,
     required this.resetParams,
     required this.clearAll,
@@ -32,9 +36,9 @@ class TemplateBaseLayout extends StatefulWidget {
 }
 
 class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   bool fileGenerate = false;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController directoryController = TextEditingController();
 
   @override
@@ -51,6 +55,8 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
         child: Icon(Icons.arrow_back),
       ),
       Spacer(),
+      Text(widget.name, style: Theme.of(context).textTheme.headlineMedium),
+      SizedBox(width: 10,)
     ];
   }
 
@@ -64,7 +70,7 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
             content: SingleChildScrollView(
               scrollDirection: Axis.vertical, // 滚动方向
               physics: BouncingScrollPhysics(),
-              padding: EdgeInsetsGeometry.only(right: 10, top: 10),
+              padding: EdgeInsetsGeometry.only(right: 10, top: 0),
               child: Column(
                 children: [
                   Form(
@@ -72,14 +78,14 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        widget.paramField,
+                        widget.paramField(fileGenerate),
                         Row(
                           children: [
                             Spacer(),
                             SizedBox(width: 10),
-                            ElevatedButton(onPressed: widget.resetParams, child: Text("重置参数")),
+                            ElevatedButton(onPressed: () => widget.resetParams(_formKey), child: Text("重置参数")),
                             SizedBox(width: 10),
-                            ElevatedButton(onPressed: widget.clearAll, child: Text("清空所有")),
+                            ElevatedButton(onPressed: () => widget.clearAll(_formKey), child: Text("清空所有")),
                             SizedBox(width: 10),
                             ElevatedButton(
                               onPressed: () => widget.generate(_formKey, fileGenerate, directoryController.text),
@@ -89,7 +95,6 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
                             Checkbox(
                               value: fileGenerate,
                               onChanged: (value) {
-                                logger.d(value);
                                 setState(() {
                                   fileGenerate = value!;
                                 });
@@ -118,7 +123,6 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
                       ],
                     ),
                   ),
-                  Divider(),
                   SizedBox(height: 10),
                   Divider(),
                   widget.resultField,

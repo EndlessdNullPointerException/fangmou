@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'CustomAppBar.dart';
+import 'custom_app_bar.dart';
 
 class AppShell extends ConsumerWidget {
   final Widget child;

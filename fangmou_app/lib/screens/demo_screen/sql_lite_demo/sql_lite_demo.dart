@@ -25,7 +25,7 @@ class SqlLiteDemoState extends State<SqlLiteDemo> {
         children: [
           ElevatedButton(
             onPressed: () async {
-              Database db = await SqfliteHelper.database;
+              Database db = SqfliteHelper.database;
 
               // 查询所有用户
               List<Map<String, Object?>> list = await db.query('note_basic_message');
@@ -43,8 +43,6 @@ class SqlLiteDemoState extends State<SqlLiteDemo> {
           ),
           ElevatedButton(
             onPressed: () async {
-              Database db = await SqfliteHelper.database;
-
               String id = generateUuid32();
               String now = DateTime.now().toIso8601String();
               String main = generateRandomString(500, 1000);
@@ -65,7 +63,7 @@ class SqlLiteDemoState extends State<SqlLiteDemo> {
           ),
           ElevatedButton(
             onPressed: () async {
-              Database db = await SqfliteHelper.database;
+              Database db = SqfliteHelper.database;
 
               logger.d('┏━━━━━━━━━━━━━━━━根据 id 获取━━━━━━━━━━━━━━━━┓');
               List<Map<String, Object?>>? list = await db.query(
@@ -88,7 +86,7 @@ class SqlLiteDemoState extends State<SqlLiteDemo> {
           ),
           ElevatedButton(
             onPressed: () async {
-              Database db = await SqfliteHelper.database;
+              Database db = SqfliteHelper.database;
 
               logger.d('┏━━━━━━━━━━━━━━━━根据 id 修改━━━━━━━━━━━━━━━━┓');
               await db.update(
@@ -103,7 +101,7 @@ class SqlLiteDemoState extends State<SqlLiteDemo> {
           ),
           ElevatedButton(
             onPressed: () async {
-              Database db = await SqfliteHelper.database;
+              Database db = SqfliteHelper.database;
 
               logger.d('┏━━━━━━━━━━━━━━━━根据 id 删除━━━━━━━━━━━━━━━━┓');
               int? result = await db.delete(

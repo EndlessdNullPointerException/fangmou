@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../utils/constants/constants.dart';
+
 class DraggableFabScreen extends ConsumerStatefulWidget {
   const DraggableFabScreen({super.key});
 
@@ -22,8 +24,8 @@ class _DraggableFabScreenState extends ConsumerState<DraggableFabScreen> {
     if (!_isInitialized) {
       final size = MediaQuery.of(context).size;
       // 初始位置设置在右下角，并留出一些边距
-      _top = 100;
-      _left = 100;
+      _top = size.height - 100;
+      _left = size.width - 100;
       _isInitialized = true;
     }
   }
@@ -51,7 +53,7 @@ class _DraggableFabScreenState extends ConsumerState<DraggableFabScreen> {
             child: FloatingActionButton(
               onPressed: () {
                 // 按钮的点击事件
-                print('FAB Tapped!');
+                logger.d('FAB Tapped!');
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('按钮被点击了！')));
               },
               child: const Icon(Icons.drag_handle),
