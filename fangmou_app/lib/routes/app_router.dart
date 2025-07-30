@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../layouts/app_shell/app_shell.dart';
-import '../screens/demo_screen/template/template.dart';
+import '../screens/demo_screen/conde_test_field/code_text_field.dart';
+import '../screens/demo_screen/expandable_card/expandable_card.dart';
 import '../screens/function_calculator_screen/function_calculator_screen.dart';
 import '../screens/function_decompress_screen/function_decompress_screen.dart';
 import '../screens/function_directory_screen/function_directory_screen.dart';
@@ -80,6 +81,12 @@ class AppRouter {
       pageBuilder: (context, state) => NoTransitionPage(child: FunctionCalculatorScreen()),
     ),
     FangMouGoRoute(
+      name: '值生成',
+      path: '/function_value_generator',
+      icon: Icon(Icons.onetwothree),
+      pageBuilder: (context, state) => NoTransitionPage(child: FunctionCalculatorScreen()),
+    ),
+    FangMouGoRoute(
       name: '其他',
       path: '/',
       pageBuilder: (context, state) => const NoTransitionPage(child: HomeScreen()),
@@ -103,16 +110,7 @@ class AppRouter {
       name: 'Test',
       path: '/function_test',
       icon: Icon(Icons.pan_tool),
-      pageBuilder:
-          (context, state) => NoTransitionPage(
-            child: AbcScreen(
-              route: FangMouGoRoute(
-                path: "path",
-                name: "TEST",
-                pageBuilder: (context, state) => const NoTransitionPage(child: HomeScreen()),
-              ),
-            ),
-          ),
+      pageBuilder: (context, state) => NoTransitionPage(child: CodeEditorPage()),
     ),
   ];
 

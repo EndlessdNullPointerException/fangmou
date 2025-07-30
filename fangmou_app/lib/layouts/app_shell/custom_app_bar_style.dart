@@ -16,6 +16,7 @@ class CustomAppbarStyle {
   static const double appbarPinHeight = 8;
   // endregion <- Values:PopupMenuButtonStyle ->
 }
+
 class CustomAppbarIconButton extends StatelessWidget {
   final Widget icon;
   final VoidCallback onPressed;
@@ -33,6 +34,7 @@ class CustomAppbarIconButton extends StatelessWidget {
     );
   }
 }
+
 class CustomAppbarPopupMenuButton extends StatelessWidget {
   final PopupMenuItemSelected onSelected;
   final PopupMenuItemBuilder<String> itemBuilder;

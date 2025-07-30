@@ -1,3 +1,4 @@
+import 'package:fangmou_app/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
@@ -16,20 +17,13 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     var screenViewmodel = ref.read(functionNoteDetailScreenViewmodelProvider(id).notifier);
 
     return screenState.when(
-      data:
-          (value) =>
-              layout(context: context, screenState: value, screenViewmodel: screenViewmodel, dynamicWidgetMap: {}),
-      loading: () => whenLoading(),
-      error: (error, stack) => whenError(error),
+      data: (screenState) => layout(screenState, screenViewmodel),
+      error: whenError,
+      loading: whenLoading,
     );
   }
 
-  Widget layout({
-    required BuildContext context,
-    required FunctionNoteDetailScreenState screenState,
-    required FunctionNoteDetailScreenViewmodel screenViewmodel,
-    Map<String, Widget>? dynamicWidgetMap,
-  }) {
+  Widget layout(screenState, screenViewmodel) {
     return Stack(
       children: [
         Positioned(
@@ -61,12 +55,12 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       screenState.editMode
-                          ? editTitle(context, screenState, screenViewmodel)
-                          : viewTitle(context, screenState, screenViewmodel),
+                          ? editTitle(screenState, screenViewmodel)
+                          : viewTitle(screenState, screenViewmodel),
                       Divider(),
                       screenState.editMode
-                          ? editMain(context, screenState, screenViewmodel)
-                          : viewMain(context, screenState, screenViewmodel),
+                          ? editMain(screenState, screenViewmodel)
+                          : viewMain(screenState, screenViewmodel),
                     ],
                   ),
                 ),
@@ -101,11 +95,7 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     ];
   }
 
-  Widget editTitle(
-    BuildContext context,
-    FunctionNoteDetailScreenState screenState,
-    FunctionNoteDetailScreenViewmodel screenViewmodel,
-  ) {
+  Widget editTitle(FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
     return TextField(
       controller: screenState.editTitle,
       decoration: InputDecoration(
@@ -126,11 +116,7 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget editMain(
-    BuildContext context,
-    FunctionNoteDetailScreenState screenState,
-    FunctionNoteDetailScreenViewmodel screenViewmodel,
-  ) {
+  Widget editMain(FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
     return TextField(
       controller: screenState.editMain,
       onChanged: screenViewmodel.changed,
@@ -152,19 +138,11 @@ class FunctionNoteDetailScreen extends ConsumerWidget {
     );
   }
 
-  Widget viewTitle(
-    BuildContext context,
-    FunctionNoteDetailScreenState screenState,
-    FunctionNoteDetailScreenViewmodel screenViewmodel,
-  ) {
-    return Text(screenState.noteBasicMessage.title, style: Theme.of(context).textTheme.headlineLarge);
+  Widget viewTitle(FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+    return Text(screenState.noteBasicMessage.title, style: Theme.of(AppRouter.context!).textTheme.headlineLarge);
   }
 
-  Widget viewMain(
-    BuildContext context,
-    FunctionNoteDetailScreenState screenState,
-    FunctionNoteDetailScreenViewmodel screenViewmodel,
-  ) {
-    return GptMarkdown(screenState.noteMain.main, style: Theme.of(context).textTheme.bodyLarge);
+  Widget viewMain(FunctionNoteDetailScreenState screenState, FunctionNoteDetailScreenViewmodel screenViewmodel) {
+    return GptMarkdown(screenState.noteMain.main, style: Theme.of(AppRouter.context!).textTheme.bodyLarge);
   }
 }

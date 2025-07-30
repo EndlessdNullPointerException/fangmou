@@ -5,7 +5,6 @@ import 'package:path/path.dart' as path;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:win32_registry/win32_registry.dart';
 
-
 import '../../utils/constants/constants.dart';
 import '../../utils/platform/windows/windows_admin_privilege_util.dart';
 
@@ -112,7 +111,7 @@ class SettingScreenViewmodel extends _$SettingScreenViewmodel {
 [-HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\CommandStore\\shell\\Fangmou.Action3.Bg]''';
 
   // 在 ViewModel 中获取当前状态，提供默认值
-  SettingScreenState getCurrentState() {
+  SettingScreenState get currentState {
     return switch (state) {
       AsyncData(value: final value) => value,
       AsyncError() => throw Exception("FunctionDecompressScreenViewModel 获取异步状态出现错误"),
@@ -171,7 +170,6 @@ class SettingScreenViewmodel extends _$SettingScreenViewmodel {
     } catch (e) {
       logger.e(e);
     }
-    final current = getCurrentState();
-    state = AsyncValue.data(current.copyWith(enableExplorerContextMenuIntegration: value));
+    state = AsyncValue.data(currentState.copyWith(enableExplorerContextMenuIntegration: value));
   }
 }

@@ -1,4 +1,3 @@
-import 'package:fangmou_app/utils/constants/constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -16,44 +15,33 @@ class DirectoryPathSelector extends StatefulWidget {
 class _DirectoryPathSelectorState extends State<DirectoryPathSelector> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(8)),
-          child: Row(
-            children: [
-              Flexible(
-                fit: FlexFit.loose,
-                child: TextField(
-                  controller: widget.controller,
-                  decoration: InputDecoration(
-                    hintText: "选择或输入路径",
-                    border: InputBorder.none, // 隐藏TextField原生边框
-                    contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 4), // 微调按钮右间距
-                child: IconButton(
-                  icon: Icon(Icons.folder_open, size: 24),
-                  padding: EdgeInsets.all(8), // 紧凑点击区域
-                  constraints: BoxConstraints(),
-                  onPressed: () async {
-                    // 选择路径时，添加遮罩层
-                    showDialog(context: context, barrierDismissible: false, builder: (ctx) => Container());
-                    // 通过文件选择器获取
-                    String? directoryPath = await FilePicker.platform.getDirectoryPath();
-                    logger.d('搜索内容: $directoryPath');
-                    widget.controller.text = directoryPath ?? "";
-                    Navigator.pop(AppRouter.context!);
-                  },
-                ),
-              ),
-            ],
-          ),
+    return TextField(
+      controller: widget.controller,
+      decoration: InputDecoration(
+        hintText: "选择或输入路径",
+        fillColor: Colors.transparent,
+        isDense: true,
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blue, width: 1),
         ),
-      ],
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(Icons.folder_open, size: 24),
+          constraints: BoxConstraints(),
+          onPressed: () async {
+            // 选择路径时，添加遮罩层
+            showDialog(context: context, barrierDismissible: false, builder: (ctx) => Container());
+            // 通过文件选择器获取
+            String? directoryPath = await FilePicker.platform.getDirectoryPath();
+            widget.controller.text = directoryPath ?? "";
+            Navigator.pop(AppRouter.context!);
+          },
+        ),
+      ),
     );
   }
 }

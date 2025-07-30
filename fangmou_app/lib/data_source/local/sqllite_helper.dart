@@ -8,7 +8,7 @@ import '../../utils/constants/constants.dart';
 
 class SqfliteHelper {
   static final _databaseName = "fangmou_database.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 2;
 
   // 单例模式
   static Database? _database;
@@ -43,6 +43,17 @@ CREATE TABLE note_basic_message (
   title TEXT NOT NULL,
   excerpt TEXT NOT NULL,
   note_type INTEGER NOT NULL
+)
+''');
+
+    await db.execute('''
+CREATE TABLE note_main (
+  id String PRIMARY KEY,
+  deletion_flag BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL,
+  last_update_at TIMESTAMP NOT NULL,
+  deleted_at TIMESTAMP NOT NULL,
+  main TEXT NOT NULL
 )
 ''');
 

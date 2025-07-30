@@ -6,7 +6,7 @@ part of 'setting_screen_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingScreenViewmodelHash() => r'01df21d628f6b60d66656a0b7f70deb060c13239';
+String _$settingScreenViewmodelHash() => r'6f8d58cbd15110c9e1a6fd65371be07090f0bf35';
 
 /// See also [SettingScreenViewmodel].
 @ProviderFor(SettingScreenViewmodel)

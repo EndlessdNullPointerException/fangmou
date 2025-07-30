@@ -1,4 +1,3 @@
-
 /// 将大驼峰 (UpperCamelCase) 格式的字符串转换为下划线蛇形 (lower_case_with_underscores，又称 SnakeCase) 格式。
 String upperCamelToSnakeCase(String text) {
   if (text.isEmpty) {
@@ -41,11 +40,11 @@ String lowerCamelToSnakeCase(String text) {
 /// 如果 `modifyInPlace` 为 true，返回的是修改后的原始列表自身的引用；
 /// 如果为 false，返回的是一个新创建的列表。
 List<T> moveElement<T>(
-    List<T> list,
-    int oldIndex, {
-      required bool moveUp,
-      bool modifyInPlace = false, // 新增的控制参数，默认为 false
-    }) {
+  List<T> list,
+  int oldIndex, {
+  required bool moveUp,
+  bool modifyInPlace = false, // 新增的控制参数，默认为 false
+}) {
   // 1. 输入验证
   if (list.length < 2 || oldIndex < 0 || oldIndex >= list.length) {
     // 根据模式，返回原始列表或其副本
@@ -62,9 +61,11 @@ List<T> moveElement<T>(
   final T element = targetList.removeAt(oldIndex);
 
   int newIndex;
-  if (moveUp) { // 向前（上）移动
+  if (moveUp) {
+    // 向前（上）移动
     newIndex = (oldIndex == 0) ? originalLength - 1 : oldIndex - 1;
-  } else { // 向后（下）移动
+  } else {
+    // 向后（下）移动
     newIndex = (oldIndex == originalLength - 1) ? 0 : oldIndex + 1;
   }
 
@@ -72,4 +73,29 @@ List<T> moveElement<T>(
 
   // 4. 返回最终的列表
   return targetList;
+}
+
+
+// 核心的私有函数
+String changeFirstLetterCase(String input, {required bool toUpper}) {
+  // 1. 处理空字符串的边缘情况
+  if (input.isEmpty) {
+    return '';
+  }
+
+  // 2. 使用正则表达式校验字符串是否只包含英文字母
+  final RegExp alphaRegex = RegExp(r'^[a-zA-Z]+$');
+  if (!alphaRegex.hasMatch(input)) {
+    // 3. 如果校验失败，则抛出异常
+    throw ArgumentError('输入字符串必须只包含英文字母 (a-z, A-Z)，但收到了: "$input"');
+  }
+
+  // 4. 执行大小写转换
+  final firstLetter = toUpper
+      ? input[0].toUpperCase()
+      : input[0].toLowerCase();
+
+  final restOfTheString = input.substring(1);
+
+  return '$firstLetter$restOfTheString';
 }

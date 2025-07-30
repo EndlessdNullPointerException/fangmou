@@ -38,7 +38,7 @@ void showCustomDialog(String message) {
   );
 }
 
-void showCustomToast(String message){
+void showCustomToast(String message) {
   showToast(
     message,
     position: ToastPosition.top,
@@ -47,7 +47,6 @@ void showCustomToast(String message){
     textStyle: const TextStyle(fontSize: 16.0, color: Colors.white),
   );
 }
-
 
 void showLoadingDialog(Stream<LoadingStatusData> currentStatus) {
   showDialog(

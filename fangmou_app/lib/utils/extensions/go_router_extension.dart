@@ -11,13 +11,21 @@ class FangMouGoRoute extends GoRoute {
     super.redirect,
     super.onExit,
     super.caseSensitive,
+    String? id,
     List<FangMouGoRoute>? descendantRoutes,
     Icon? icon,
     String? hintMessage,
-  }) : _icon = icon,
+  }) : _id = id,
+
+       _icon = icon,
        _hintMessage = hintMessage,
        _descendantRoutes = descendantRoutes,
        super(routes: descendantRoutes ?? const <RouteBase>[]);
+
+  // region <- Values: route id ->
+  final String? _id;
+  String? get id => _id;
+  // endregion <- Values: route id ->
 
   // region <- Values:为 GoRoute 对象附加图标属性，用于导航栏 ->
   final Icon? _icon;
@@ -31,6 +39,7 @@ class FangMouGoRoute extends GoRoute {
 
   // region <- Values:保留原始的多级routes->
   final List<FangMouGoRoute>? _descendantRoutes;
+
   List<FangMouGoRoute>? get descendantRoutes => _descendantRoutes;
   // endregion <- Values:保留原始的多级routes ->
 }

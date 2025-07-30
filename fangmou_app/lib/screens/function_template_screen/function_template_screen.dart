@@ -1,26 +1,25 @@
 import 'package:fangmou_app/utils/extensions/date_time_extension.dart';
-import 'package:fangmou_app/utils/extensions/go_router_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../common_widgets/when_status_widget.dart';
 import '../../routes/app_router.dart';
-import '../../utils/constants/constants.dart';
+import 'function_template_screen_state.dart';
+import 'function_template_screen_viewmodel.dart';
+import 'model/function_template_screen_item.dart';
 import 'model/tabs.dart';
 
-class FunctionTemplateScreen extends StatefulWidget {
+class FunctionTemplateScreen extends ConsumerStatefulWidget {
   const FunctionTemplateScreen({super.key});
 
   @override
-  State<FunctionTemplateScreen> createState() => _FunctionTemplateScreenState();
+  ConsumerState<FunctionTemplateScreen> createState() => _FunctionTemplateScreenState();
 }
 
-class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with SingleTickerProviderStateMixin {
+class _FunctionTemplateScreenState extends ConsumerState<FunctionTemplateScreen> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _currentIndex = 0;
-
-  late Map<Tabs, List<bool>> itemVisibleMap;
-
-  final TextEditingController _searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -31,8 +30,6 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
         _currentIndex = _tabController.index;
       });
     });
-
-    searchInitiate();
   }
 
   @override
@@ -43,6 +40,16 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
 
   @override
   Widget build(BuildContext context) {
+    final screenState = ref.watch(functionTemplateScreenViewmodelProvider);
+    final screenViewmodel = ref.watch(functionTemplateScreenViewmodelProvider.notifier);
+    return screenState.when(
+      data: (screenState) => layout(screenState, screenViewmodel),
+      error: whenError,
+      loading: whenLoading,
+    );
+  }
+
+  Widget layout(FunctionTemplateScreenState screenState, FunctionTemplateScreenViewmodel screenViewmodel) {
     return Stack(
       children: [
         Positioned(
@@ -68,7 +75,7 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
                         indicatorColor: Colors.orangeAccent,
                         dividerColor: Colors.transparent,
                         tabAlignment: TabAlignment.start,
-                        onTap: (index) => searchInitiate(),
+                        onTap: (index) => screenViewmodel.searchInitiate(_currentIndex),
                         tabs: Tabs.values.map((tab) => Tab(text: tab.title)).toList(),
                       ),
                     ),
@@ -87,8 +94,8 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
                           focusColor: Colors.transparent, // 获得焦点后的高亮
                         ),
                         child: TextField(
-                          controller: _searchController,
-                          onSubmitted: (string) => searchTemplate(),
+                          controller: screenState.search,
+                          onSubmitted: (string) => screenViewmodel.searchTemplate(_currentIndex),
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -103,13 +110,20 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
                             constraints: BoxConstraints(maxHeight: 40),
                             filled: true,
                             hintText: "搜索模板",
-                            suffixIcon: GestureDetector(onTap: () => searchTemplate(), child: Icon(Icons.search)),
+                            suffixIcon: GestureDetector(
+                              onTap: () => screenViewmodel.searchTemplate(_currentIndex),
+                              child: Icon(Icons.search),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  IconButton(onPressed: () => searchInitiate(), icon: Icon(Icons.close), tooltip: "取消搜索"),
+                  IconButton(
+                    onPressed: () => screenViewmodel.searchInitiate(_currentIndex),
+                    icon: Icon(Icons.close),
+                    tooltip: "取消搜索",
+                  ),
                   SizedBox(width: 10),
                 ],
               ),
@@ -118,102 +132,58 @@ class _FunctionTemplateScreenState extends State<FunctionTemplateScreen> with Si
           ),
         ),
         Padding(
-          padding: EdgeInsetsGeometry.only(top: 50),
+          padding: EdgeInsetsGeometry.only(top: 55),
           child: SingleChildScrollView(
             padding: EdgeInsetsGeometry.only(left: 10, right: 10),
-            child:
-            // 使用 IndexedStack 替代 TabBarView
-            IndexedStack(index: _currentIndex, children: Tabs.values.map((tab) => tabBarView(tab)).toList()),
+            child: items(screenState, screenViewmodel),
           ),
         ),
       ],
     );
   }
 
-  Widget tabBarView(Tabs tab) {
+  Widget items(FunctionTemplateScreenState screenState, FunctionTemplateScreenViewmodel screenViewmodel) {
     return ListView.builder(
-      itemBuilder:
-          (context, i) => Visibility(
-            visible: itemVisibleMap[tab]![i],
-            child: GestureDetector(
-              onTap: () => AppRouter.context!.push(tab.routes[i].path,extra: tab.routes[i]),
-              behavior: HitTestBehavior.opaque, // 整个 GestureDetector 包裹的区域（包括空白区）都会捕捉事件
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: EdgeInsetsGeometry.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        tab.routes[i].name!,
-                        maxLines: 1,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(height: 1.1, fontWeight: FontWeight.bold, fontSize: 30),
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Text("使用次数："),
-                          Text("100"),
-                          Spacer(),
-                          Text("最后使用时间：${DateTime.now().formatDateTime}"),
-                        ],
-                      ),
-                    ],
-                  ),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: screenState.items.length,
+      itemBuilder: (context, i) {
+        FunctionTemplateScreenItem item = screenState.items[i];
+        return Visibility(
+          visible: item.visible,
+          child: GestureDetector(
+            onTap: () => AppRouter.context!.push(item.route.path, extra: item.route.id),
+            behavior: HitTestBehavior.opaque, // 整个 GestureDetector 包裹的区域（包括空白区）都会捕捉事件
+            child: Card(
+              elevation: 5,
+              child: Padding(
+                padding: EdgeInsetsGeometry.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.route.name!,
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(height: 1.1, fontWeight: FontWeight.bold, fontSize: 30),
+                    ),
+                    Divider(),
+                    Row(
+                      children: [
+                        Text("使用次数："),
+                        Text("${item.times}"),
+                        Spacer(),
+                        Text("最后使用时间：${item.last.formatDateTime}"),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-
-      itemCount: tab.routes.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+        );
+      },
     );
   }
-
-  // region <- Functions:模板搜索相关 ->
-  searchTemplate() {
-    final currentTab = Tabs.values[_currentIndex];
-    List<FangMouGoRoute> list = currentTab.routes;
-    List<int> indexList =
-        list
-            .asMap()
-            .entries
-            .where((entry) {
-              final fangMouGoRoute = entry.value;
-              final result = fangMouGoRoute.name!.contains(_searchController.text);
-              if (result) {
-                logger.d(fangMouGoRoute.name);
-              }
-              return fangMouGoRoute.name!.contains(_searchController.text);
-            })
-            .map((entry) => entry.key) // 获取索引
-            .toList();
-
-    List<bool> newList = List.filled(currentTab.routes.length, false);
-
-    for (int index in indexList) {
-      newList[index] = true;
-    }
-
-    setState(() {
-      itemVisibleMap[currentTab] = newList;
-    });
-  }
-
-  searchInitiate() {
-    _searchController.text = "";
-    Map<Tabs, List<bool>> initiateMap = {};
-    for (final tabItem in Tabs.values) {
-      initiateMap[tabItem] = List.filled(tabItem.routes.length, true);
-    }
-
-    setState(() {
-      itemVisibleMap = initiateMap;
-    });
-  }
-  // endregion <- Functions:模板搜索相关 ->
 }

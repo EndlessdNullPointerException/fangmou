@@ -16,33 +16,14 @@ class FunctionNoteListScreen extends ConsumerStatefulWidget {
 }
 
 class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen> {
-  // 定义悬浮按钮控制
-  // 你可以设置一个更合理的初始位置，例如屏幕右下角
-  late double _top;
-  late double _left;
-  bool _isInitialized = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // 延迟初始化位置，以确保可以获取到屏幕尺寸
-    if (!_isInitialized) {
-      final size = MediaQuery.of(context).size;
-      // 初始位置设置在右下角，并留出一些边距
-      _top = size.height - 150;
-      _left = size.width - 150;
-      _isInitialized = true;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final screenState = ref.watch(functionNoteListScreenViewmodelProvider);
     final screenViewmodel = ref.watch(functionNoteListScreenViewmodelProvider.notifier);
     return screenState.when(
-      data: (value) => layout(value, screenViewmodel),
-      loading: () => whenLoading(),
-      error: (error, stack) => whenError(error),
+      data: (screenState) => layout(screenState, screenViewmodel),
+      error: whenError,
+      loading: whenLoading,
     );
   }
 
@@ -296,6 +277,25 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
     );
   }
 
+  // region <- Logic:悬浮按钮 ->
+  // 定义悬浮按钮控制
+  late double _top;
+  late double _left;
+  bool _isInitialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 延迟初始化位置，以确保可以获取到屏幕尺寸
+    if (!_isInitialized) {
+      final size = MediaQuery.of(context).size;
+      // 初始位置设置在右下角，并留出一些边距
+      _top = size.height - 150;
+      _left = size.width - 150;
+      _isInitialized = true;
+    }
+  }
+
   Widget floatButton(FunctionNoteListScreenState screenState, FunctionNoteListScreenViewmodel screenViewmodel) {
     return Positioned(
       top: _top,
@@ -315,4 +315,6 @@ class _FunctionNoteListScreenState extends ConsumerState<FunctionNoteListScreen>
       ),
     );
   }
+
+  // endregion <- Logic:悬浮按钮 ->
 }

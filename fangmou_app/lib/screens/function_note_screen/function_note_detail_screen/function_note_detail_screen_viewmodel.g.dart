@@ -6,7 +6,7 @@ part of 'function_note_detail_screen_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$functionNoteDetailScreenViewmodelHash() => r'055123b62fcc3f5a5c63b05bf08e457045ebbd1e';
+String _$functionNoteDetailScreenViewmodelHash() => r'859fd3dbe9603fab6d8959616219af670d38a3ef';
 
 /// Copied from Dart SDK
 class _SystemHash {

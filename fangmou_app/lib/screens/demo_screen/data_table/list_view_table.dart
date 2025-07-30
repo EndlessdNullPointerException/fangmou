@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../model/sql/sql.dart';
-import '../../function_template_screen/function_template_sql/model/sql_column_viewmodel.dart';
-
-
-
+import '../../function_template_screen/function_template_sql/table_create_template/sql_column_viewmodel.dart';
 
 class EditableTableScreen extends StatefulWidget {
   const EditableTableScreen({super.key});
@@ -15,7 +12,7 @@ class EditableTableScreen extends StatefulWidget {
 
 class _EditableTableScreenState extends State<EditableTableScreen> {
   // 表格数据源
-  final List<SqlColumnViewmodel> _items = [];
+  final List<SqlColumnModel> _items = [];
 
   bool get allChecked => _items.every((item) => item.checked == true);
 
@@ -34,14 +31,14 @@ class _EditableTableScreenState extends State<EditableTableScreen> {
   void initiateTable() {
     setState(() {
       _items.clear();
-      _items.addAll(SqlColumnViewmodel.baseColumns(currentDataBase));
+      _items.addAll(SqlColumnModel.baseColumns(currentDataBase));
     });
   }
 
   // 增加一行的逻辑
   void _addRow() {
     setState(() {
-      _items.add(SqlColumnViewmodel.initiate(currentDataBase));
+      _items.add(SqlColumnModel.initiate(currentDataBase));
     });
   }
 

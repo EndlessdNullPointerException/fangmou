@@ -3,12 +3,12 @@ import 'package:oktoast/oktoast.dart';
 
 import '../../../../model/sql/sql.dart';
 import '../../../../utils/common.dart';
-import '../model/sql_column_viewmodel.dart';
+import 'sql_column_viewmodel.dart';
 
 typedef DataBaseNotifier = void Function(DataBase);
 
 class EditableTable extends StatefulWidget {
-  final List<SqlColumnViewmodel> items;
+  final List<SqlColumnModel> items;
   final DataBaseNotifier dataBaseNotifier;
 
   const EditableTable({super.key, required this.items, required this.dataBaseNotifier});
@@ -49,14 +49,14 @@ class _EditableTableScreenState extends State<EditableTable> {
   void initiateTable() {
     setState(() {
       widget.items.clear();
-      widget.items.addAll(SqlColumnViewmodel.baseColumns(currentDataBase));
+      widget.items.addAll(SqlColumnModel.baseColumns(currentDataBase));
     });
   }
 
   // 增加一行的逻辑
   void _addRow() {
     setState(() {
-      widget.items.add(SqlColumnViewmodel.initiate(currentDataBase));
+      widget.items.add(SqlColumnModel.initiate(currentDataBase));
     });
   }
 

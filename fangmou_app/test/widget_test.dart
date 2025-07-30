@@ -10,7 +10,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-
   test('示例测试', () {
     logger.d('\x1B[31m红色文本\x1B[0m'); // ANSI 转义码示例
   });
@@ -23,7 +22,8 @@ void pickFolder() async {
   // 或者使用新 API（推荐）
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.any, // 必须指定类型
-    allowMultiple: false);
+    allowMultiple: false,
+  );
 
   if (selectedDirectory != null) {
     logger.d("选择的目录: $selectedDirectory");

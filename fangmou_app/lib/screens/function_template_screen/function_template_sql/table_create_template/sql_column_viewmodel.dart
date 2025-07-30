@@ -1,15 +1,15 @@
 import '../../../../model/sql/sql.dart';
 
-class SqlColumnViewmodel {
+class SqlColumnModel {
   bool checked = false;
   final SqlColumn sqlColumn;
 
-  SqlColumnViewmodel({required this.sqlColumn});
+  SqlColumnModel({required this.sqlColumn});
 
-  factory SqlColumnViewmodel.initiate(DataBase dataBase) {
+  factory SqlColumnModel.initiate(DataBase dataBase) {
     switch (dataBase) {
       case DataBase.sqlLite:
-        return SqlColumnViewmodel(
+        return SqlColumnModel(
           sqlColumn: SqlColumn(
             columnName: "",
             dataType: DataType.textSqlLite,
@@ -21,7 +21,7 @@ class SqlColumnViewmodel {
           ),
         );
       case DataBase.mySql:
-        return SqlColumnViewmodel(
+        return SqlColumnModel(
           sqlColumn: SqlColumn(
             columnName: "",
             dataType: DataType.varcharMySql,
@@ -33,7 +33,7 @@ class SqlColumnViewmodel {
           ),
         );
       case DataBase.sqlServer:
-        return SqlColumnViewmodel(
+        return SqlColumnModel(
           sqlColumn: SqlColumn(
             columnName: "",
             dataType: DataType.varcharSqlServer,
@@ -47,37 +47,37 @@ class SqlColumnViewmodel {
     }
   }
 
-  static List<SqlColumnViewmodel> baseColumns(DataBase database) {
+  static List<SqlColumnModel> baseColumns(DataBase database) {
     switch (database) {
       case DataBase.mySql:
         return [
-          SqlColumnViewmodel.id(DataType.varcharMySql),
-          SqlColumnViewmodel.deleteFlag(DataType.booleanMySql),
-          SqlColumnViewmodel.createdAt(DataType.datetimeMySql),
-          SqlColumnViewmodel.updatedAt(DataType.datetimeMySql),
-          SqlColumnViewmodel.deletedAt(DataType.datetimeMySql),
+          SqlColumnModel.id(DataType.varcharMySql),
+          SqlColumnModel.deleteFlag(DataType.booleanMySql),
+          SqlColumnModel.createdAt(DataType.datetimeMySql),
+          SqlColumnModel.updatedAt(DataType.datetimeMySql),
+          SqlColumnModel.deletedAt(DataType.datetimeMySql),
         ];
       case DataBase.sqlServer:
         return [
-          SqlColumnViewmodel.id(DataType.varcharSqlServer),
-          SqlColumnViewmodel.deleteFlag(DataType.bitSqlServer),
-          SqlColumnViewmodel.createdAt(DataType.datetime2SqlServer),
-          SqlColumnViewmodel.updatedAt(DataType.datetime2SqlServer),
-          SqlColumnViewmodel.deletedAt(DataType.datetime2SqlServer),
+          SqlColumnModel.id(DataType.varcharSqlServer),
+          SqlColumnModel.deleteFlag(DataType.bitSqlServer),
+          SqlColumnModel.createdAt(DataType.datetime2SqlServer),
+          SqlColumnModel.updatedAt(DataType.datetime2SqlServer),
+          SqlColumnModel.deletedAt(DataType.datetime2SqlServer),
         ];
       case DataBase.sqlLite:
         return [
-          SqlColumnViewmodel.id(DataType.textSqlLite),
-          SqlColumnViewmodel.deleteFlag(DataType.integerSqlLite),
-          SqlColumnViewmodel.createdAt(DataType.textSqlLite),
-          SqlColumnViewmodel.updatedAt(DataType.textSqlLite),
-          SqlColumnViewmodel.deletedAt(DataType.textSqlLite),
+          SqlColumnModel.id(DataType.textSqlLite),
+          SqlColumnModel.deleteFlag(DataType.integerSqlLite),
+          SqlColumnModel.createdAt(DataType.textSqlLite),
+          SqlColumnModel.updatedAt(DataType.textSqlLite),
+          SqlColumnModel.deletedAt(DataType.textSqlLite),
         ];
     }
   }
 
-  static SqlColumnViewmodel id(DataType datatype) {
-    return SqlColumnViewmodel(
+  static SqlColumnModel id(DataType datatype) {
+    return SqlColumnModel(
       sqlColumn: SqlColumn(
         columnName: "id",
         dataType: datatype,
@@ -90,8 +90,8 @@ class SqlColumnViewmodel {
     );
   }
 
-  static SqlColumnViewmodel deleteFlag(DataType datatype) {
-    return SqlColumnViewmodel(
+  static SqlColumnModel deleteFlag(DataType datatype) {
+    return SqlColumnModel(
       sqlColumn: SqlColumn(
         columnName: "deletion_flag",
         dataType: datatype,
@@ -104,8 +104,8 @@ class SqlColumnViewmodel {
     );
   }
 
-  static SqlColumnViewmodel createdAt(DataType datatype) {
-    return SqlColumnViewmodel(
+  static SqlColumnModel createdAt(DataType datatype) {
+    return SqlColumnModel(
       sqlColumn: SqlColumn(
         columnName: "created_at",
         dataType: datatype,
@@ -118,8 +118,8 @@ class SqlColumnViewmodel {
     );
   }
 
-  static SqlColumnViewmodel updatedAt(DataType datatype) {
-    return SqlColumnViewmodel(
+  static SqlColumnModel updatedAt(DataType datatype) {
+    return SqlColumnModel(
       sqlColumn: SqlColumn(
         columnName: "updated_at",
         dataType: datatype,
@@ -132,8 +132,8 @@ class SqlColumnViewmodel {
     );
   }
 
-  static SqlColumnViewmodel deletedAt(DataType datatype) {
-    return SqlColumnViewmodel(
+  static SqlColumnModel deletedAt(DataType datatype) {
+    return SqlColumnModel(
       sqlColumn: SqlColumn(
         columnName: "deleted_at",
         dataType: datatype,

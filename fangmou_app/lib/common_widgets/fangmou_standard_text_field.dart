@@ -6,6 +6,7 @@ Widget fangmouStandardTextField({
   required TextEditingController controller,
   String? hintText,
   String? labelText,
+  IconButton? suffixIcon,
 }) {
   return Flexible(
     flex: flex,
@@ -33,6 +34,7 @@ Widget fangmouStandardTextField({
             isDense: true,
             hintText: hintText,
             labelText: labelText,
+            suffixIcon: suffixIcon,
           ),
         ),
       ),
@@ -45,7 +47,7 @@ Widget fangmouStandardTextFormField({
   required TextEditingController controller,
   String? hintText,
   String? labelText,
-  String helperText=" ",
+  String helperText = " ",
   required FormFieldValidator validator,
 }) {
   return Flexible(

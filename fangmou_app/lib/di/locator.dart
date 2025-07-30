@@ -17,7 +17,7 @@ void setupDomainUserCase() {
 
   // region  本地数据获取
   getIt.registerLazySingleton<NoteLocal>(
-        () => NoteLocal(), // 使用异步工厂
+    () => NoteLocal(), // 使用异步工厂
   );
   // endregion
 
