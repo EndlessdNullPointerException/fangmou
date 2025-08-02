@@ -1,11 +1,12 @@
 import 'package:fangmou_app/routes/app_router.dart';
+import 'package:fangmou_app/routes/fangmou_routes.dart';
 import 'package:fangmou_app/screens/function_note_screen/function_note_list_screen/model/pop_option.dart';
 import 'package:fangmou_app/screens/function_note_screen/function_note_list_screen/model/sort_method.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data_source/local/note_local.dart';
+import '../../../data_source/local/sql_lite/note_local.dart';
 import '../../../model/note_model/note_basic_message.dart';
 import 'function_note_list_screen_state.dart';
 
@@ -75,12 +76,12 @@ class FunctionNoteListScreenViewmodel extends _$FunctionNoteListScreenViewmodel 
 
   void gotoDetail(String i) {
     if (!currentState.editMode) {
-      AppRouter.context!.go("/function_note_detail/$i");
+      AppRouter.context!.pushNamed(FangMouRoutes.functionNoteDetail.name,pathParameters:{"id": i});
     }
   }
 
   void addNote() {
-    AppRouter.context!.go("/function_note_detail/add");
+    AppRouter.context!.pushNamed(FangMouRoutes.functionNoteDetail.name,pathParameters:{"id": "add"});
   }
 
   void selectCheckbox(bool? checkState, int i, NoteBasicMessage noteMessage) {

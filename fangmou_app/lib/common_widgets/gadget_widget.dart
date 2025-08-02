@@ -38,11 +38,11 @@ void showCustomDialog(String message) {
   );
 }
 
-void showCustomToast(String message) {
+void showCustomToast(String message,{Color color = Colors.black12 }) {
   showToast(
     message,
     position: ToastPosition.top,
-    backgroundColor: Colors.black.withValues(alpha: 0.7),
+    backgroundColor: color,
     radius: 10.0,
     textStyle: const TextStyle(fontSize: 16.0, color: Colors.white),
   );

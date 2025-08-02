@@ -1,47 +1,26 @@
+import 'package:fangmou_app/screens/function_template_screen/function_template_flutter/template_generate_template/template_generate_template_screen.dart';
+
+import '../../model/template_common_state.dart';
 import './template_generate_template_enum.dart';
 
-final String templateGenerateTemplateSourceEnum = '''
+mixin SourceEnum on TemplateCommonState<TemplateGenerateTemplateScreen, Params, Results> {
+  String get sourceEnum => '''
 import 'package:highlight/highlight.dart';
-import 'package:highlight/languages/${Params.language.token}.dart';
+import 'package:highlight/languages/${paramMap[Params.language]}.dart';
 
 import '../../model/param_type.dart';
 import '../../model/template_source.dart';
 import '../../model/template_common_enum.dart';
-import './${Params.fileName.token}_source.dart';
-
-enum Templates implements TemplatesFormat{
-
-  example;
-
-  const Templates();
-
-  @override
-  TemplateSource get source {
-    switch (this) {
-      case Templates.example:
-        return TemplateSource(
-          name: this,
-          placeholders: tokens,
-          source: ${Params.lowerTemplateName.token}Source,
-        );
-    }
-  }
-
-  @override
-  List<String> get tokens =>
-      Params.values.where((item) => item.templates.contains(this)).map((item) => item.token).toList();
-}
+import './${paramMap[Params.fileName]}_source.dart';
 
 enum Params with ParamsFormat{
-  fileName( type: ParamType.input, templates: []),
-  example( type: ParamType.input, templates: [Templates.example]);
+  fileName( type: ParamType.input,),
+  example( type: ParamType.input,);
  
-  const Params({ required this.templates, required this.type});
+  const Params({ required this.type});
 
   @override
   final ParamType type;
-  @override
-  final List<Templates> templates;
 }
 
 enum Results implements ResultsFormat{
@@ -56,7 +35,8 @@ enum Results implements ResultsFormat{
   Mode get language {
     switch (this) {
       case Results.example:
-        return ${Params.language.token};
+        return ${paramMap[Params.language]};
     }
   }
 }''';
+}

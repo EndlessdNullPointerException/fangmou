@@ -1,11 +1,11 @@
 import 'package:fangmou_app/model/note_model/note_basic_message.dart';
-import 'package:fangmou_app/utils/generator.dart';
+import 'package:fangmou_app/utils/data_generator_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../../data_source/local/note_local.dart';
-import '../../../data_source/local/sqllite_helper.dart';
+import '../../../data_source/local/sql_lite/note_local.dart';
+import '../../../data_source/local/sql_lite/sqllite_helper.dart';
 import '../../../utils/constants/constants.dart';
 
 class SqlLiteDemo extends StatefulWidget {

@@ -1,15 +1,15 @@
-import 'package:fangmou_app/utils/extensions/go_router_extension.dart';
+import 'package:fangmou_app/screens/function_template_screen/model/tabs.dart';
 
 class FunctionTemplateScreenItem {
-  final FangMouGoRoute route;
-  final String tab;
-  final DateTime last;
-  final int times;
+  final TemplateRoutes route;
+  final TemplateTypes templateType;
+  DateTime last;
+  int times;
   bool visible;
 
   FunctionTemplateScreenItem({
     required this.route,
-    required this.tab,
+    required this.templateType,
     required this.last,
     required this.times,
     this.visible = false,

@@ -27,5 +27,6 @@ Future<void> safeCreateFile(Map<String, String> pathContentMap) async {
     }
   } catch (e) {
     logger.e('发生错误: $e');
+    rethrow;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:fangmou_app/common_widgets/fangmou_standard_widget.dart';
 import 'package:fangmou_app/utils/extensions/date_time_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import '../../routes/app_router.dart';
 import 'function_template_screen_state.dart';
 import 'function_template_screen_viewmodel.dart';
 import 'model/function_template_screen_item.dart';
+import 'model/sort_method.dart';
 import 'model/tabs.dart';
 
 class FunctionTemplateScreen extends ConsumerStatefulWidget {
@@ -24,7 +26,7 @@ class _FunctionTemplateScreenState extends ConsumerState<FunctionTemplateScreen>
   void initState() {
     super.initState();
 
-    _tabController = TabController(length: Tabs.values.length, vsync: this);
+    _tabController = TabController(length: TemplateTypes.values.length, vsync: this);
     _tabController.addListener(() {
       setState(() {
         _currentIndex = _tabController.index;
@@ -76,7 +78,7 @@ class _FunctionTemplateScreenState extends ConsumerState<FunctionTemplateScreen>
                         dividerColor: Colors.transparent,
                         tabAlignment: TabAlignment.start,
                         onTap: (index) => screenViewmodel.searchInitiate(_currentIndex),
-                        tabs: Tabs.values.map((tab) => Tab(text: tab.title)).toList(),
+                        tabs: TemplateTypes.values.map((item) => Tab(text: item.title)).toList(),
                       ),
                     ),
                   ),
@@ -124,6 +126,12 @@ class _FunctionTemplateScreenState extends ConsumerState<FunctionTemplateScreen>
                     icon: Icon(Icons.close),
                     tooltip: "取消搜索",
                   ),
+                  fangmouStandardDropdownMenu<SortMethod>(
+                    initialSelection: SortMethod.titleAsc,
+                    dropdownMenuEntries:
+                        SortMethod.values.map((item) => DropdownMenuEntry(value: item, label: item.name)).toList(),
+                    onSelected: null,
+                  ),
                   SizedBox(width: 10),
                 ],
               ),
@@ -162,7 +170,7 @@ class _FunctionTemplateScreenState extends ConsumerState<FunctionTemplateScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.route.name!,
+                      item.route.title,
                       maxLines: 1,
                       textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,

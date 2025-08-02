@@ -4,11 +4,11 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import '../../utils/constants/constants.dart';
+import '../../../utils/constants/constants.dart';
 
 class SqfliteHelper {
   static final _databaseName = "fangmou_database.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 3;
 
   // 单例模式
   static Database? _database;
@@ -57,24 +57,22 @@ CREATE TABLE note_main (
 )
 ''');
 
-    await db.execute('''
-CREATE TABLE note_main (
-  id String PRIMARY KEY,
-  deletion_flag BOOLEAN NOT NULL DEFAULT FALSE,
-  created_at TIMESTAMP NOT NULL,
-  last_update_at TIMESTAMP NOT NULL,
-  deleted_at TIMESTAMP NOT NULL,
-  main TEXT NOT NULL
-)
-''');
+    await db.execute(createTableTemplateRecord);
   }
 
   // 数据库升级
   static Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion == 2) {
-      await db.execute('''
-
-''');
+      await db.execute(createTableTemplateRecord);
     }
   }
+
+
+ static String get createTableTemplateRecord=>'''
+CREATE TABLE template_record (
+  id TEXT(32) NOT NULL  ,
+  times INTEGER NOT NULL DEFAULT 0 ,
+  last TEXT NOT NULL  
+);
+  ''';
 }

@@ -1,21 +1,31 @@
+import 'base_screen_template_screen.dart';
+import '../../model/template_common_state.dart';
+
 import './base_screen_template_enum.dart';
 
-final String baseScreenTemplateSourceStatefulView = '''
-class ${Params.screenName.token} extends ConsumerStatefulWidget {
-  const ${Params.screenName.token}({super.key});
+mixin SourceStatefulView on TemplateCommonState<BaseScreenTemplateScreen, Params, Results>   {
+  String get sourceStatefulView => '''
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import './${paramMap[Params.fileName]}_screen_viewmodel.dart';
+
+class ${paramMap[Params.screenName]}Screen extends ConsumerStatefulWidget {
+  const ${paramMap[Params.screenName]}Screen({super.key});
 
   @override
-  ConsumerState<${Params.screenName.token}> createState() => _${Params.screenName.token}State();
+  ConsumerState<${paramMap[Params.screenName]}Screen> createState() => _${paramMap[Params.screenName]}ScreenState();
 }
 
-class _${Params.screenName.token} extends ConsumerState<${Params.screenName.token}> {
+class _${paramMap[Params.screenName]}ScreenState extends ConsumerState<${paramMap[Params.screenName]}Screen> {
 
 
   @override
   Widget build(BuildContext context) {
-    final screenState = ref.watch(functionTemplateScreenViewmodelProvider${Params.familyProvider.token});
-    final screenViewmodel = ref.watch(functionTemplateScreenViewmodelProvider${Params.familyProvider.token}.notifier);
-${Params.screenName.token}
+    final screenState = ref.watch(${paramMap[Params.lowerScreenName]}ScreenViewmodelProvider${paramMap[Params.familyProvider]});
+    final screenViewmodel = ref.watch(${paramMap[Params.lowerScreenName]}ScreenViewmodelProvider${paramMap[Params.familyProvider]}.notifier);
+    return ${paramMap[Params.viewBuildReturnValue]};
   }
 }
 ''';
+}

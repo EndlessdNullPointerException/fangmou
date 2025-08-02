@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:oktoast/oktoast.dart';
 
 import '../../../../model/sql/sql.dart';
-import '../../../../utils/common.dart';
+import '../../../../utils/string_utils.dart';
 import 'sql_column_viewmodel.dart';
 
 typedef DataBaseNotifier = void Function(DataBase);

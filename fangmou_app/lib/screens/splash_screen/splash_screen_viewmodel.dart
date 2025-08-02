@@ -4,9 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../data_source/local/sqllite_helper.dart';
-import '../../data_source/local/archive_file_password_list.dart';
+import '../../data_source/local/sql_lite/sqllite_helper.dart';
+import '../../data_source/local/hive/archive_file_password_list.dart';
 import '../../routes/app_router.dart';
+import '../../routes/fangmou_routes.dart';
 import '../../utils/constants/constants.dart';
 import '../../utils/platform/windows/windows_admin_privilege_util.dart';
 import '../../utils/platform/windows/file_utils.dart';
@@ -36,11 +37,12 @@ class SlashScreenViewmodel extends _$SlashScreenViewmodel {
       // 打开 Box
       await Hive.openBox('settings');
       await Hive.openBox<ArchiveFilePasswordList>('ArchiveFilePasswordList');
-      // region <- Logic:初始化 Hive ->
+      // endregion <- Logic:初始化 Hive ->
 
       // region <- Logic:初始化 SqlLite ->
       SqfliteHelper.initDatabase();
       // endregion <- Logic:初始化 SqlLite ->
+
 
       // 初始化 7zip
       await FileUtils.initialize7z();
@@ -53,7 +55,7 @@ class SlashScreenViewmodel extends _$SlashScreenViewmodel {
       // 使用路由跳转到主页面
       await Future.delayed(Duration(milliseconds: 1));
       state = SlashScreenState(StartupStatus.success);
-      AppRouter.context!.go('/home');
+      AppRouter.context!.go(FangMouRoutes.home.path);
     } catch (e) {
       logger.e(e);
       state = SlashScreenState(StartupStatus.failure);

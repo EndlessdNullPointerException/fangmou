@@ -2,44 +2,17 @@ import 'package:highlight/highlight.dart';
 import 'package:highlight/languages/dart.dart';
 
 import '../../model/param_type.dart';
-import '../../model/template_source.dart';
 import '../../model/template_common_enum.dart';
-import './template_generate_template_source_enum.dart';
-import './template_generate_template_source_screen.dart';
-import './template_generate_template_source_source.dart';
-
-enum Templates implements TemplatesFormat {
-  screenPart,
-  enumPart,
-  sourcePart;
-
-  const Templates();
-
-  @override
-  TemplateSource get source {
-    switch (this) {
-      case Templates.screenPart:
-        return TemplateSource(name: this,  source: templateGenerateTemplateSourceScreen);
-      case Templates.enumPart:
-        return TemplateSource(name: this,  source: templateGenerateTemplateSourceEnum);
-      case Templates.sourcePart:
-        return TemplateSource(name: this,  source: templateGenerateTemplateSourceSource);
-    }
-  }
-
-
-}
 
 enum Params with ParamsFormat {
-  templateName(type: ParamType.input, ),
-  lowerTemplateName(type: ParamType.transfer,),
-  language(type: ParamType.condition,),
-  fileName(type: ParamType.input,);
+  templateName(type: ParamType.input),
+  lowerTemplateName(type: ParamType.transfer),
+  language(type: ParamType.condition),
+  fileName(type: ParamType.input);
 
-  const Params({ required this.type});
+  const Params({required this.type});
   @override
   final ParamType type;
-
 }
 
 enum Results implements ResultsFormat {

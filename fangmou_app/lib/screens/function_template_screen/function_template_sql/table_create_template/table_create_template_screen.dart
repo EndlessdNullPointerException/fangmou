@@ -1,8 +1,12 @@
 import 'dart:io';
 
-import 'package:fangmou_app/common_widgets/fangmou_standard_text_field.dart';
+import 'package:fangmou_app/common_widgets/fangmou_standard_widget.dart';
 import 'package:fangmou_app/screens/function_template_screen/function_template_sql/table_create_template/sql_column_viewmodel.dart';
 import 'package:fangmou_app/screens/function_template_screen/function_template_sql/table_create_template/editable_table.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_sql/table_create_template/table_create_template_source_mysql.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_sql/table_create_template/table_create_template_source_sqllite.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_sql/table_create_template/table_create_template_source_sqlserver.dart';
+import 'package:fangmou_app/screens/function_template_screen/model/param_map.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_screen.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_state.dart';
 import 'package:fangmou_app/screens/function_template_screen/widget/copyable_field.dart';
@@ -21,8 +25,8 @@ class TableCreateTemplateScreen extends TemplateCommonScreen {
   ConsumerState<ConsumerStatefulWidget> createState() => _TableCreateTemplateScreenState();
 }
 
-class _TableCreateTemplateScreenState
-    extends TemplateCommonState<TableCreateTemplateScreen, Templates, Params, Results> {
+class _TableCreateTemplateScreenState extends TemplateCommonState<TableCreateTemplateScreen, Params, Results>
+    with SourceMysql, SourceSqllite, SourceSqlserver {
   // 默认数据库
   // TODO 这个属性应该可以在设置中修改
   DataBase currentDataBase = DataBase.sqlLite;
@@ -30,7 +34,12 @@ class _TableCreateTemplateScreenState
 
   @override
   void paramMapInitiate() {
-    paramMap = {for (Params param in Params.values) param: TextEditingController()};
+    paramMap = ParamMap({
+      Params.tableName: TextEditingController(),
+      Params.tableFieldsAndIndex: "",
+      Params.tableComment: TextEditingController(),
+      Params.fileName: TextEditingController(),
+    });
   }
 
   @override
@@ -57,18 +66,16 @@ class _TableCreateTemplateScreenState
             Spacer(flex: 15),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.fileName]!,
+              controller: paramMap.getController(Params.fileName),
               labelText: "文件名",
               validator: (value) {
-                if (!fileGenerate) return null;
-                if (value != null && value != "") return null;
-                return "文件名不能为空";
+                return null;
               },
             ),
             Spacer(flex: 10),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.tableName]!,
+              controller: paramMap.getController(Params.tableName),
               labelText: "表名",
               validator: (value) {
                 if (value != null && value != "") return null;
@@ -78,7 +85,7 @@ class _TableCreateTemplateScreenState
             Spacer(flex: 10),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.tableComment]!,
+              controller: paramMap.getController(Params.tableComment),
               labelText: "表注释",
               validator: (value) {
                 return null;
@@ -94,14 +101,29 @@ class _TableCreateTemplateScreenState
   // region <- Functions:代码生成方法 ->
   @override
   Future<void> generate(fileGenerate, directory) async {
+
+    // 如果文件名未设置，则默认采用表名
+    if (paramMap[Params.fileName].isEmpty) {
+      setState(() {
+        paramMap[Params.fileName] = paramMap[Params.tableName];
+      });
+    }
+
+    fieldsAndIndex();
+
     String result = "";
     // region <- Logic: 生成可复制文本 ->
     result = templatesGenerator();
     resultMap[Results.sqlResult]!.controller.text = result;
     // endregion <- Logic: 生成可复制文本->
 
+
     // region <- Logic: 生成文件->
 
+    if(fileGenerate){
+      String fileName = paramMap[Params.fileName];
+
+    }
     try {
       var file = File("$directory/${paramMap[Params.fileName]}.sql");
       await file.writeAsString(result);
@@ -109,38 +131,22 @@ class _TableCreateTemplateScreenState
       logger.e(e);
     }
     // endregion <- Logic:生成文件 ->
+
+    allExpandOrCollapse(true);
   }
 
   String templatesGenerator() {
-    String result = "";
-
     switch (currentDataBase) {
       case DataBase.mySql:
-        result = Templates.mySqlCreateTable.source.replaceAll({
-          Params.tableName.token: paramMap[Params.tableName]!.text,
-          Params.tableFieldsAndIndex.token: fieldsAndIndex(),
-          Params.tableComment.token: paramMap[Params.tableComment]!.text,
-        });
-        break;
+        return sourceMysql;
       case DataBase.sqlServer:
-        result = Templates.sqlServerCreateTable.source.replaceAll({
-          Params.tableName.token: paramMap[Params.tableName]!.text,
-          Params.tableFieldsAndIndex.token: fieldsAndIndex(),
-          Params.tableComment.token: paramMap[Params.tableComment]!.text,
-        });
-        break;
+        return sourceSqlserver;
       case DataBase.sqlLite:
-        result = Templates.sqlLiteCreateTable.source.replaceAll({
-          Params.tableName.token: paramMap[Params.tableName]!.text,
-          Params.tableFieldsAndIndex.token: fieldsAndIndex(),
-        });
-        break;
+        return sourceSqllite;
     }
-
-    return result;
   }
 
-  String fieldsAndIndex() {
+  void fieldsAndIndex() {
     StringBuffer sb = StringBuffer();
 
     for (final sqlColumnModel in sqlColumnModelList) {
@@ -166,7 +172,7 @@ class _TableCreateTemplateScreenState
       result = result.substring(0, result.lastIndexOf(",\n"));
     }
 
-    return result;
+    paramMap[Params.tableFieldsAndIndex] = result;
   }
 
   // endregion <- Functions:代码生成方法 ->

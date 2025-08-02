@@ -6,7 +6,8 @@ part of 'function_note_detail_screen_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$functionNoteDetailScreenViewmodelHash() => r'859fd3dbe9603fab6d8959616219af670d38a3ef';
+String _$functionNoteDetailScreenViewmodelHash() =>
+    r'859fd3dbe9603fab6d8959616219af670d38a3ef';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -33,28 +34,38 @@ abstract class _$FunctionNoteDetailScreenViewmodel
     extends BuildlessAutoDisposeAsyncNotifier<FunctionNoteDetailScreenState> {
   late final String id;
 
-  FutureOr<FunctionNoteDetailScreenState> build(String id);
+  FutureOr<FunctionNoteDetailScreenState> build(
+    String id,
+  );
 }
 
 /// See also [FunctionNoteDetailScreenViewmodel].
 @ProviderFor(FunctionNoteDetailScreenViewmodel)
-const functionNoteDetailScreenViewmodelProvider = FunctionNoteDetailScreenViewmodelFamily();
+const functionNoteDetailScreenViewmodelProvider =
+    FunctionNoteDetailScreenViewmodelFamily();
 
 /// See also [FunctionNoteDetailScreenViewmodel].
-class FunctionNoteDetailScreenViewmodelFamily extends Family<AsyncValue<FunctionNoteDetailScreenState>> {
+class FunctionNoteDetailScreenViewmodelFamily
+    extends Family<AsyncValue<FunctionNoteDetailScreenState>> {
   /// See also [FunctionNoteDetailScreenViewmodel].
   const FunctionNoteDetailScreenViewmodelFamily();
 
   /// See also [FunctionNoteDetailScreenViewmodel].
-  FunctionNoteDetailScreenViewmodelProvider call(String id) {
-    return FunctionNoteDetailScreenViewmodelProvider(id);
+  FunctionNoteDetailScreenViewmodelProvider call(
+    String id,
+  ) {
+    return FunctionNoteDetailScreenViewmodelProvider(
+      id,
+    );
   }
 
   @override
   FunctionNoteDetailScreenViewmodelProvider getProviderOverride(
     covariant FunctionNoteDetailScreenViewmodelProvider provider,
   ) {
-    return call(provider.id);
+    return call(
+      provider.id,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -65,7 +76,8 @@ class FunctionNoteDetailScreenViewmodelFamily extends Family<AsyncValue<Function
   static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
 
   @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies => _allTransitiveDependencies;
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
 
   @override
   String? get name => r'functionNoteDetailScreenViewmodelProvider';
@@ -73,19 +85,24 @@ class FunctionNoteDetailScreenViewmodelFamily extends Family<AsyncValue<Function
 
 /// See also [FunctionNoteDetailScreenViewmodel].
 class FunctionNoteDetailScreenViewmodelProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<FunctionNoteDetailScreenViewmodel, FunctionNoteDetailScreenState> {
+    extends AutoDisposeAsyncNotifierProviderImpl<
+        FunctionNoteDetailScreenViewmodel, FunctionNoteDetailScreenState> {
   /// See also [FunctionNoteDetailScreenViewmodel].
-  FunctionNoteDetailScreenViewmodelProvider(String id)
-    : this._internal(
-        () => FunctionNoteDetailScreenViewmodel()..id = id,
-        from: functionNoteDetailScreenViewmodelProvider,
-        name: r'functionNoteDetailScreenViewmodelProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product') ? null : _$functionNoteDetailScreenViewmodelHash,
-        dependencies: FunctionNoteDetailScreenViewmodelFamily._dependencies,
-        allTransitiveDependencies: FunctionNoteDetailScreenViewmodelFamily._allTransitiveDependencies,
-        id: id,
-      );
+  FunctionNoteDetailScreenViewmodelProvider(
+    String id,
+  ) : this._internal(
+          () => FunctionNoteDetailScreenViewmodel()..id = id,
+          from: functionNoteDetailScreenViewmodelProvider,
+          name: r'functionNoteDetailScreenViewmodelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$functionNoteDetailScreenViewmodelHash,
+          dependencies: FunctionNoteDetailScreenViewmodelFamily._dependencies,
+          allTransitiveDependencies: FunctionNoteDetailScreenViewmodelFamily
+              ._allTransitiveDependencies,
+          id: id,
+        );
 
   FunctionNoteDetailScreenViewmodelProvider._internal(
     super._createNotifier, {
@@ -100,8 +117,12 @@ class FunctionNoteDetailScreenViewmodelProvider
   final String id;
 
   @override
-  FutureOr<FunctionNoteDetailScreenState> runNotifierBuild(covariant FunctionNoteDetailScreenViewmodel notifier) {
-    return notifier.build(id);
+  FutureOr<FunctionNoteDetailScreenState> runNotifierBuild(
+    covariant FunctionNoteDetailScreenViewmodel notifier,
+  ) {
+    return notifier.build(
+      id,
+    );
   }
 
   @override
@@ -121,8 +142,8 @@ class FunctionNoteDetailScreenViewmodelProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<FunctionNoteDetailScreenViewmodel, FunctionNoteDetailScreenState>
-  createElement() {
+  AutoDisposeAsyncNotifierProviderElement<FunctionNoteDetailScreenViewmodel,
+      FunctionNoteDetailScreenState> createElement() {
     return _FunctionNoteDetailScreenViewmodelProviderElement(this);
   }
 
@@ -142,19 +163,20 @@ class FunctionNoteDetailScreenViewmodelProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin FunctionNoteDetailScreenViewmodelRef on AutoDisposeAsyncNotifierProviderRef<FunctionNoteDetailScreenState> {
+mixin FunctionNoteDetailScreenViewmodelRef
+    on AutoDisposeAsyncNotifierProviderRef<FunctionNoteDetailScreenState> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _FunctionNoteDetailScreenViewmodelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<FunctionNoteDetailScreenViewmodel, FunctionNoteDetailScreenState>
+    extends AutoDisposeAsyncNotifierProviderElement<
+        FunctionNoteDetailScreenViewmodel, FunctionNoteDetailScreenState>
     with FunctionNoteDetailScreenViewmodelRef {
   _FunctionNoteDetailScreenViewmodelProviderElement(super.provider);
 
   @override
   String get id => (origin as FunctionNoteDetailScreenViewmodelProvider).id;
 }
-
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -1,28 +1,32 @@
-import './template_generate_template_enum.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_flutter/template_generate_template/template_generate_template_screen.dart';
 
-final String templateGenerateTemplateSourceScreen = '''
-import 'package:fangmou_app/common_widgets/fangmou_standard_text_field.dart';
+import '../../model/template_common_state.dart';
+import './template_generate_template_enum.dart';
+mixin SourceScreen on TemplateCommonState<TemplateGenerateTemplateScreen, Params, Results> {
+
+ String get sourceScreen => '''
+import 'package:fangmou_app/common_widgets/fangmou_standard_widget.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_state.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../utils/file.dart';
+import '../../../../utils/file_utils.dart';
 import '../../widget/copyable_field.dart';
-import './${Params.fileName.token}_enum.dart';
+import './${paramMap[Params.fileName]}_enum.dart';
 
-class ${Params.templateName.token}Screen extends TemplateCommonScreen {
-  const ${Params.templateName.token}Screen({super.key, required super.id});
+class ${paramMap[Params.templateName]}Screen extends TemplateCommonScreen {
+  const ${paramMap[Params.templateName]}Screen({super.key, required super.id});
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _${Params.templateName.token}ScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _${paramMap[Params.templateName]}ScreenState();
 }
 
-class _${Params.templateName.token}ScreenState extends TemplateCommonState<${Params.templateName.token}Screen,Templates,Params,Results> {
+class _${paramMap[Params.templateName]}ScreenState extends TemplateCommonState<${paramMap[Params.templateName]}Screen,Templates,Params,Results> {
 
 
   @override
   void paramMapInitiate() {
-    paramMap = {for (Params param in Params.values) param: TextEditingController()};
+    paramMap = {for (Params param in paramMap[Params.values) param: TextEditingController()};
   }
 
   @override
@@ -43,7 +47,7 @@ class _${Params.templateName.token}ScreenState extends TemplateCommonState<${Par
             Spacer(flex: 10),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.fileName]!,
+              controller: paramMap[paramMap[Params.fileName]!,
               labelText: "文件名",
               validator: (value) {
                 if (!fileGenerate) return null;
@@ -54,7 +58,7 @@ class _${Params.templateName.token}ScreenState extends TemplateCommonState<${Par
             Spacer(flex: 10),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.example]!,
+              controller: paramMap[paramMap[Params.example]!,
               labelText: "示例",
               validator: (value) {
                 if (value != null && value != "") return null;
@@ -84,7 +88,7 @@ class _${Params.templateName.token}ScreenState extends TemplateCommonState<${Par
 
     // region <- Logic: 创建文件->
     if (fileGenerate) {
-      safeCreateFile({"\$directory/\${paramMap[Params.fileName].text}": result});
+      safeCreateFile({"\$directory/\${paramMap[paramMap[Params.fileName].text}": result});
     }
     // endregion <- Logic:创建文件 ->
   }
@@ -92,8 +96,9 @@ class _${Params.templateName.token}ScreenState extends TemplateCommonState<${Par
   // region <- Functions: 生成代码方法 ->
   String generator() {
     String result = "";
-    result = Templates.example.source.replaceAll({Params.example.token: paramMap[Params.example]!.text});
+    result = Templates.example.source.replaceAll({paramMap[Params.example]: paramMap[paramMap[Params.example]!.text});
     return result;
   }
   // endregion <- Functions: 生成代码方法 ->
 }''';
+}

@@ -1,3 +1,5 @@
+import 'package:fangmou_app/routes/app_router.dart';
+import 'package:fangmou_app/routes/fangmou_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +22,7 @@ class FunctionScheduleListScreen extends ConsumerWidget {
                 onTap: () {
                   // 点击事件处理逻辑
                   logger.d('第 $i Row 被点击了!');
-                  context.go('/function_schedule_detail/$i');
+                  AppRouter.context!.pushNamed(FangMouRoutes.functionScheduleDetail.name,pathParameters: {"id":i.toString()});
                 },
                 behavior: HitTestBehavior.opaque,
                 child: Padding(

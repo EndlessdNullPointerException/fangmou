@@ -6,18 +6,21 @@ part of 'setting_screen_viewmodel.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$settingScreenViewmodelHash() => r'6f8d58cbd15110c9e1a6fd65371be07090f0bf35';
+String _$settingScreenViewmodelHash() =>
+    r'6f8d58cbd15110c9e1a6fd65371be07090f0bf35';
 
 /// See also [SettingScreenViewmodel].
 @ProviderFor(SettingScreenViewmodel)
-final settingScreenViewmodelProvider =
-    AutoDisposeAsyncNotifierProvider<SettingScreenViewmodel, SettingScreenState>.internal(
-      SettingScreenViewmodel.new,
-      name: r'settingScreenViewmodelProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product') ? null : _$settingScreenViewmodelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+final settingScreenViewmodelProvider = AutoDisposeAsyncNotifierProvider<
+    SettingScreenViewmodel, SettingScreenState>.internal(
+  SettingScreenViewmodel.new,
+  name: r'settingScreenViewmodelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$settingScreenViewmodelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$SettingScreenViewmodel = AutoDisposeAsyncNotifier<SettingScreenState>;
 // ignore_for_file: type=lint

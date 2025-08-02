@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../utils/generator.dart';
+import '../../utils/data_generator_utils.dart';
 
 part 'note_main.g.dart';
 

@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart'; // 用于时间格式化
 import 'package:logger/logger.dart';
 
-import '../data_source/local/note_local.dart';
+import '../data_source/local/sql_lite/note_local.dart';
+import '../data_source/local/sql_lite/template_local.dart';
 import '../domain/use_cases/decompress_processor.dart';
 import '../domain/use_cases/file_batch_processor.dart';
 import '../utils/constants/constants.dart';
@@ -18,6 +19,9 @@ void setupDomainUserCase() {
   // region  本地数据获取
   getIt.registerLazySingleton<NoteLocal>(
     () => NoteLocal(), // 使用异步工厂
+  );
+  getIt.registerLazySingleton<TemplateLocal>(
+    () => TemplateLocal(), // 使用异步工厂
   );
   // endregion
 

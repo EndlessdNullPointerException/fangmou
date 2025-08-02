@@ -1,10 +1,9 @@
 // 自定义应用栏
-import 'package:fangmou_app/routes/app_router.dart';
-import 'package:fangmou_app/utils/extensions/go_router_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../routes/fangmou_routes.dart';
 import 'custom_app_bar_style.dart';
 
 class CustomAppBar extends ConsumerWidget {
@@ -67,20 +66,18 @@ class CustomAppBar extends ConsumerWidget {
       color: Colors.black12,
       child: Row(
         children: [
-          for (FangMouGoRoute item in AppRouter.goRouteItemList)
-            if (item.routes.isEmpty)
+          for (FangMouRoutes item in FangMouRoutes.navigatorRoutes)
+            if (item.navigatorDescendents.isEmpty)
               CustomAppbarIconButton(icon: item.icon!, onPressed: () => {context.go(item.path)})
             else
               CustomAppbarPopupMenuButton(
                 icon: item.icon!,
                 itemBuilder:
                     (context) => [
-                      for (FangMouGoRoute subItem in item.descendantRoutes!)
+                      for (FangMouRoutes subItem in item.navigatorDescendents)
                         PopupMenuItem<String>(
                           value: subItem.path,
-                          child: Row(
-                            children: [subItem.icon ?? Icon(Icons.error), SizedBox(width: 8), Text(subItem.name ?? "")],
-                          ),
+                          child: Row(children: [subItem.icon!, SizedBox(width: 8), Text(subItem.title)]),
                         ),
                     ],
                 onSelected: (value) async {

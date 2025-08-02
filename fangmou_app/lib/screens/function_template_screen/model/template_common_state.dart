@@ -1,3 +1,4 @@
+import 'package:fangmou_app/screens/function_template_screen/model/param_map.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_enum.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,12 +9,11 @@ import '../widget/template_base_layout.dart';
 
 abstract class TemplateCommonState<
   T extends TemplateCommonScreen,
-  Templates extends TemplatesFormat,
   Params extends ParamsFormat,
   Results extends ResultsFormat
 >
     extends ConsumerState<T> {
-  late final Map<Params, dynamic> paramMap;
+  late final ParamMap paramMap;
   late final Map<Results, CopyableFieldParams> resultMap;
 
   @override
@@ -61,9 +61,7 @@ abstract class TemplateCommonState<
 
   void resetParams(formKey) {
     formKey.currentState!.reset();
-    for (var item in paramMap.values) {
-      item.text = "";
-    }
+    paramMap.reset();
   }
 
   void clearAll(formKey) {

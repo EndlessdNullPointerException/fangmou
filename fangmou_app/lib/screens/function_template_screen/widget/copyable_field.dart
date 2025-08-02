@@ -57,22 +57,6 @@ class CopyableFieldState extends State<CopyableField> {
                     maxLines: null,
                   ),
                 ),
-                // TextField(
-                //   controller: widget.copyableFieldParams.controller,
-                //   maxLines: null, // 设置为 null 可以使得 TextField 高度等于文本高度
-                //   readOnly: true,
-                //   decoration: InputDecoration(
-                //     fillColor: Color(0x110099ee),
-                //     enabledBorder: OutlineInputBorder(
-                //       borderRadius: BorderRadius.circular(10.0),
-                //       borderSide: BorderSide(color: Colors.blue, width: 1),
-                //     ),
-                //     focusedBorder: OutlineInputBorder(
-                //       borderRadius: BorderRadius.circular(10.0),
-                //       borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                //     ),
-                //   ),
-                // ),
               ),
             ],
           ),

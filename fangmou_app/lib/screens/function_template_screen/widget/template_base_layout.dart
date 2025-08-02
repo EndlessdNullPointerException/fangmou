@@ -1,16 +1,19 @@
+import 'package:fangmou_app/routes/fangmou_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../common_widgets/directory_path_selector.dart';
 import '../../../common_widgets/gadget_widget.dart';
 import '../../../common_widgets/simple_content_card.dart';
+import '../../../data_source/local/sql_lite/template_local.dart';
 import '../../../routes/app_router.dart';
-import '../../../utils/extensions/go_router_extension.dart';
+import '../../../utils/constants/constants.dart';
 import '../model/tabs.dart';
 
 typedef ResetParamsCallback = void Function(GlobalKey<FormState> formkey);
 typedef ClearAllCallBack = void Function(GlobalKey<FormState> formkey);
-typedef GenerateCallback = void Function(bool fileGenerate, String directory);
+typedef GenerateCallback = Future<void> Function(bool fileGenerate, String directory);
 typedef ParamFieldBuilder = Widget Function(bool isFileGenerate);
 typedef AllExpandOrCollapseCallback = void Function(bool isFileGenerate);
 
@@ -41,16 +44,18 @@ class TemplateBaseLayout extends StatefulWidget {
 }
 
 class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
+  final templateLocal = GetIt.I.get<TemplateLocal>();
+
   bool fileGenerate = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController directoryController = TextEditingController();
 
-  late FangMouGoRoute currentRoute;
+  late TemplateRoutes currentRoute;
   @override
   void initState() {
     super.initState();
-    currentRoute = allTemplates.singleWhere((item) => item.route.id == widget.id).route;
+    currentRoute = TemplateRoutes.values.singleWhere((item) => item.id == widget.id);
   }
 
   @override
@@ -60,13 +65,13 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
 
   List<Widget> toolBar() {
     return [
-      MaterialButton(
+      IconButton(
         onPressed: () {
-          AppRouter.context!.pop();
+          AppRouter.context!.pushNamed(FangMouRoutes.functionTemplate.name);
         },
-        child: Icon(Icons.arrow_back),
+        icon: Icon(Icons.arrow_back),
       ),
-      Text(currentRoute.name!, style: Theme.of(context).textTheme.headlineMedium),
+      Text(currentRoute.title, style: Theme.of(context).textTheme.headlineMedium),
       Spacer(),
       Flexible(
         flex: 1,
@@ -103,7 +108,7 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
 
   // 数据校验
   // 如果校验通过，则直接进行生成
-  void dataCheck() {
+  void dataCheck() async {
     if (_formKey.currentState == null) return;
     if (!_formKey.currentState!.validate()) {
       FocusScope.of(context).requestFocus(FocusNode());
@@ -113,7 +118,15 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
       showCustomToast("请选择路径");
       return;
     }
-    widget.generate(fileGenerate, directoryController.text);
+    try {
+      await widget.generate(fileGenerate, directoryController.text);
+      showCustomToast("成功", color: Colors.green);
+      await templateLocal.updateById(widget.id);
+    } catch (e) {
+      showCustomDialog(e.toString());
+      logger.e(e);
+      rethrow;
+    }
   }
 
   Widget layout() {
@@ -151,6 +164,7 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
     );
   }
 
+
   // region  悬浮按钮
   late double _top;
   late double _left;
@@ -178,7 +192,7 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
         // 当拖动更新时
         onPanUpdate: (details) {
           // details.delta 包含了从上次更新到本次更新的拖动距离 (dx, dy)
-          // 我们通过更新 _top 和 _left 的值来改变按钮的位置
+          // 通过更新 _top 和 _left 的值来改变按钮的位置
           setState(() {
             _top += details.delta.dy;
             _left += details.delta.dx;
@@ -193,6 +207,7 @@ class _TemplateBaseLayoutState extends State<TemplateBaseLayout> {
               tooltip: "收起",
               child: Icon(Icons.arrow_drop_down),
             ),
+            SizedBox(height: 5),
             FloatingActionButton(
               mini: true,
               shape: CircleBorder(),

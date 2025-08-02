@@ -1,10 +1,11 @@
 import 'package:fangmou_app/routes/app_router.dart';
+import 'package:fangmou_app/routes/fangmou_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../data_source/local/note_local.dart';
+import '../../../data_source/local/sql_lite/note_local.dart';
 import '../../../model/note_model/note_basic_message.dart';
 import '../../../model/note_model/note_main.dart';
 import 'function_note_detail_screen_state.dart';
@@ -102,7 +103,8 @@ class FunctionNoteDetailScreenViewmodel extends _$FunctionNoteDetailScreenViewmo
                   onPressed: () {
                     state = AsyncValue.data(currentState.copyWith(editMode: false));
                     Navigator.pop(AppRouter.context!);
-                    AppRouter.context!.go("/function_note_list");
+                    AppRouter.context!.push(FangMouRoutes.functionNote.path);
+
                   },
                   child: Text('放弃'),
                 ),
@@ -110,7 +112,7 @@ class FunctionNoteDetailScreenViewmodel extends _$FunctionNoteDetailScreenViewmo
             ),
       );
     } else {
-      AppRouter.context!.go("/function_note_list");
+      AppRouter.context!.push(FangMouRoutes.functionNote.path);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:fangmou_app/routes/app_router.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Widget fangmouStandardTextField({
   required int flex,
@@ -7,6 +8,7 @@ Widget fangmouStandardTextField({
   String? hintText,
   String? labelText,
   IconButton? suffixIcon,
+  List<TextInputFormatter>? inputFormatters,
 }) {
   return Flexible(
     flex: flex,
@@ -21,6 +23,7 @@ Widget fangmouStandardTextField({
         ),
         child: TextField(
           controller: controller,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -48,6 +51,7 @@ Widget fangmouStandardTextFormField({
   String? hintText,
   String? labelText,
   String helperText = " ",
+  List<TextInputFormatter>? inputFormatters,
   required FormFieldValidator validator,
 }) {
   return Flexible(
@@ -64,6 +68,7 @@ Widget fangmouStandardTextFormField({
         child: TextFormField(
           controller: controller,
           validator: validator,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -91,4 +96,12 @@ Widget fangmouStandardTextFormField({
       ),
     ),
   );
+}
+
+Widget fangmouStandardDropdownMenu<T>({
+  required List<DropdownMenuEntry<T>> dropdownMenuEntries,
+  ValueChanged<T?>? onSelected,
+  T? initialSelection
+}) {
+  return DropdownMenu<T>(dropdownMenuEntries: dropdownMenuEntries, onSelected: onSelected,initialSelection: initialSelection,);
 }

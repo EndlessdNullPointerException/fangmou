@@ -1,12 +1,17 @@
-import 'package:fangmou_app/common_widgets/fangmou_standard_text_field.dart';
+import 'package:fangmou_app/common_widgets/fangmou_standard_widget.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_flutter/template_generate_template/template_generate_template_source_enum.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_flutter/template_generate_template/template_generate_template_source_screen.dart';
+import 'package:fangmou_app/screens/function_template_screen/function_template_flutter/template_generate_template/template_generate_template_source_source.dart';
+import 'package:fangmou_app/screens/function_template_screen/model/param_map.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_state.dart';
 import 'package:fangmou_app/screens/function_template_screen/model/template_common_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:highlight/languages/all.dart';
+import 'package:path/path.dart' as p;
 
-import '../../../../utils/constants/constants.dart';
-import '../../../../utils/file.dart';
+import '../../../../utils/file_utils.dart';
+import '../../../../utils/string_utils.dart';
 import '../../widget/copyable_field.dart';
 import './template_generate_template_enum.dart';
 
@@ -17,10 +22,15 @@ class TemplateGenerateTemplateScreen extends TemplateCommonScreen {
 }
 
 class _TemplateGenerateTemplateScreenState
-    extends TemplateCommonState<TemplateGenerateTemplateScreen, Templates, Params, Results> {
+    extends TemplateCommonState<TemplateGenerateTemplateScreen, Params, Results> with SourceSource,SourceEnum,SourceScreen {
   @override
   void paramMapInitiate() {
-    paramMap = {for (Params param in Params.values) param: TextEditingController()};
+    paramMap = ParamMap({
+      Params.fileName: TextEditingController(),
+      Params.templateName: TextEditingController(),
+      Params.lowerTemplateName: () => changeFirstLetterCase(paramMap[Params.templateName], toUpper: false),
+      Params.language: "dart",
+    });
   }
 
   @override
@@ -65,7 +75,7 @@ class _TemplateGenerateTemplateScreenState
             Spacer(flex: 10),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.fileName]!,
+              controller: paramMap.getController(Params.fileName),
               labelText: "文件名",
               validator: (value) {
                 if (value != null && value != "") return null;
@@ -75,7 +85,7 @@ class _TemplateGenerateTemplateScreenState
             Spacer(flex: 10),
             fangmouStandardTextFormField(
               flex: 30,
-              controller: paramMap[Params.templateName]!,
+              controller: paramMap.getController(Params.templateName),
               labelText: "模板名",
               validator: (value) {
                 if (value != null && value != "") return null;
@@ -91,9 +101,9 @@ class _TemplateGenerateTemplateScreenState
 
   @override
   Future<void> generate(fileGenerate, directory) async {
-    String screenPartResult = screenPartGenerator();
-    String enumPartResult = enumPartGenerator();
-    String sourcePartResult = sourcePartGenerator();
+    String screenPartResult = sourceScreen;
+    String enumPartResult = sourceEnum;
+    String sourcePartResult = sourceSource;
 
     // region <- Logic: 赋值可复制文本 ->
     resultMap[Results.screenPart]!.controller.text = screenPartResult;
@@ -106,46 +116,16 @@ class _TemplateGenerateTemplateScreenState
     allExpandOrCollapse(true);
 
     // region <- Logic: 生成文件->
-    logger.d("$directory/${paramMap[Params.fileName].text}/${paramMap[Params.fileName].text}_screen.dart");
 
     if (fileGenerate) {
+      String fileName = paramMap[Params.fileName];
       safeCreateFile({
-        "$directory\\${paramMap[Params.fileName].text}\\${paramMap[Params.fileName].text}_screen.dart":
-            screenPartResult,
-        "$directory\\${paramMap[Params.fileName].text}\\${paramMap[Params.fileName].text}_enum.dart": enumPartResult,
-        "$directory\\${paramMap[Params.fileName].text}\\${paramMap[Params.fileName].text}_source.dart":
-            sourcePartResult,
+        p.join(directory, fileName, "${fileName}_screen.dart"): screenPartResult,
+        p.join(directory, fileName, "${fileName}_enum.dart"): enumPartResult,
+        p.join(directory, fileName, "${fileName}_source.dart"): sourcePartResult,
       });
     }
 
     // endregion <- Logic:生成文件 ->
   }
-
-  // region <- Functions: 生成代码方法 ->
-  screenPartGenerator() {
-    String result = Templates.screenPart.source.replaceAll({
-      Params.templateName.token: paramMap[Params.templateName]!.text,
-      Params.fileName.token: paramMap[Params.fileName]!.text,
-    });
-    return result;
-  }
-
-  enumPartGenerator() {
-    String result = Templates.enumPart.source.replaceAll({
-      Params.lowerTemplateName.token: paramMap[Params.lowerTemplateName]!.text,
-      Params.language.token: language,
-      Params.fileName.token: paramMap[Params.fileName]!.text,
-    });
-    return result;
-  }
-
-  sourcePartGenerator() {
-    String result = Templates.sourcePart.source.replaceAll({
-      Params.lowerTemplateName.token: paramMap[Params.lowerTemplateName]!.text,
-      Params.fileName.token: paramMap[Params.fileName]!.text,
-    });
-    return result;
-  }
-
-  // endregion <- Functions: 生成代码方法 ->
 }

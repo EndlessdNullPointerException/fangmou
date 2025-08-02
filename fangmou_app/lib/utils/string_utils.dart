@@ -1,31 +1,53 @@
-/// 将大驼峰 (UpperCamelCase) 格式的字符串转换为下划线蛇形 (lower_case_with_underscores，又称 SnakeCase) 格式。
-String upperCamelToSnakeCase(String text) {
-  if (text.isEmpty) {
+String camelToSnake(String input) {
+  if (input.isEmpty) {
     return '';
   }
 
-  // 正则表达式：匹配所有大写字母
-  final RegExp exp = RegExp(r'[A-Z]');
+  // 正则表达式，用于在需要的地方插入下划线
+  // 1. 在小写字母/数字和-大写字母之间
+  final RegExp pattern1 = RegExp(r'(?<=[a-z0-9])[A-Z]');
+  // 2. 在大写字母和-大写字母+小写字母之间（处理首字母缩略词，如HTTP-R）
+  final RegExp pattern2 = RegExp(r'(?<=[A-Z])[A-Z](?=[a-z])');
 
-  // 使用 replaceAllMapped 处理所有大写字母
-  return text.replaceAllMapped(exp, (Match m) {
-    final String match = m.group(0)!;
-    // 如果不是字符串的开头，就在前面加上下划线
-    return (m.start == 0) ? match.toLowerCase() : '_${match.toLowerCase()}';
-  });
+  // 先处理类似 HTTPRequest 的情况，再处理普通情况
+  String result = input.replaceAllMapped(pattern2, (match) => '_${match.group(0)}');
+  result = result.replaceAllMapped(pattern1, (match) => '_${match.group(0)}');
+
+  return result.toLowerCase();
 }
 
-/// 将小驼峰 (lowerCamelCase) 格式的字符串转换为下划线蛇形 (lower_case_with_underscores，又称 SnakeCase) 格式。
-String lowerCamelToSnakeCase(String text) {
-  if (text.isEmpty) {
+/// 将下划线命名的字符串转换为驼峰命名。
+///
+/// [capitalizeFirst] 参数控制是否生成大驼峰（PascalCase）。
+/// - `false` (默认): 生成小驼峰 (camelCase)。
+/// - `true`: 生成大驼峰 (PascalCase)。
+///
+/// 示例:
+/// 'snake_case' -> 'snakeCase'
+/// 'snake_case', capitalizeFirst: true -> 'SnakeCase'
+String snakeToCamel(String input, {bool capitalizeFirst = false}) {
+  if (input.isEmpty) {
     return '';
   }
 
-  // 正则表达式：匹配前面是小写字母的大写字母
-  final RegExp exp = RegExp(r'(?<=[a-z])[A-Z]');
+  final List<String> parts = input.split('_');
 
-  // 使用 replaceAllMapped 在匹配项前添加下划线，然后将整个字符串转为小写
-  return text.replaceAllMapped(exp, (Match m) => '_${m.group(0)}').toLowerCase();
+  if (parts.length == 1) {
+    // 如果没有下划线，则根据参数决定是否大写首字母
+    return capitalizeFirst ? parts[0][0].toUpperCase() + parts[0].substring(1) : parts[0];
+  }
+
+  // 第一个单词根据 capitalizeFirst 参数处理
+  final String firstPart = capitalizeFirst ? parts[0][0].toUpperCase() + parts[0].substring(1) : parts[0];
+
+  // 后续单词全部首字母大写
+  final List<String> remainingParts =
+      parts.sublist(1).map((part) {
+        if (part.isEmpty) return ''; // 处理连续下划线 "a__b"
+        return part[0].toUpperCase() + part.substring(1);
+      }).toList();
+
+  return [firstPart, ...remainingParts].join('');
 }
 
 /// 将列表中的元素向前或向后移动一位，并处理边界情况（循环移动）。
@@ -75,9 +97,9 @@ List<T> moveElement<T>(
   return targetList;
 }
 
+String changeFirstLetterCase(String inputOrigin, {required bool toUpper}) {
+  String input = inputOrigin.substring(0);
 
-// 核心的私有函数
-String changeFirstLetterCase(String input, {required bool toUpper}) {
   // 1. 处理空字符串的边缘情况
   if (input.isEmpty) {
     return '';
@@ -91,9 +113,7 @@ String changeFirstLetterCase(String input, {required bool toUpper}) {
   }
 
   // 4. 执行大小写转换
-  final firstLetter = toUpper
-      ? input[0].toUpperCase()
-      : input[0].toLowerCase();
+  final firstLetter = toUpper ? input[0].toUpperCase() : input[0].toLowerCase();
 
   final restOfTheString = input.substring(1);
 
